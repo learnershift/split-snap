@@ -31,3 +31,16 @@ it('active bill autosaves and restores through the persistence API', async () =>
   expect(screen.getByLabelText('Participant 1 name')).toHaveValue('Ana')
   expect(screen.getByLabelText('Participant 2 name')).toHaveValue('Bo')
 })
+
+it('blocks an update when the active draft cannot be saved', async () => {
+  const user = userEvent.setup()
+  render(<App />)
+  await user.type(screen.getByLabelText('Pre-tax total'), '12')
+
+  const originalSetItem = Storage.prototype.setItem
+  Object.defineProperty(Storage.prototype, 'setItem', { configurable: true, value: () => { throw new DOMException('quota', 'QuotaExceededError') } })
+  window.dispatchEvent(new Event('splitsnap:update-ready'))
+  await user.click(await screen.findByRole('button', { name: 'Update now' }))
+  expect(screen.getByRole('alert')).toHaveTextContent('Unable to save draft. Update remains pending.')
+  Object.defineProperty(Storage.prototype, 'setItem', { configurable: true, value: originalSetItem })
+})

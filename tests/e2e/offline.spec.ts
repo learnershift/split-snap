@@ -47,3 +47,21 @@ test('V10-B04 rejecting update preserves old controller UI and draft', { tag: '@
   expect(await page.evaluate(() => localStorage.getItem('split-snap:v1:draft'))).toBe(draft)
   await expect(page.getByRole('main', { name: 'SplitSnap bill' })).toBeVisible()
 })
+
+test('V10-B05 failed draft save blocks update activation', { tag: '@offline' }, async ({ page }) => {
+  await page.goto('/split-snap/')
+  await page.evaluate(async () => navigator.serviceWorker.ready)
+  const beforeController = await page.evaluate(() => navigator.serviceWorker.controller?.scriptURL ?? null)
+  await page.getByLabel('Pre-tax total').fill('12')
+  const draft = '{"schemaVersion":1,"inputs":{"monetaryLabel":"USD","precision":2,"participants":["Ana","Bo"],"preTaxTotalUnits":"1200"}}'
+  await page.evaluate((bytes) => localStorage.setItem('split-snap:v1:draft', bytes), draft)
+  await page.evaluate(() => {
+    Object.defineProperty(Storage.prototype, 'setItem', { configurable: true, value: () => { throw new DOMException('quota', 'QuotaExceededError') } })
+    window.dispatchEvent(new Event('splitsnap:update-ready'))
+  })
+
+  await page.getByRole('button', { name: 'Update now' }).click()
+  await expect(page.getByRole('alert')).toContainText('Unable to save draft. Update remains pending.')
+  expect(await page.evaluate(() => navigator.serviceWorker.controller?.scriptURL ?? null)).toBe(beforeController)
+  expect(await page.evaluate(() => localStorage.getItem('split-snap:v1:draft'))).toBe(draft)
+})

@@ -34,10 +34,23 @@ export function App() {
   const [items, setItems] = useState<Item[]>([])
   const [focusParticipantId, setFocusParticipantId] = useState<string | null>(null)
   const [updateReady, setUpdateReady] = useState(false)
+  const [updateError, setUpdateError] = useState('')
   const draftHasBeenEdited = useRef(false)
 
   function markDraftEdited() {
     draftHasBeenEdited.current = true
+  }
+
+  function acceptUpdate() {
+    const parsedTotal = parseMoneyInput(preTaxTotal, Number(precision))
+    if (!parsedTotal.ok || !saveDraft(localStorage, {
+      monetaryLabel,
+      precision: Number(precision),
+      participants: participants.map(({ name }) => name),
+      preTaxTotalUnits: parsedTotal.units,
+    }).ok) {
+      setUpdateError('Unable to save draft. Update remains pending.')
+    }
   }
 
   useEffect(() => {
@@ -265,9 +278,11 @@ export function App() {
         {updateReady ? (
           <section aria-label="Update ready" role="dialog">
             <p>Update ready. Keep the current version until you choose to update.</p>
-            <button onClick={() => setUpdateReady(false)} type="button">Keep current version</button>
+            <button onClick={() => { setUpdateReady(false); setUpdateError('') }} type="button">Keep current version</button>
+            <button onClick={acceptUpdate} type="button">Update now</button>
           </section>
         ) : null}
+        {updateError ? <p role="alert">{updateError}</p> : null}
         <button type="submit">Calculate split</button>
         {result !== null ? (
           <output aria-live="polite" role="status">

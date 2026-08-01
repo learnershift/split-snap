@@ -1,0 +1,4 @@
+Command: npm run test:offline -- --grep "^V10-B05 failed draft save blocks update activation$"
+Exit code: 1
+Expected missing feature: Waiting worker activates after failed flush.
+Observed failure: Update now control was absent, so no save-failure block existed.
