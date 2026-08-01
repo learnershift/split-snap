@@ -1,0 +1,9 @@
+> split-snap@1.0.0 test:unit
+> vitest --run src/app/App.unicode.test.tsx -t ^V02-B07 enforces Unicode label and name limits safely$
+
+FAIL  src/app/App.unicode.test.tsx
+Error: Failed to resolve import "../domain/text" from "src/app/App.unicode.test.tsx". Does the file exist?
+
+Test Files  1 failed (1)
+Tests  no tests
+exit_code: 1

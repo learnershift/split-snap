@@ -1,0 +1,6 @@
+> split-snap@1.0.0 test:unit
+> vitest --run src/app/App.unicode.test.tsx -t ^V02-B07 enforces Unicode label and name limits safely$
+
+Test Files  1 passed (1)
+Tests  1 passed (1)
+exit_code: 0

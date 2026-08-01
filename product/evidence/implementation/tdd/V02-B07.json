@@ -1,0 +1,11 @@
+{
+  "behavior_id": "V02-B07",
+  "command": "npm run test:unit -- --run src/app/App.unicode.test.tsx -t \"^V02-B07 enforces Unicode label and name limits safely$\"",
+  "test_file": "src/app/App.unicode.test.tsx",
+  "test_file_sha256": "4222c538839edf8dbe4cc45a8476722b48e3eee88feb7474eef2be2f4d7f3c0f",
+  "red": { "started_at_utc": "2026-08-01T10:12:54Z", "ended_at_utc": "2026-08-01T10:12:55Z", "exit_code": 1, "expected_failure": "Limits/NFC duplicate comparison/text rendering fail.", "observed_failure": "The Unicode text utility and participant-name input boundary were absent.", "captured_output": "product/evidence/implementation/red/V02-B07.txt", "captured_output_sha256": "e2b3a83a10c579817baaed4ddd76312cf04297b4167191fa41722f40ed8f2b40" },
+  "green": { "exit_code": 0, "captured_output": "product/evidence/implementation/green/V02-B07.txt", "captured_output_sha256": "8d441a6eebda57e2eb2c927b601770e3006acac35348591d53a029e651792daa" },
+  "full_check": { "command": "npm run check", "exit_code": 0, "result": "PASS: typecheck, lint, unit, coverage thresholds, and production build." },
+  "refactor": { "started_at_utc": "2026-08-01T10:14:33Z", "exit_code": 0, "captured_output": "product/evidence/implementation/refactor/V02-B07.txt", "captured_output_sha256": "8d441a6eebda57e2eb2c927b601770e3006acac35348591d53a029e651792daa", "full_check_exit_code": 0, "result": "No refactor required; the minimal GREEN boundary was retained." },
+  "implementation_revision": "pending_verified_checkpoint"
+}

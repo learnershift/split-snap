@@ -1,10 +1,13 @@
 import { useState } from 'react'
 
+import { trimToCodePointLimit } from '../domain/text'
+
 export function App() {
   const [preTaxTotal, setPreTaxTotal] = useState('')
   const [result, setResult] = useState<number | null>(null)
   const [payer, setPayer] = useState('Person 1')
   const [monetaryLabel, setMonetaryLabel] = useState('')
+  const [participantNames, setParticipantNames] = useState(['Person 1', 'Person 2'])
   const [precision, setPrecision] = useState('0')
 
   function calculateSplit(event: React.FormEvent<HTMLFormElement>) {
@@ -26,8 +29,22 @@ export function App() {
         />
         <fieldset>
           <legend>Participants</legend>
-          <p>Person 1</p>
-          <p>Person 2</p>
+          <label htmlFor="participant-1-name">Participant 1 name</label>
+          <input
+            id="participant-1-name"
+            onChange={(event) =>
+              setParticipantNames([trimToCodePointLimit(event.target.value, 40), participantNames[1]])
+            }
+            value={participantNames[0]}
+          />
+          <label htmlFor="participant-2-name">Participant 2 name</label>
+          <input
+            id="participant-2-name"
+            onChange={(event) =>
+              setParticipantNames([participantNames[0], trimToCodePointLimit(event.target.value, 40)])
+            }
+            value={participantNames[1]}
+          />
         </fieldset>
         <label htmlFor="payer">Payer</label>
         <select id="payer" onChange={(event) => setPayer(event.target.value)} value={payer}>
@@ -37,7 +54,7 @@ export function App() {
         <label htmlFor="monetary-label">Monetary label</label>
         <input
           id="monetary-label"
-          onChange={(event) => setMonetaryLabel(event.target.value)}
+          onChange={(event) => setMonetaryLabel(trimToCodePointLimit(event.target.value, 12))}
           value={monetaryLabel}
         />
         <label htmlFor="decimal-precision">Decimal precision</label>
