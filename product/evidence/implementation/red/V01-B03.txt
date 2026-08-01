@@ -1,0 +1,9 @@
+> split-snap@1.0.0 test:unit
+> vitest --run src/app/App.quick.test.tsx -t ^V01-B03 selects payer label and precision$
+
+FAIL  src/app/App.quick.test.tsx > V01-B03 selects payer label and precision
+TestingLibraryElementError: Unable to find an accessible element with the role "combobox" and name "Payer"
+
+Test Files  1 failed (1)
+Tests  1 failed | 2 skipped (3)
+exit_code: 1

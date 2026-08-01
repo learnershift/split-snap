@@ -1,0 +1,6 @@
+> split-snap@1.0.0 test:unit
+> vitest --run src/app/App.quick.test.tsx -t ^V01-B03 selects payer label and precision$
+
+Test Files  1 passed (1)
+Tests  1 passed | 2 skipped (3)
+exit_code: 0
