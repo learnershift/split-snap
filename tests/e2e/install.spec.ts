@@ -34,3 +34,21 @@ test('V10-B01 manifest is scoped to split-snap with valid icons', { tag: '@insta
     expect(dimensions).toEqual({ width: Number(icon.sizes.split('x')[0]), height: Number(icon.sizes.split('x')[1]) })
   }
 })
+
+test('V10-B02 every shell and precache resource returns 200', { tag: '@install' }, async ({ page, request }) => {
+  await page.goto('/split-snap/')
+  const registration = await page.evaluate(() => navigator.serviceWorker.getRegistration())
+  expect(registration).toBeDefined()
+  await page.evaluate(async () => navigator.serviceWorker.ready)
+
+  const worker = await request.get('/split-snap/sw.js')
+  expect(worker.status()).toBe(200)
+  const source = await worker.text()
+  const urls = [...source.matchAll(/url:"([^"]+)"/g)].map((match) => match[1])
+  expect(urls).toContain('index.html')
+
+  for (const url of urls) {
+    expect((await request.get(url)).status()).toBe(200)
+  }
+  await expect(page).toHaveTitle(/SplitSnap/)
+})

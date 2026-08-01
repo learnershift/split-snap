@@ -1,0 +1,4 @@
+Command: npm run test:install -- --grep "^V10-B02 every shell and precache resource returns 200$"
+Exit code: 1
+Expected missing feature: Service worker/precache is absent or any entry fails.
+Observed failure: navigator.serviceWorker.getRegistration() returned undefined.
