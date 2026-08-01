@@ -1,0 +1,4 @@
+Command: npm run test:unit -- --run src/features/sharing/Sharing.test.tsx -t "^V07-B03 shares when supported and falls back on cancel or absence$"
+Exit code: 1
+Expected missing feature: Share/fallback/cancel behavior is wrong.
+Observed failure: Share result text action was absent.
