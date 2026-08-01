@@ -11,6 +11,7 @@ export default defineConfig({
       manifest: false,
       includeAssets: ['manifest.webmanifest', 'icons/*.png'],
       workbox: {
+        cleanupOutdatedCaches: true,
         navigateFallback: '/split-snap/index.html',
       },
     }),
