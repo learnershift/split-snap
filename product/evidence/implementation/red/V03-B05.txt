@@ -1,0 +1,2 @@
+FAIL: Failed to resolve import "./allocate.itemized" from "src/domain/allocate.itemized.test.ts".
+exit_code: 1
