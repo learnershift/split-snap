@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "frozen_at": "2026-08-01T03:58:02Z",
+  "algorithm": "sha256",
+  "encoding": "UTF-8",
+  "artifacts": [
+    {
+      "path": "product/problem-definition.md",
+      "bytes": 20914,
+      "sha256": "c177db044dfe0ccdbd6275a97a2f0f3f75c459fa5924e9678c8a4aedee5c6670"
+    },
+    {
+      "path": "product/problem-review-packet.md",
+      "bytes": 15525,
+      "sha256": "ae184108aaf461065d22fe7d83a28a482ebc725b5ec01807b1a87c26eea16d15"
+    }
+  ],
+  "digest": "adb4cf5578860009ed81b830d3a8e1347854ea226e0c3cf0cc804c0a9de70ecd",
+  "digest_input": {
+    "ordering": "artifacts sorted lexicographically by path",
+    "line_format": "<artifact sha256><two ASCII spaces><artifact path><LF>",
+    "includes": "the two Markdown artifacts only; this JSON file is excluded"
+  }
+}

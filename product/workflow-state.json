@@ -1,0 +1,192 @@
+{
+  "schema_version": 1,
+  "project": "SplitSnap",
+  "phase": "implementation_plan_review_pending",
+  "candidate_digest": "087c33c64a99e98f133a5e879b7ff45583e699835dd124808269907671459b40",
+  "candidate_digest_algorithm": "sha256",
+  "problem_bundle_digest": "adb4cf5578860009ed81b830d3a8e1347854ea226e0c3cf0cc804c0a9de70ecd",
+  "serial_review": {
+    "gate": "implementation_plan",
+    "streak": 0,
+    "required": 3,
+    "display": "0/3",
+    "status": "writer_revision_required",
+    "active_reviewer_terminal_handle": null,
+    "active_review_artifact": null
+  },
+  "writer": {
+    "terminal_handle": "term_6364f849-8c64-4720-8227-a8239a08776f",
+    "current_runtime_terminal_handle": "term_fa418a9d-7f67-476f-89ae-5d129182598d",
+    "status": "revising_plan_after_087c_review_3_fail"
+  },
+  "timestamps": {
+    "problem_candidate_frozen_at": "2026-08-01T03:58:02Z",
+    "problem_review_completed_at": "2026-08-01T04:29:27Z",
+    "candidate_frozen_at": "2026-08-01T06:59:21Z",
+    "implementation_plan_frozen_at": "2026-08-01T06:59:21Z",
+    "implementation_plan_review_1_started_at": "2026-08-01T07:03:55Z",
+    "implementation_plan_review_1_completed_at": "2026-08-01T07:04:45Z",
+    "implementation_plan_review_2_started_at": "2026-08-01T07:06:16Z",
+    "implementation_plan_review_2_completed_at": "2026-08-01T07:07:14Z",
+    "implementation_plan_review_3_started_at": "2026-08-01T07:52:47Z",
+    "implementation_plan_review_3_completed_at": "2026-08-01T07:56:38Z",
+    "state_updated_at": "2026-08-01T07:59:01Z"
+  },
+  "owner_authorizations": {
+    "implementation": true,
+    "public_launch": true
+  },
+  "gate_readiness": {
+    "problem_review_passed": true,
+    "implementation_plan_review_passed": false,
+    "implementation_ready": false,
+    "public_launch_ready": false
+  },
+  "claims": {
+    "problem_definition_frozen_candidate": true,
+    "problem_review_complete": true,
+    "problem_validated": false,
+    "implementation_plan_frozen_candidate": true,
+    "implementation_plan_review_complete": false,
+    "implementation_complete": false,
+    "launch_complete": false
+  },
+  "failed_review_ledger": [
+    {
+      "review_number": 1,
+      "candidate_digest": "0bb919869f7a78bfeffe9d135c1f533d453942e5f96dbd6b02a4614af4c63864",
+      "reviewer_terminal_handle": "term_afb5e3f5-e0fd-4446-8e70-97537424317c",
+      "verdict": "FAIL",
+      "review_artifact": "product/reviews/problem-review-1.md",
+      "review_artifact_bytes": 9601,
+      "review_artifact_sha256": "51e4a528e16149db9a21cc00f10c335ff58949b14f6967cce69400d74f120dd1",
+      "reviewed_at": "2026-08-01T03:57:06Z",
+      "reason_code": "PRE_TAX_SUBTOTAL_NOT_POSITIVE",
+      "superseded_by_candidate_digest": "adb4cf5578860009ed81b830d3a8e1347854ea226e0c3cf0cc804c0a9de70ecd"
+    }
+  ],
+  "problem_review_pass_ledger": [
+    {
+      "review_number": 1,
+      "candidate_digest": "adb4cf5578860009ed81b830d3a8e1347854ea226e0c3cf0cc804c0a9de70ecd",
+      "reviewer_creation_terminal_handle": "term_ce87a338-4d81-42c5-b835-50f400a5569b",
+      "reviewer_current_runtime_terminal_handle": "term_40281c8f-4e14-490c-8592-85509d3ce612",
+      "verdict": "PASS",
+      "review_artifact": "product/reviews/problem-adb4-review-1.md",
+      "review_artifact_bytes": 6444,
+      "review_artifact_sha256": "d433899b3843aed80498656dd2160e9a190b5e2629ece103321febf51c306a81",
+      "reviewed_at": "2026-08-01T04:02:18Z"
+    },
+    {
+      "review_number": 2,
+      "candidate_digest": "adb4cf5578860009ed81b830d3a8e1347854ea226e0c3cf0cc804c0a9de70ecd",
+      "reviewer_terminal_handle": "term_4a95e0fc-e187-44bf-b24f-e460c22b559a",
+      "verdict": "PASS",
+      "review_artifact": "product/reviews/problem-adb4-review-2.md",
+      "review_artifact_bytes": 6619,
+      "review_artifact_sha256": "ed1897b31077ce67af6460124d1e08898bf3b59202f030427a44e818e9ba2cf8",
+      "reviewed_at": "2026-08-01T04:23:38Z"
+    },
+    {
+      "review_number": 3,
+      "candidate_digest": "adb4cf5578860009ed81b830d3a8e1347854ea226e0c3cf0cc804c0a9de70ecd",
+      "reviewer_terminal_handle": "term_74ee4344-5717-44a4-bf9c-eed0f7e2c868",
+      "verdict": "PASS",
+      "review_artifact": "product/reviews/problem-adb4-review-3.md",
+      "review_artifact_bytes": 6184,
+      "review_artifact_sha256": "3778f6a401bf9f3442a273ad48d51d51a8a40252ca6e31efd16affe32a044f2f",
+      "reviewed_at": "2026-08-01T04:29:27Z"
+    }
+  ],
+  "implementation_plan_failed_review_ledger": [
+    {
+      "review_number": 1,
+      "candidate_digest": "3f1dc33aa6b9b294dd069a756a13f0a67cd4ac871e9cd79824f70421a7a679ad",
+      "candidate_frozen_at": "2026-08-01T04:42:58Z",
+      "reviewer_terminal_handle": "term_84efa753-91e6-49a7-ab2a-a05e0a3a83be",
+      "verdict": "FAIL",
+      "review_artifact": "product/reviews/implementation-plan-3f1d-review-1.md",
+      "review_artifact_bytes": 15118,
+      "review_artifact_sha256": "e55e0944c714757b57aa310e43206c89ee1381b9dc6941766ca38575d002d43e",
+      "reviewed_at": "2026-08-01T04:49:49Z",
+      "reason_codes": [
+        "UNEXECUTABLE_REVIEW_PREREQUISITES",
+        "COMPOSITE_TDD_RED_BOUNDARIES",
+        "INCOMPLETE_CANONICAL_FIXTURE_INPUTS",
+        "MISSING_MODERATED_VALIDATION_PROTOCOL",
+        "RACY_PAGES_REVISION_GATE",
+        "MISSING_SAFE_RECOVERY_PROCEDURE"
+      ],
+      "reason_summary": "The frozen plan required forbidden mutable prerequisite reads, grouped multiple behaviors behind composite RED commands, omitted complete F1-F4 inputs and an executable AC-U01-U05 gate, did not mechanically bind Pages deployment to the tested artifact, and lacked content-addressed schema-safe rollback or fix-forward recovery.",
+      "superseded_by_candidate_digest": "7db3b8aa5a6c488ae14e3fdf4ef6537c813531d8311d102b960891b25b0e1b3f"
+    },
+    {
+      "review_number": 1,
+      "candidate_digest": "7db3b8aa5a6c488ae14e3fdf4ef6537c813531d8311d102b960891b25b0e1b3f",
+      "candidate_frozen_at": "2026-08-01T05:09:40Z",
+      "reviewer_terminal_handle": "term_36504df1-afb4-4911-9264-22f40dfb18f3",
+      "verdict": "FAIL",
+      "review_artifact": "product/reviews/implementation-plan-7db3-review-1.md",
+      "review_artifact_bytes": 6530,
+      "review_artifact_sha256": "449cba0cc234020fedebea98dd41fb4feeae7f9f3eb4491d87ce159f946ad9aa",
+      "reviewed_at": "2026-08-01T06:54:24Z",
+      "reason_codes": [
+        "MISSING_PER_REVIEW_PROBLEM_CANDIDATE_DIGEST",
+        "UNDEFINED_SEVEN_CALCULATION_INVARIANTS"
+      ],
+      "reason_summary": "The frozen packet omitted the exact problem candidate digest from each embedded problem review object, and the plan referenced seven calculation invariants without enumerating exact predicates or binding every canonical and generated valid case to all seven.",
+      "superseded_by_candidate_digest": "087c33c64a99e98f133a5e879b7ff45583e699835dd124808269907671459b40"
+    },
+    {
+      "review_number": 3,
+      "candidate_digest": "087c33c64a99e98f133a5e879b7ff45583e699835dd124808269907671459b40",
+      "candidate_frozen_at": "2026-08-01T06:59:21Z",
+      "reviewer_terminal_handle": "term_8af96e95-d3d0-4f6a-9bc3-8c268c523c6c",
+      "verdict": "FAIL",
+      "review_artifact": "product/reviews/implementation-plan-087c-review-3.md",
+      "review_artifact_bytes": 9996,
+      "review_artifact_sha256": "07e51f0d9e3dd6bbdaba6b5463bcced15c8cd2cdd28010a0468a29fcb703b764",
+      "reviewed_at": "2026-08-01T07:56:38Z",
+      "reason_codes": [
+        "GENERATED_MATRIX_MISSING_EXCLUSION_AND_REMAINDER_CLASSES",
+        "F2_F3_SHARE_TEXT_RECONSTRUCTION_UNPROVEN",
+        "DEPLOYED_ARTIFACT_NOT_EXACT_BROWSER_TESTED_ARTIFACT",
+        "V04_TIE_TDD_RED_NOT_GUARANTEED"
+      ],
+      "reason_summary": "The generated invariant matrix omitted exclusion and tie/non-tie dimensions, F2/F3 copied-text reconstruction was not explicitly tested, Pages packaging rebuilt instead of deploying the exact browser-tested artifact, and V04 B03 could make B04 pass before its required feature-missing RED.",
+      "superseded_by_candidate_digest": null
+    }
+  ],
+  "implementation_plan_candidate": {
+    "problem_authority_digest": "adb4cf5578860009ed81b830d3a8e1347854ea226e0c3cf0cc804c0a9de70ecd",
+    "freeze_file": "product/implementation-plan-freeze.json",
+    "frozen_at": "2026-08-01T06:59:21Z",
+    "digest": "087c33c64a99e98f133a5e879b7ff45583e699835dd124808269907671459b40"
+  },
+  "implementation_plan_review_pass_ledger": [
+    {
+      "review_number": 1,
+      "candidate_digest": "087c33c64a99e98f133a5e879b7ff45583e699835dd124808269907671459b40",
+      "reviewer_terminal_handle": "term_9c8cfee9-0d37-4728-836c-2adeffa28e83",
+      "verdict": "PASS",
+      "review_artifact": "product/reviews/implementation-plan-087c-review-1.md",
+      "review_artifact_bytes": 5999,
+      "review_artifact_sha256": "a861797953fa7e4832d6b1a93edd954f28d243c42e83dfd411f629ca71c73222",
+      "reviewed_at": "2026-08-01T07:03:21Z",
+      "coordinator_pre_next_review_digest_check": "087c33c64a99e98f133a5e879b7ff45583e699835dd124808269907671459b40"
+    },
+    {
+      "review_number": 2,
+      "candidate_digest": "087c33c64a99e98f133a5e879b7ff45583e699835dd124808269907671459b40",
+      "reviewer_creation_terminal_handle": "term_59e49587-a412-4a1f-869e-ffff2ee32529",
+      "reviewer_current_runtime_terminal_handle": "term_fed87fba-0c31-4852-8442-8dfaac803e75",
+      "verdict": "PASS",
+      "review_artifact": "product/reviews/implementation-plan-087c-review-2.md",
+      "review_artifact_bytes": 6337,
+      "review_artifact_sha256": "d68748121c42f779f6548564bf92098e1fdbaafb39be328b9462bf11d83f85bf",
+      "reviewed_at": "2026-08-01T07:07:14Z",
+      "coordinator_pre_next_review_digest_check": "087c33c64a99e98f133a5e879b7ff45583e699835dd124808269907671459b40"
+    }
+  ],
+  "next_gate": "writer_patch_plan_after_review_3_fail_then_refreeze_and_restart_0_of_3"
+}
