@@ -7,3 +7,10 @@ export function parseShare(value: string): ShareParseResult {
 
   return { ok: true, value: BigInt(value) }
 }
+
+export function validateQuickSubtotal(subtotalUnits: bigint, fixedAdditionUnits: bigint) {
+  void fixedAdditionUnits
+  return subtotalUnits > 0n
+    ? { ok: true as const }
+    : { ok: false as const, message: 'Enter a pre-tax total greater than 0.' }
+}

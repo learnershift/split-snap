@@ -1,0 +1,2 @@
+FAIL: validateQuickSubtotal is not a function.
+exit_code: 1
