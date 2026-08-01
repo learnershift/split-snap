@@ -1,0 +1,4 @@
+Command: npm run test:a11y -- --grep "^V09-B01 initial shell has no automated WCAG A-AA violation$"
+Exit code: 1
+Expected missing feature: Axe reports missing names, structure, or contrast.
+Observed failure: axe target-size serious violation; Remove participant was 130.8px by 21px and required at least 24px by 24px.

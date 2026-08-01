@@ -1,0 +1,5 @@
+button,
+input,
+select {
+  min-height: 24px;
+}
