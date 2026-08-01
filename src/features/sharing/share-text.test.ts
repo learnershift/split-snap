@@ -32,3 +32,15 @@ it('V07-B01 formats exact reconstructable F1 F2 and F3 plaintext', () => {
     roundingRecipientName: 'Gia', roundingReason: 'equal discarded remainders were tied and Gia appears first in visible participant order',
   })).toBe('SplitSnap\nMonetary label: KWD\nPrecision: 3\nPayer: Gia\nGrand total: KWD 1.065\nAllocations:\n- Gia: KWD 0.533; owes Gia: KWD 0.000 (payer)\n- Han: KWD 0.532; owes Gia: KWD 0.532\nTotal owed to Gia: KWD 0.532\nRounding: Gia received +KWD 0.001 because equal discarded remainders were tied and Gia appears first in visible participant order.\n')
 })
+
+it('V07-B04 preserves Unicode and neutralizes line controls', () => {
+  const text = formatShareText({
+    label: '¤CANARY\n', precision: 2, payerName: 'Éva\r', grandTotalUnits: 100n,
+    participants: [{ name: 'Éva 🧳\t', allocationUnits: 100n, owedUnits: 0n }],
+    roundingRecipientName: 'Éva 🧳\n', roundingReason: 'largest discarded remainder',
+  })
+
+  expect(text).toContain('Éva 🧳')
+  expect(text).not.toContain('¤CANARY\n')
+  expect(text.split('\n')).toHaveLength(10)
+})

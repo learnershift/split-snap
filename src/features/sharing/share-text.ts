@@ -19,22 +19,28 @@ export function formatShareText({
   roundingRecipientName: string
   roundingReason: string
 }) {
-  const amount = (units: bigint) => `${label} ${formatUnits(units, precision)}`
+  const sanitize = (value: string) => Array.from(value, (character) => {
+    const codePoint = character.codePointAt(0)!
+    return codePoint <= 31 || codePoint === 127 ? ' ' : character
+  }).join('')
+  const safeLabel = sanitize(label)
+  const safePayerName = sanitize(payerName)
+  const amount = (units: bigint) => `${safeLabel} ${formatUnits(units, precision)}`
   const totalOwed = participants.reduce((total, participant) => total + participant.owedUnits, 0n)
   const participantLines = participants.map((participant) =>
-    `- ${participant.name}: ${amount(participant.allocationUnits)}; owes ${payerName}: ${amount(participant.owedUnits)}${participant.name === payerName ? ' (payer)' : ''}`,
+    `- ${sanitize(participant.name)}: ${amount(participant.allocationUnits)}; owes ${safePayerName}: ${amount(participant.owedUnits)}${participant.name === payerName ? ' (payer)' : ''}`,
   )
 
   return [
     'SplitSnap',
-    `Monetary label: ${label}`,
+    `Monetary label: ${safeLabel}`,
     `Precision: ${precision}`,
-    `Payer: ${payerName}`,
+    `Payer: ${safePayerName}`,
     `Grand total: ${amount(grandTotalUnits)}`,
     'Allocations:',
     ...participantLines,
-    `Total owed to ${payerName}: ${amount(totalOwed)}`,
-    `Rounding: ${roundingRecipientName} received +${amount(1n)} because ${roundingReason === 'largest discarded remainder' ? `${roundingRecipientName} had the ${roundingReason}` : roundingReason}.`,
+    `Total owed to ${safePayerName}: ${amount(totalOwed)}`,
+    `Rounding: ${sanitize(roundingRecipientName)} received +${amount(1n)} because ${roundingReason === 'largest discarded remainder' ? `${sanitize(roundingRecipientName)} had the ${roundingReason}` : sanitize(roundingReason)}.`,
     '',
   ].join('\n')
 }
