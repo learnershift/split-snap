@@ -1,0 +1,3 @@
+Command: git diff --check
+Exit code: 0
+Result: No refactor required; prompt registration and the rejection branch are the minimal V10-B04 boundary.

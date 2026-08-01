@@ -7,6 +7,7 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
+      injectRegister: false,
       manifest: false,
       includeAssets: ['manifest.webmanifest', 'icons/*.png'],
       workbox: {

@@ -33,6 +33,7 @@ export function App() {
   const [precision, setPrecision] = useState(() => String(restoredDraft?.precision ?? 0))
   const [items, setItems] = useState<Item[]>([])
   const [focusParticipantId, setFocusParticipantId] = useState<string | null>(null)
+  const [updateReady, setUpdateReady] = useState(false)
   const draftHasBeenEdited = useRef(false)
 
   function markDraftEdited() {
@@ -50,6 +51,12 @@ export function App() {
       preTaxTotalUnits: parsedTotal.units,
     })
   }, [monetaryLabel, participants, preTaxTotal, precision])
+
+  useEffect(() => {
+    const showUpdate = () => setUpdateReady(true)
+    window.addEventListener('splitsnap:update-ready', showUpdate)
+    return () => window.removeEventListener('splitsnap:update-ready', showUpdate)
+  }, [])
 
   useEffect(() => {
     if (!focusParticipantId) return
@@ -255,6 +262,12 @@ export function App() {
           <p>Decimal precision: {precision}</p>
         </section>
         <Persistence />
+        {updateReady ? (
+          <section aria-label="Update ready" role="dialog">
+            <p>Update ready. Keep the current version until you choose to update.</p>
+            <button onClick={() => setUpdateReady(false)} type="button">Keep current version</button>
+          </section>
+        ) : null}
         <button type="submit">Calculate split</button>
         {result !== null ? (
           <output aria-live="polite" role="status">

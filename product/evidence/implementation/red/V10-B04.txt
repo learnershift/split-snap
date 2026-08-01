@@ -1,0 +1,4 @@
+Command: npm run test:offline -- --grep "^V10-B04 rejecting update preserves old controller UI and draft$"
+Exit code: 1
+Expected missing feature: Prompt/reject path activates or mutates state.
+Observed failure: the Update ready dialog was absent after the update-ready signal.
