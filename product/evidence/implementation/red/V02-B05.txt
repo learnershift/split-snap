@@ -1,0 +1,2 @@
+FAIL: Failed to resolve import "./format" from "src/domain/format.test.ts". Does the file exist?
+exit_code: 1

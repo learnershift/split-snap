@@ -1,0 +1,11 @@
+{
+  "behavior_id": "V02-B05",
+  "command": "npm run test:unit -- --run src/domain/format.test.ts -t \"^V02-B05 formats precision zero through three exactly$\"",
+  "test_file": "src/domain/format.test.ts",
+  "test_file_sha256": "3ca57a83fb1008c516f8f09d0b73c5e359efdee331dff3b568931890a68ccfea",
+  "red": { "exit_code": 1, "expected_failure": "Any precision formats incorrectly.", "observed_failure": "The bigint formatter module was absent.", "captured_output": "product/evidence/implementation/red/V02-B05.txt", "captured_output_sha256": "59f773fcd3e617307c61e94f4fb49b1ad768c0ec2018759d1bc2469a2c80b841" },
+  "green": { "exit_code": 0, "captured_output": "product/evidence/implementation/green/V02-B05.txt", "captured_output_sha256": "f1399287cae8fd3cfee70b9b936308eb3577f1837cc17af4a76d8f6b5c9f2d9e" },
+  "full_check": { "command": "npm run check", "exit_code": 0, "result": "PASS: typecheck, lint, unit, coverage thresholds, and production build." },
+  "refactor": { "exit_code": 0, "captured_output": "product/evidence/implementation/refactor/V02-B05.txt", "captured_output_sha256": "fa52a5023b92b6d97dcfc764076c7b2f6fdc09516fafa54bc0fd181cd7bb27f7", "full_check_exit_code": 0, "result": "No refactor required." },
+  "implementation_revision": "pending_verified_checkpoint"
+}
