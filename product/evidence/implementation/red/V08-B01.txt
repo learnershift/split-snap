@@ -1,0 +1,4 @@
+Command: npm run test:unit -- --run src/features/persistence/persistence.test.ts -t "^V08-B01 restores versioned draft inputs without derived result$"
+Exit code: 1
+Expected missing feature: Reload loses inputs or persists stale result.
+Observed failure: persistence module was absent.
