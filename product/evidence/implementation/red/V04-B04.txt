@@ -1,0 +1,2 @@
+FAIL: reconcileQuickEntitlements is not a function.
+exit_code: 1
