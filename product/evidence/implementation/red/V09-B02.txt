@@ -1,0 +1,4 @@
+Command: npm run test:a11y -- --grep "^V09-B02 keyboard completes F1 with logical focus$"
+Exit code: 1
+Expected missing feature: Keyboard cannot complete or focus becomes hidden/trapped.
+Observed failure: Mode control was absent, so F1 itemized keyboard flow timed out at the first control.

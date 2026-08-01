@@ -3,13 +3,18 @@ import { useState } from 'react'
 import { parseMoneyInput } from '../domain/decimal'
 import { formatUnits } from '../domain/format'
 import { sameParticipantName, trimToCodePointLimit } from '../domain/text'
+import { calculateItemizedSplit } from '../domain/allocate.itemized'
 
 type Participant = { id: string; name: string }
-type Item = { id: string; description: string; amount: string }
+type Item = { id: string; description: string; amount: string; participants: { included: boolean; share: string }[] }
+type ItemizedResult = { allocations: bigint[]; grandTotalUnits: bigint }
 
 export function App() {
   const [preTaxTotal, setPreTaxTotal] = useState('')
-  const [result, setResult] = useState<number | null>(null)
+  const [result, setResult] = useState<number | ItemizedResult | null>(null)
+  const [mode, setMode] = useState('quick')
+  const [taxPercentage, setTaxPercentage] = useState('0')
+  const [fixedTip, setFixedTip] = useState('0')
   const [payerId, setPayerId] = useState('participant-1')
   const [monetaryLabel, setMonetaryLabel] = useState('')
   const [participants, setParticipants] = useState<Participant[]>([
@@ -34,6 +39,19 @@ export function App() {
     }
 
     setNameError('')
+    if (mode === 'itemized') {
+      const itemizedItems = items.map((item) => {
+        const parsedAmount = parseMoneyInput(item.amount, Number(precision))
+        return {
+          units: parsedAmount.ok ? parsedAmount.units : 0n,
+          participants: item.participants.map((participant) => ({ included: participant.included, share: BigInt(participant.share || '0') })),
+        }
+      })
+      const tip = parseMoneyInput(fixedTip, Number(precision))
+      const split = calculateItemizedSplit({ items: itemizedItems, taxPercentage: BigInt(taxPercentage || '0'), fixedTipUnits: tip.ok ? tip.units : 0n })
+      setResult({ allocations: split.allocations, grandTotalUnits: split.grandTotalUnits })
+      return
+    }
     setResult(Number(preTaxTotal) / 2)
   }
 
@@ -45,6 +63,7 @@ export function App() {
 
     const number = participants.length + 1
     setParticipants([...participants, { id: `participant-${number}`, name: `Person ${number}` }])
+    setItems(items.map((item) => ({ ...item, participants: [...item.participants, { included: true, share: '1' }] })))
     setResult(null)
     setParticipantError('')
   }
@@ -81,12 +100,20 @@ export function App() {
 
   function addItem() {
     const number = items.length + 1
-    setItems([...items, { id: `item-${number}`, description: '', amount: '' }])
+    setItems([...items, { id: `item-${number}`, description: '', amount: '', participants: participants.map(() => ({ included: true, share: '1' })) }])
     setResult(null)
   }
 
   function updateItem(index: number, field: 'description' | 'amount', value: string) {
     setItems(items.map((item, currentIndex) => currentIndex === index ? { ...item, [field]: value } : item))
+    setResult(null)
+  }
+
+  function updateItemParticipant(itemIndex: number, participantIndex: number, field: 'included' | 'share', value: boolean | string) {
+    setItems(items.map((item, currentItemIndex) => currentItemIndex !== itemIndex ? item : {
+      ...item,
+      participants: item.participants.map((participant, currentParticipantIndex) => currentParticipantIndex !== participantIndex ? participant : { ...participant, [field]: value }),
+    }))
     setResult(null)
   }
 
@@ -101,6 +128,10 @@ export function App() {
       <h1>SplitSnap</h1>
       <form aria-label="Bill details" onSubmit={calculateSplit}>
         <p>Enter a bill to calculate an exact split.</p>
+        <label htmlFor="mode">Mode</label>
+        <select id="mode" onChange={(event) => { setMode(event.target.value); setResult(null) }} value={mode}>
+          <option value="quick">Quick</option><option value="itemized">Itemized</option>
+        </select>
         <label htmlFor="pre-tax-total">Pre-tax total</label>
         <input
           id="pre-tax-total"
@@ -125,6 +156,12 @@ export function App() {
                 onChange={(event) => updateItem(index, 'amount', event.target.value)}
                 value={item.amount}
               />
+              {mode === 'itemized' ? item.participants.map((itemParticipant, participantIndex) => (
+                <span key={participants[participantIndex].id}>
+                  <label htmlFor={`item-${index + 1}-include-${participantIndex + 1}`}>Item {index + 1} include {participants[participantIndex].name}</label>
+                  <input checked={itemParticipant.included} id={`item-${index + 1}-include-${participantIndex + 1}`} onChange={(event) => updateItemParticipant(index, participantIndex, 'included', event.target.checked)} type="checkbox" />
+                </span>
+              )) : null}
             </div>
           ))}
           <button onClick={addItem} type="button">Add item</button>
@@ -173,6 +210,10 @@ export function App() {
           <option value="2">2</option>
           <option value="3">3</option>
         </select>
+        <label htmlFor="tax-percentage">Tax percentage</label>
+        <input id="tax-percentage" inputMode="numeric" onChange={(event) => { setTaxPercentage(event.target.value); setResult(null) }} value={taxPercentage} />
+        <label htmlFor="fixed-tip">Fixed tip</label>
+        <input id="fixed-tip" inputMode="decimal" onChange={(event) => { setFixedTip(event.target.value); setResult(null) }} value={fixedTip} />
         <section aria-label="Split settings">
           <p>Payer: {payer.name}</p>
           <p>Monetary label: {monetaryLabel}</p>
@@ -181,8 +222,10 @@ export function App() {
         <button type="submit">Calculate split</button>
         {result !== null ? (
           <output aria-live="polite" role="status">
-            <p>Person 1: {result}</p>
-            <p>Person 2: {result}</p>
+            {typeof result === 'number' ? <><p>Person 1: {result}</p><p>Person 2: {result}</p></> : <>
+              {result.allocations.map((allocation, index) => <p key={participants[index].id}>{participants[index].name}: {formatUnits(allocation, Number(precision))}</p>)}
+              <p>Grand total: {formatUnits(result.grandTotalUnits, Number(precision))}</p>
+            </>}
           </output>
         ) : null}
       </form>
