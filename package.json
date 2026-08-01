@@ -14,7 +14,7 @@
     "preview": "vite preview",
     "test:e2e": "playwright test",
     "test:offline": "playwright test --grep @offline",
-    "test:install": "playwright test --grep @install",
+    "test:install": "node scripts/run-playwright-tagged.mjs @install",
     "test:a11y": "node scripts/run-playwright-tagged.mjs @a11y",
     "test:privacy": "playwright test --grep @privacy",
     "check:source": "npm run typecheck && npm run lint && npm run test:unit -- --run && npm run test:coverage",

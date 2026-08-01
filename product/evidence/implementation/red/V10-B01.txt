@@ -1,0 +1,4 @@
+Command: npm run test:install -- --grep "^V10-B01 manifest is scoped to split-snap with valid icons$"
+Exit code: 1
+Expected missing feature: Manifest/base/scope/start/icon assertion fails.
+Observed failure: /split-snap/manifest.webmanifest returned the HTML fallback, so JSON parsing failed with Unexpected token '<'.
