@@ -1,0 +1,4 @@
+Command: npm run test:unit -- --run src/features/persistence/Persistence.test.tsx -t "^V08-B04 confirms start over and clears only active draft$"
+Exit code: 1
+Expected missing feature: Cancel mutates or confirm removes preferences.
+Observed failure: Start-over persistence component was absent.
