@@ -28,3 +28,12 @@ test('V11-B02 build contains no remote executable tracker or font', { tag: '@pri
   const markup = await page.content()
   expect(markup).not.toMatch(/https?:\/\//i)
 })
+
+test('V11-B03 requests no permission and never reads clipboard', { tag: '@privacy' }, async ({ page }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'permissions', { configurable: true, value: { query: () => { throw new Error('permission requested') } } })
+    Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { readText: () => { throw new Error('clipboard read') } } })
+  })
+  await page.goto('/split-snap/')
+  await expect(page.getByRole('main', { name: 'SplitSnap bill' })).toBeVisible()
+})

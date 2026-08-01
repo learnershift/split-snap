@@ -1,0 +1,1 @@
+{"behavior_id":"V11-B03","characterization":true,"red":"unavailable: existing app requests no permission and never reads clipboard","green_command":"npm run test:privacy -- --grep ^V11-B03","result":"PASS","production_change":false}
