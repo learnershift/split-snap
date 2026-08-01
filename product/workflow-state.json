@@ -1,36 +1,45 @@
 {
   "schema_version": 1,
   "project": "SplitSnap",
-  "phase": "implementation_plan_review_pending",
-  "candidate_digest": "087c33c64a99e98f133a5e879b7ff45583e699835dd124808269907671459b40",
+  "phase": "implementation_in_progress",
+  "candidate_digest": "02e875d722bdac57b14e2bf4bac89ba52aa1e7f719a50dc913eea9f80a61cdea",
   "candidate_digest_algorithm": "sha256",
   "problem_bundle_digest": "adb4cf5578860009ed81b830d3a8e1347854ea226e0c3cf0cc804c0a9de70ecd",
   "serial_review": {
     "gate": "implementation_plan",
-    "streak": 0,
+    "streak": 3,
     "required": 3,
-    "display": "0/3",
-    "status": "writer_revision_required",
+    "display": "3/3",
+    "status": "passed",
+    "ready_for_review_number": null,
     "active_reviewer_terminal_handle": null,
     "active_review_artifact": null
   },
   "writer": {
     "terminal_handle": "term_6364f849-8c64-4720-8227-a8239a08776f",
-    "current_runtime_terminal_handle": "term_fa418a9d-7f67-476f-89ae-5d129182598d",
-    "status": "revising_plan_after_087c_review_3_fail"
+    "current_runtime_terminal_handle": "codex-api-root-handle-unavailable",
+    "model": "gpt-5.6-terra",
+    "status": "blocked_git_index_write_permission"
   },
   "timestamps": {
     "problem_candidate_frozen_at": "2026-08-01T03:58:02Z",
     "problem_review_completed_at": "2026-08-01T04:29:27Z",
-    "candidate_frozen_at": "2026-08-01T06:59:21Z",
-    "implementation_plan_frozen_at": "2026-08-01T06:59:21Z",
+    "candidate_frozen_at": "2026-08-01T08:41:25Z",
+    "implementation_plan_frozen_at": "2026-08-01T08:41:25Z",
     "implementation_plan_review_1_started_at": "2026-08-01T07:03:55Z",
     "implementation_plan_review_1_completed_at": "2026-08-01T07:04:45Z",
     "implementation_plan_review_2_started_at": "2026-08-01T07:06:16Z",
     "implementation_plan_review_2_completed_at": "2026-08-01T07:07:14Z",
     "implementation_plan_review_3_started_at": "2026-08-01T07:52:47Z",
     "implementation_plan_review_3_completed_at": "2026-08-01T07:56:38Z",
-    "state_updated_at": "2026-08-01T07:59:01Z"
+    "implementation_plan_review_486c_1_completed_at": "2026-08-01T08:22:10Z",
+    "implementation_plan_review_486c_2_completed_at": "2026-08-01T08:29:05.807Z",
+    "implementation_plan_review_486c_3_completed_at": "2026-08-01T08:36:40Z",
+    "implementation_plan_review_02e8_1_completed_at": "2026-08-01T08:44:56Z",
+    "implementation_plan_review_02e8_2_completed_at": "2026-08-01T08:52:03Z",
+    "implementation_plan_review_02e8_3_completed_at": "2026-08-01T08:58:40Z",
+    "implementation_plan_review_completed_at": "2026-08-01T08:58:40Z",
+    "state_updated_at": "2026-08-01T09:17:45Z"
   },
   "owner_authorizations": {
     "implementation": true,
@@ -38,8 +47,8 @@
   },
   "gate_readiness": {
     "problem_review_passed": true,
-    "implementation_plan_review_passed": false,
-    "implementation_ready": false,
+    "implementation_plan_review_passed": true,
+    "implementation_ready": true,
     "public_launch_ready": false
   },
   "claims": {
@@ -47,7 +56,7 @@
     "problem_review_complete": true,
     "problem_validated": false,
     "implementation_plan_frozen_candidate": true,
-    "implementation_plan_review_complete": false,
+    "implementation_plan_review_complete": true,
     "implementation_complete": false,
     "launch_complete": false
   },
@@ -154,39 +163,83 @@
         "V04_TIE_TDD_RED_NOT_GUARANTEED"
       ],
       "reason_summary": "The generated invariant matrix omitted exclusion and tie/non-tie dimensions, F2/F3 copied-text reconstruction was not explicitly tested, Pages packaging rebuilt instead of deploying the exact browser-tested artifact, and V04 B03 could make B04 pass before its required feature-missing RED.",
-      "superseded_by_candidate_digest": null
+      "superseded_by_candidate_digest": "486c72e8e1fda59b2c461c800c5bed5e73e27b45c81f7a1a385c3997ab972456"
+    },
+    {
+      "review_number": 3,
+      "candidate_digest": "486c72e8e1fda59b2c461c800c5bed5e73e27b45c81f7a1a385c3997ab972456",
+      "candidate_frozen_at": "2026-08-01T08:08:20Z",
+      "reviewer_terminal_handle": "term_62b5f940-5c18-4d38-ae34-c6ea03342154",
+      "verdict": "FAIL",
+      "review_artifact": "product/reviews/implementation-plan-486c-review-3.md",
+      "review_artifact_bytes": 4586,
+      "review_artifact_sha256": "0538fb2ad8aaa576892149e12165b79c204fbdca629d59069c4945a37e22f46b",
+      "reviewed_at": "2026-08-01T08:36:40Z",
+      "reason_codes": ["QUICK_MODE_EXCLUSION_SCOPE_EXPANSION"],
+      "reason_summary": "V03-B05 and GM-X expanded per-item exclusions into quick-mode whole-bill exclusion, changing calculation scope beyond the frozen V1 boundary.",
+      "superseded_by_candidate_digest": "02e875d722bdac57b14e2bf4bac89ba52aa1e7f719a50dc913eea9f80a61cdea"
     }
   ],
   "implementation_plan_candidate": {
     "problem_authority_digest": "adb4cf5578860009ed81b830d3a8e1347854ea226e0c3cf0cc804c0a9de70ecd",
     "freeze_file": "product/implementation-plan-freeze.json",
-    "frozen_at": "2026-08-01T06:59:21Z",
-    "digest": "087c33c64a99e98f133a5e879b7ff45583e699835dd124808269907671459b40"
+    "frozen_at": "2026-08-01T08:41:25Z",
+    "digest": "02e875d722bdac57b14e2bf4bac89ba52aa1e7f719a50dc913eea9f80a61cdea"
   },
   "implementation_plan_review_pass_ledger": [
     {
       "review_number": 1,
-      "candidate_digest": "087c33c64a99e98f133a5e879b7ff45583e699835dd124808269907671459b40",
-      "reviewer_terminal_handle": "term_9c8cfee9-0d37-4728-836c-2adeffa28e83",
+      "candidate_digest": "02e875d722bdac57b14e2bf4bac89ba52aa1e7f719a50dc913eea9f80a61cdea",
+      "reviewer_terminal_handle": "term_9aacc60a-3b41-4580-870e-6fb4c7983dec",
       "verdict": "PASS",
-      "review_artifact": "product/reviews/implementation-plan-087c-review-1.md",
-      "review_artifact_bytes": 5999,
-      "review_artifact_sha256": "a861797953fa7e4832d6b1a93edd954f28d243c42e83dfd411f629ca71c73222",
-      "reviewed_at": "2026-08-01T07:03:21Z",
-      "coordinator_pre_next_review_digest_check": "087c33c64a99e98f133a5e879b7ff45583e699835dd124808269907671459b40"
+      "review_artifact": "product/reviews/implementation-plan-02e8-review-1.md",
+      "review_artifact_bytes": 6939,
+      "review_artifact_sha256": "9e1886f9d97f491825035f4931f389b71db74ad27b1adc6071ca93eab6bb76b4",
+      "reviewed_at": "2026-08-01T08:44:56Z"
     },
     {
       "review_number": 2,
-      "candidate_digest": "087c33c64a99e98f133a5e879b7ff45583e699835dd124808269907671459b40",
-      "reviewer_creation_terminal_handle": "term_59e49587-a412-4a1f-869e-ffff2ee32529",
-      "reviewer_current_runtime_terminal_handle": "term_fed87fba-0c31-4852-8442-8dfaac803e75",
+      "candidate_digest": "02e875d722bdac57b14e2bf4bac89ba52aa1e7f719a50dc913eea9f80a61cdea",
+      "reviewer_terminal_handle": "term_4df24db6-f459-468a-90de-278e1db35b7e",
       "verdict": "PASS",
-      "review_artifact": "product/reviews/implementation-plan-087c-review-2.md",
-      "review_artifact_bytes": 6337,
-      "review_artifact_sha256": "d68748121c42f779f6548564bf92098e1fdbaafb39be328b9462bf11d83f85bf",
-      "reviewed_at": "2026-08-01T07:07:14Z",
-      "coordinator_pre_next_review_digest_check": "087c33c64a99e98f133a5e879b7ff45583e699835dd124808269907671459b40"
+      "review_artifact": "product/reviews/implementation-plan-02e8-review-2.md",
+      "review_artifact_bytes": 4428,
+      "review_artifact_sha256": "763b353c118ee5140aa495252e1e052f20076615da7b024f6963fe396176c1cb",
+      "reviewed_at": "2026-08-01T08:52:03Z"
+    },
+    {
+      "review_number": 3,
+      "candidate_digest": "02e875d722bdac57b14e2bf4bac89ba52aa1e7f719a50dc913eea9f80a61cdea",
+      "reviewer_terminal_handle": "term_895ecc88-2bd4-4444-be60-5ddc10fbc4a9",
+      "verdict": "PASS",
+      "review_artifact": "product/reviews/implementation-plan-02e8-review-3.md",
+      "review_artifact_bytes": 8042,
+      "review_artifact_sha256": "410a4ec4af9945efde4e46148f7d16ae83c98df151dc83500a6767a79c62e425",
+      "reviewed_at": "2026-08-01T08:58:40Z"
     }
   ],
-  "next_gate": "writer_patch_plan_after_review_3_fail_then_refreeze_and_restart_0_of_3"
+  "latest_blocking_review": {
+    "review_number": 3,
+    "candidate_digest": "486c72e8e1fda59b2c461c800c5bed5e73e27b45c81f7a1a385c3997ab972456",
+    "reviewer_terminal_handle": "term_62b5f940-5c18-4d38-ae34-c6ea03342154",
+    "verdict": "FAIL",
+    "review_artifact": "product/reviews/implementation-plan-486c-review-3.md",
+    "reviewed_at": "2026-08-01T08:36:40Z",
+    "reason_code": "QUICK_MODE_EXCLUSION_SCOPE_EXPANSION"
+  },
+  "implementation_evidence": {
+    "V00-B01": {
+      "status": "PASS",
+      "red_evidence": "product/evidence/implementation/red/V00-B01.txt",
+      "green_command": "npm run test:unit -- --run src/test/harness.test.ts -t \"^V00-B01 runs the locked test harness$\"",
+      "full_check": "PASS"
+    },
+    "V01-B01": {
+      "status": "PASS",
+      "evidence": "product/evidence/implementation/tdd/V01-B01.json",
+      "full_check": "PASS"
+    }
+  },
+  "next_gate": "git_checkpoint_permission",
+  "next_action": "restore write access to .git, commit the verified V00-B01 and V01-B01 checkpoint with preserved reviewed artifacts, push main, then continue at V01-B02"
 }

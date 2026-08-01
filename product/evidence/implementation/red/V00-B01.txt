@@ -1,0 +1,7 @@
+behavior_id: V00-B01
+command: npm run test:unit -- --run src/test/harness.test.ts -t "^V00-B01 runs the locked test harness$"
+observed_at_utc: 2026-08-01T09:00:00Z
+exit_code: 1
+expected_failure: missing test script/toolchain
+observed_failure: 'npm error Missing script: "test:unit"'
+captured_output_sha256: 2c4b8ddea7ce4ca0e11b7158853c76f1e1e701d088fca86f81277d0c456ea92f

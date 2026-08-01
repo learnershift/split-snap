@@ -1,0 +1,30 @@
+{
+  "behavior_id": "V01-B01",
+  "command": "npm run test:unit -- --run src/app/App.quick.test.tsx -t \"^V01-B01 renders the semantic mobile shell$\"",
+  "test_file": "src/app/App.quick.test.tsx",
+  "test_file_sha256": "559f1ae0727e089990dfdcebfddd55fef701aa4afe54bc81882297abfbea6493",
+  "red": {
+    "started_at_utc": "2026-08-01T09:12:00Z",
+    "ended_at_utc": "2026-08-01T09:12:00Z",
+    "exit_code": 1,
+    "expected_failure": "App or the named SplitSnap main region is absent.",
+    "observed_failure": "Failed to resolve import \"./App\" from \"src/app/App.quick.test.tsx\".",
+    "captured_output_sha256": "c7951e333a8693f2287f4c7ee37644de023e586a6a0722866cc6b44d2c6a03c0"
+  },
+  "green": {
+    "exit_code": 0,
+    "captured_output_sha256": "ecbae8d967b7dcadff6086b5ca42da863d09434477433d65016035afa0289491"
+  },
+  "full_check": {
+    "command": "npm run check",
+    "exit_code": 0,
+    "result": "PASS: typecheck, lint, unit, coverage thresholds, and production build."
+  },
+  "refactor": {
+    "started_at_utc": "2026-08-01T09:16:23Z",
+    "exit_code": 0,
+    "captured_output_sha256": "4a3deb64dbc7970db3a24494279915604c87b2a540d1d55c87d22210c5d7869c",
+    "full_check_exit_code": 0
+  },
+  "implementation_revision": "pending_verified_checkpoint"
+}

@@ -1,22 +1,22 @@
 {
   "schema_version": 1,
-  "frozen_at": "2026-08-01T06:59:21Z",
+  "frozen_at": "2026-08-01T08:41:25Z",
   "problem_authority_digest": "adb4cf5578860009ed81b830d3a8e1347854ea226e0c3cf0cc804c0a9de70ecd",
   "algorithm": "sha256",
   "encoding": "UTF-8",
   "artifacts": [
     {
       "path": "product/implementation-plan-review-packet.md",
-      "bytes": 27530,
-      "sha256": "5faf3baa8df15267eeb41317f1a8db3afce68e361736f9e26aeab849aa5e2bc5"
+      "bytes": 29578,
+      "sha256": "790aaf06dfcd7349cb1520f8f2295e0b7118b06dbc8575258a0ba23540033552"
     },
     {
       "path": "product/implementation-plan.md",
-      "bytes": 65972,
-      "sha256": "a4418fee31493f84e78eeb57c4c1e628d5f7387e67593e6a4af85b254a238600"
+      "bytes": 74011,
+      "sha256": "5ff9405e1fde0400890a0d988fc025ba29307c8f4fcaf0da7eff4125f6cb3a46"
     }
   ],
-  "digest": "087c33c64a99e98f133a5e879b7ff45583e699835dd124808269907671459b40",
+  "digest": "02e875d722bdac57b14e2bf4bac89ba52aa1e7f719a50dc913eea9f80a61cdea",
   "digest_input": {
     "ordering": "artifacts sorted lexicographically by path using bytewise ASCII order",
     "line_format": "<artifact sha256><two ASCII spaces><artifact path><LF>",
