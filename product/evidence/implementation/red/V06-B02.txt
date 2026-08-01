@@ -1,0 +1,4 @@
+Command: npm run test:unit -- --run src/features/results/Results.test.tsx -t "^V06-B02 shows every required total payer allocation and owed value$"
+Exit code: 1
+Expected missing feature: Any required result field is absent.
+Observed failure: Results component module was absent.
