@@ -1,0 +1,11 @@
+{
+  "behavior_id": "V03-B03",
+  "command": "npm run test:unit -- --run src/app/App.participants.test.tsx -t \"^V03-B03 preserves visible order and selected payer$\"",
+  "test_file": "src/app/App.participants.test.tsx",
+  "test_file_sha256": "e2b097bc3ff874b1cb7c0d0d4a09decc8cc7a3093b3fe3794bb4393b8d08fbd0",
+  "red": { "exit_code": 1, "expected_failure": "Reorder/payer identity is lost or changed.", "observed_failure": "Payer option identity was not available after participant addition.", "captured_output": "product/evidence/implementation/red/V03-B03.txt", "captured_output_sha256": "644eca5a4ebb25d6d13c645c260c080353ed1bb1b19cf6be8b86305fec096bac" },
+  "green": { "exit_code": 0, "captured_output": "product/evidence/implementation/green/V03-B03.txt", "captured_output_sha256": "16b48fab59fa1ec88783eea28371ace97b91ca4e47dcf085ce81212b9bd1344e" },
+  "full_check": { "command": "npm run check", "exit_code": 0, "result": "PASS: typecheck, lint, unit, coverage thresholds, and production build." },
+  "refactor": { "exit_code": 0, "captured_output": "product/evidence/implementation/refactor/V03-B03.txt", "captured_output_sha256": "7189d89987983e1578b1539e7c112976c2a64aa8aaad8e61b2807ce08d3be3a1", "full_check_exit_code": 0, "result": "No refactor required; the minimal GREEN boundary was retained." },
+  "implementation_revision": "pending_verified_checkpoint"
+}

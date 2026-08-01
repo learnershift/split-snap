@@ -2,21 +2,26 @@ import { useState } from 'react'
 
 import { sameParticipantName, trimToCodePointLimit } from '../domain/text'
 
+type Participant = { id: string; name: string }
+
 export function App() {
   const [preTaxTotal, setPreTaxTotal] = useState('')
   const [result, setResult] = useState<number | null>(null)
-  const [payer, setPayer] = useState('Person 1')
+  const [payerId, setPayerId] = useState('participant-1')
   const [monetaryLabel, setMonetaryLabel] = useState('')
-  const [participantNames, setParticipantNames] = useState(['Person 1', 'Person 2'])
+  const [participants, setParticipants] = useState<Participant[]>([
+    { id: 'participant-1', name: 'Person 1' },
+    { id: 'participant-2', name: 'Person 2' },
+  ])
   const [participantError, setParticipantError] = useState('')
   const [nameError, setNameError] = useState('')
   const [precision, setPrecision] = useState('0')
 
   function calculateSplit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    const hasBlankName = participantNames.some((name) => name.trim() === '')
-    const hasDuplicateName = participantNames.some((name, index) =>
-      participantNames.slice(index + 1).some((otherName) => sameParticipantName(name, otherName)),
+    const hasBlankName = participants.some(({ name }) => name.trim() === '')
+    const hasDuplicateName = participants.some(({ name }, index) =>
+      participants.slice(index + 1).some(({ name: otherName }) => sameParticipantName(name, otherName)),
     )
 
     if (hasBlankName || hasDuplicateName) {
@@ -29,32 +34,44 @@ export function App() {
   }
 
   function addParticipant() {
-    if (participantNames.length === 8) {
+    if (participants.length === 8) {
       setParticipantError('Use between 2 and 8 participants.')
       return
     }
 
-    setParticipantNames([...participantNames, `Person ${participantNames.length + 1}`])
+    const number = participants.length + 1
+    setParticipants([...participants, { id: `participant-${number}`, name: `Person ${number}` }])
     setParticipantError('')
   }
 
   function removeParticipant() {
-    if (participantNames.length === 2) {
+    if (participants.length === 2) {
       setParticipantError('Use between 2 and 8 participants.')
       return
     }
 
-    setParticipantNames(participantNames.slice(0, -1))
+    setParticipants(participants.slice(0, -1))
     setParticipantError('')
   }
 
   function updateParticipantName(index: number, value: string) {
-    setParticipantNames(
-      participantNames.map((name, currentIndex) =>
-        currentIndex === index ? trimToCodePointLimit(value, 40) : name,
+    setParticipants(
+      participants.map((participant, currentIndex) =>
+        currentIndex === index ? { ...participant, name: trimToCodePointLimit(value, 40) } : participant,
       ),
     )
   }
+
+  function moveParticipant(index: number, direction: -1 | 1) {
+    const targetIndex = index + direction
+    if (targetIndex < 0 || targetIndex >= participants.length) return
+
+    const reordered = [...participants]
+    ;[reordered[index], reordered[targetIndex]] = [reordered[targetIndex], reordered[index]]
+    setParticipants(reordered)
+  }
+
+  const payer = participants.find((participant) => participant.id === payerId) as Participant
 
   return (
     <main aria-label="SplitSnap bill">
@@ -70,14 +87,17 @@ export function App() {
         />
         <fieldset>
           <legend>Participants</legend>
-          {participantNames.map((name, index) => (
-            <div key={index}>
+          {participants.map((participant, index) => (
+            <div key={participant.id}>
               <label htmlFor={`participant-${index + 1}-name`}>Participant {index + 1} name</label>
               <input
                 id={`participant-${index + 1}-name`}
                 onChange={(event) => updateParticipantName(index, event.target.value)}
-                value={name}
+                value={participant.name}
               />
+              {index < participants.length - 1 ? (
+                <button onClick={() => moveParticipant(index, 1)} type="button">Move participant {index + 1} down</button>
+              ) : null}
             </div>
           ))}
           <button onClick={addParticipant} type="button">Add participant</button>
@@ -86,9 +106,14 @@ export function App() {
           {nameError ? <p role="alert">{nameError}</p> : null}
         </fieldset>
         <label htmlFor="payer">Payer</label>
-        <select id="payer" onChange={(event) => setPayer(event.target.value)} value={payer}>
-          <option>Person 1</option>
-          <option>Person 2</option>
+        <select
+          id="payer"
+          onChange={(event) => setPayerId(event.target.selectedOptions[0].dataset.participantId!)}
+          value={payer.name}
+        >
+          {participants.map((participant) => (
+            <option data-participant-id={participant.id} key={participant.id} value={participant.name}>{participant.name}</option>
+          ))}
         </select>
         <label htmlFor="monetary-label">Monetary label</label>
         <input
@@ -104,7 +129,7 @@ export function App() {
           <option value="3">3</option>
         </select>
         <section aria-label="Split settings">
-          <p>Payer: {payer}</p>
+          <p>Payer: {payer.name}</p>
           <p>Monetary label: {monetaryLabel}</p>
           <p>Decimal precision: {precision}</p>
         </section>

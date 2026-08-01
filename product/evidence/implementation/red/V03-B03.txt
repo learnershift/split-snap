@@ -1,0 +1,2 @@
+FAIL: Payer option identity and participant reorder control were absent.
+exit_code: 1
