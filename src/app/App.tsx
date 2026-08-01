@@ -50,7 +50,9 @@ export function App() {
       preTaxTotalUnits: parsedTotal.units,
     }).ok) {
       setUpdateError('Unable to save draft. Update remains pending.')
+      return
     }
+    window.dispatchEvent(new Event('splitsnap:accept-update'))
   }
 
   useEffect(() => {

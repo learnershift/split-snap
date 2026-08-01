@@ -1,0 +1,3 @@
+Command: npx playwright test tests/e2e/update.spec.ts --grep "^V10-B06 accepted update changes controller and reloads once$"
+Expected missing feature: Controller does not change and no reload follows accepted update.
+Observed failure: Update now saves the draft but does not activate a waiting worker or reload under a new controller.
