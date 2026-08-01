@@ -1,8 +1,11 @@
 import { useState } from 'react'
 
+import { parseMoneyInput } from '../domain/decimal'
+import { formatUnits } from '../domain/format'
 import { sameParticipantName, trimToCodePointLimit } from '../domain/text'
 
 type Participant = { id: string; name: string }
+type Item = { id: string; description: string; amount: string }
 
 export function App() {
   const [preTaxTotal, setPreTaxTotal] = useState('')
@@ -16,6 +19,7 @@ export function App() {
   const [participantError, setParticipantError] = useState('')
   const [nameError, setNameError] = useState('')
   const [precision, setPrecision] = useState('0')
+  const [items, setItems] = useState<Item[]>([])
 
   function calculateSplit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -71,7 +75,20 @@ export function App() {
     setParticipants(reordered)
   }
 
+  function addItem() {
+    const number = items.length + 1
+    setItems([...items, { id: `item-${number}`, description: '', amount: '' }])
+  }
+
+  function updateItem(index: number, field: 'description' | 'amount', value: string) {
+    setItems(items.map((item, currentIndex) => currentIndex === index ? { ...item, [field]: value } : item))
+  }
+
   const payer = participants.find((participant) => participant.id === payerId) as Participant
+  const subtotalUnits = items.reduce((subtotal, item) => {
+    const parsed = parseMoneyInput(item.amount, Number(precision))
+    return parsed.ok ? subtotal + parsed.units : subtotal
+  }, 0n)
 
   return (
     <main aria-label="SplitSnap bill">
@@ -85,6 +102,28 @@ export function App() {
           onChange={(event) => setPreTaxTotal(event.target.value)}
           value={preTaxTotal}
         />
+        <fieldset>
+          <legend>Items</legend>
+          {items.map((item, index) => (
+            <div key={item.id}>
+              <label htmlFor={`item-${index + 1}-description`}>Item {index + 1} description</label>
+              <input
+                id={`item-${index + 1}-description`}
+                onChange={(event) => updateItem(index, 'description', event.target.value)}
+                value={item.description}
+              />
+              <label htmlFor={`item-${index + 1}-amount`}>Item {index + 1} amount</label>
+              <input
+                id={`item-${index + 1}-amount`}
+                inputMode="decimal"
+                onChange={(event) => updateItem(index, 'amount', event.target.value)}
+                value={item.amount}
+              />
+            </div>
+          ))}
+          <button onClick={addItem} type="button">Add item</button>
+          <p>Subtotal: {formatUnits(subtotalUnits, Number(precision))}</p>
+        </fieldset>
         <fieldset>
           <legend>Participants</legend>
           {participants.map((participant, index) => (

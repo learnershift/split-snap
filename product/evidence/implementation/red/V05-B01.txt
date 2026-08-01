@@ -1,0 +1,4 @@
+Command: npm run test:unit -- --run src/app/App.itemized.test.tsx -t "^V05-B01 adds item rows and sums subtotal$"
+Exit code: 1
+Expected missing feature: Item rows/subtotal are absent or wrong.
+Observed failure: Unable to find an accessible element with the role "button" and name "Add item".
