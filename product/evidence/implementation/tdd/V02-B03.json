@@ -1,0 +1,11 @@
+{
+  "behavior_id": "V02-B03",
+  "command": "npm run test:unit -- --run src/domain/decimal.test.ts -t \"^V02-B03 rejects mixed malformed exponent and signed money$\"",
+  "test_file": "src/domain/decimal.test.ts",
+  "test_file_sha256": "a7de004955c1c5e6a45890c1af0a8c72f844a07070d29afe5c2e44faae6d894e",
+  "red": { "started_at_utc": "2026-08-01T09:38:19Z", "ended_at_utc": "2026-08-01T09:38:20Z", "exit_code": 1, "expected_failure": "Any forbidden syntax is accepted/coerced.", "observed_failure": "The typed lexical parser was absent.", "captured_output": "product/evidence/implementation/red/V02-B03.txt", "captured_output_sha256": "8211d3a9d84e3d2dda39f1e98c0954d42dc1d06fc4ec4778ba0c6e48c3d404f1" },
+  "green": { "exit_code": 0, "captured_output": "product/evidence/implementation/green/V02-B03.txt", "captured_output_sha256": "56a8755260af67b23534c648a017d7b7420f19c6800041fe77c2343657bfe83c" },
+  "full_check": { "command": "npm run check", "exit_code": 0, "result": "PASS: typecheck, lint, unit, coverage thresholds, and production build." },
+  "refactor": { "started_at_utc": "2026-08-01T09:38:49Z", "exit_code": 0, "captured_output": "product/evidence/implementation/refactor/V02-B03.txt", "captured_output_sha256": "56a8755260af67b23534c648a017d7b7420f19c6800041fe77c2343657bfe83c", "full_check_exit_code": 0, "result": "No refactor required; the minimal GREEN boundary was retained." },
+  "implementation_revision": "pending_verified_checkpoint"
+}

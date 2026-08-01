@@ -1,0 +1,6 @@
+> split-snap@1.0.0 test:unit
+> vitest --run src/domain/decimal.test.ts -t ^V02-B03 rejects mixed malformed exponent and signed money$
+
+Test Files  1 passed (1)
+Tests  1 passed | 2 skipped (3)
+exit_code: 0
