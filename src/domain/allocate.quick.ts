@@ -1,4 +1,5 @@
 import { normalizeRational, type Rational } from './rational'
+import { addFixedAdditions, calculatePercentageAddition } from './additions'
 
 export type QuickDecomposition = {
   baseUnits: bigint[]
@@ -42,4 +43,24 @@ export function reconcileQuickEntitlements({
   }
 
   return { allocations, recipientIndexes }
+}
+
+export function calculateQuickSplit({
+  subtotalUnits,
+  shares,
+  taxPercentage,
+  fixedTipUnits,
+}: {
+  subtotalUnits: bigint
+  shares: bigint[]
+  taxPercentage: bigint
+  fixedTipUnits: bigint
+}) {
+  const taxUnits = calculatePercentageAddition(subtotalUnits, taxPercentage)
+  const { grandTotalUnits } = addFixedAdditions(subtotalUnits, taxUnits, fixedTipUnits)
+  const totalShares = shares.reduce((total, share) => total + share, 0n)
+  const entitlements = shares.map((share) => normalizeRational(grandTotalUnits * share, totalShares))
+  const reconciliation = reconcileQuickEntitlements(decomposeQuickEntitlements(entitlements, grandTotalUnits))
+
+  return { taxUnits, grandTotalUnits, ...reconciliation }
 }

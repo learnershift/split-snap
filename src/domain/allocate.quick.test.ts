@@ -1,6 +1,6 @@
 import { expect, it } from 'vitest'
 
-import { decomposeQuickEntitlements, reconcileQuickEntitlements } from './allocate.quick'
+import { calculateQuickSplit, decomposeQuickEntitlements, reconcileQuickEntitlements } from './allocate.quick'
 import { normalizeRational } from './rational'
 
 it('V04-B03 decomposes exact floors remainders and remaining-unit count', () => {
@@ -31,4 +31,9 @@ it('V04-B04 reconciles largest remainders with visible-order ties and reproduces
     normalizeRational(1n, 3n),
     normalizeRational(1n, 2n),
   ], 1n))).toEqual({ allocations: [0n, 1n], recipientIndexes: [1] })
+})
+
+it('V04-B05 reproduces complete F3', () => {
+  expect(calculateQuickSplit({ subtotalUnits: 1005n, shares: [1n, 1n], taxPercentage: 5n, fixedTipUnits: 10n }))
+    .toEqual({ taxUnits: 50n, grandTotalUnits: 1065n, allocations: [533n, 532n], recipientIndexes: [0] })
 })
