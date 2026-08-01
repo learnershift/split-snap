@@ -1,0 +1,4 @@
+Command: npm run test:unit -- --run src/features/persistence/persistence.test.ts -t "^V08-B02 preserves prior bytes on write or quota failure$"
+Exit code: 1
+Expected missing feature: Failure overwrites/removes prior bytes.
+Observed failure: guarded draft write was absent.

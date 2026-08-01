@@ -26,3 +26,17 @@ export function restoreDraft(bytes: string): { ok: true; inputs: DraftInputs } {
     inputs: { ...draft.inputs, preTaxTotalUnits: BigInt(draft.inputs.preTaxTotalUnits) },
   }
 }
+
+export function saveDraft(
+  storage: Pick<Storage, 'getItem' | 'setItem'>,
+  inputs: DraftInputs,
+): { ok: true } | { ok: false; priorBytes: string | null } {
+  const priorBytes = storage.getItem('split-snap:v1:draft')
+
+  try {
+    storage.setItem('split-snap:v1:draft', serializeDraft(inputs))
+    return { ok: true }
+  } catch {
+    return { ok: false, priorBytes }
+  }
+}
