@@ -1,0 +1,1 @@
+{"behavior_id":"V11-B05","characterization":true,"red":"unavailable: safe React text rendering pre-existed","green_command":"npm run test:privacy -- --grep ^V11-B05","result":"PASS","production_change":false}

@@ -42,3 +42,14 @@ test('V11-B04 meta CSP blocks product connections', { tag: '@privacy' }, async (
   await page.goto('/split-snap/')
   await expect(page.locator('meta[http-equiv="Content-Security-Policy"]')).toHaveAttribute('content', "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'")
 })
+
+test('V11-B05 renders canary Unicode as text without URL or console leakage', { tag: '@privacy' }, async ({ page }) => {
+  const canary = '한글-☃-<img>'
+  const messages: string[] = []
+  page.on('console', (message) => messages.push(message.text()))
+  await page.goto('/split-snap/')
+  await page.getByLabel('Monetary label').fill(canary)
+  await expect(page.getByText(`Monetary label: ${canary}`)).toBeVisible()
+  expect(page.url()).not.toContain(canary)
+  expect(messages.join('\n')).not.toContain(canary)
+})
