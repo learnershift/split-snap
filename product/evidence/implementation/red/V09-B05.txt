@@ -1,0 +1,4 @@
+Command: npm run test:a11y -- --grep "^V09-B05 reflows at 320px and 200 percent zoom$"
+Exit code: 1
+Expected missing feature: Content/function is lost or page scrolls in two dimensions.
+Observed failure: At 320px with 200% zoom, document scrollWidth exceeded clientWidth.

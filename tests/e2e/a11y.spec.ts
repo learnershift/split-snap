@@ -65,3 +65,18 @@ test('V09-B04 errors results and rounding are announced', { tag: '@a11y' }, asyn
   await expect(page.getByRole('status')).toContainText('Grand total: 1')
   await expect(page.getByRole('status')).toContainText('Rounding: Ana received +1 unit.')
 })
+
+test('V09-B05 reflows at 320px and 200 percent zoom', { tag: '@a11y' }, async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 720 })
+  await page.goto('/')
+  await page.getByRole('button', { name: 'Add participant' }).click()
+  await page.getByRole('button', { name: 'Add item' }).click()
+
+  await expect(page.getByLabel('Participant 3 name')).toBeVisible()
+  await expect(page.getByLabel('Item 1 amount')).toBeVisible()
+  await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true)
+
+  await page.evaluate(() => { document.body.style.zoom = '2' })
+  await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true)
+  await expect(page.getByRole('button', { name: 'Calculate split' })).toBeVisible()
+})
