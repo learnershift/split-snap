@@ -1,0 +1,6 @@
+> split-snap@1.0.0 test:unit
+> vitest --run src/domain/rational.test.ts -t ^V02-B06 normalizes exact bigint rationals$
+
+Test Files  1 passed (1)
+Tests  1 passed (1)
+exit_code: 0

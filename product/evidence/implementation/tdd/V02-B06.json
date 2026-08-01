@@ -1,0 +1,11 @@
+{
+  "behavior_id": "V02-B06",
+  "command": "npm run test:unit -- --run src/domain/rational.test.ts -t \"^V02-B06 normalizes exact bigint rationals$\"",
+  "test_file": "src/domain/rational.test.ts",
+  "test_file_sha256": "4e1f990e60e7805dd862999d8e1d94952207c3224af7039b31087e66661bd096",
+  "red": { "started_at_utc": "2026-08-01T09:45:24Z", "ended_at_utc": "2026-08-01T09:45:25Z", "exit_code": 1, "expected_failure": "Rational reduction/sign/denominator invariant is absent.", "observed_failure": "The rational primitive module was absent.", "captured_output": "product/evidence/implementation/red/V02-B06.txt", "captured_output_sha256": "7889f67356cb22c414f0afc99ea2efc5ff3357b5413594dbd1661a020513b3b6" },
+  "green": { "exit_code": 0, "captured_output": "product/evidence/implementation/green/V02-B06.txt", "captured_output_sha256": "ce24f038e073a21c1fde26fc7ed8e38537c683ce4f1620e2bad42b5d24a5f689" },
+  "full_check": { "command": "npm run check", "exit_code": 0, "result": "PASS: typecheck, lint, unit, coverage thresholds, and production build." },
+  "refactor": { "started_at_utc": "2026-08-01T09:45:55Z", "exit_code": 0, "captured_output": "product/evidence/implementation/refactor/V02-B06.txt", "captured_output_sha256": "ce24f038e073a21c1fde26fc7ed8e38537c683ce4f1620e2bad42b5d24a5f689", "full_check_exit_code": 0, "result": "No refactor required; the minimal GREEN boundary was retained." },
+  "implementation_revision": "pending_verified_checkpoint"
+}
