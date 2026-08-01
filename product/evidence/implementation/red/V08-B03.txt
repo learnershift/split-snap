@@ -1,0 +1,4 @@
+Command: npm run test:unit -- --run src/features/persistence/persistence.test.ts -t "^V08-B03 retains corrupt or unknown-schema bytes$"
+Exit code: 1
+Expected missing feature: Load silently resets or overwrites bytes.
+Observed failure: Corrupt draft JSON threw instead of returning a recovery-safe result.

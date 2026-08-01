@@ -19,11 +19,21 @@ export function serializeDraft(inputs: DraftInputs): string {
   return JSON.stringify(draft)
 }
 
-export function restoreDraft(bytes: string): { ok: true; inputs: DraftInputs } {
-  const draft = JSON.parse(bytes) as StoredDraft
-  return {
-    ok: true,
-    inputs: { ...draft.inputs, preTaxTotalUnits: BigInt(draft.inputs.preTaxTotalUnits) },
+export function restoreDraft(bytes: string):
+  | { ok: true; inputs: DraftInputs }
+  | { ok: false; code: 'draft_unreadable'; originalBytes: string } {
+  try {
+    const draft = JSON.parse(bytes) as StoredDraft
+    if (draft.schemaVersion !== 1) {
+      return { ok: false, code: 'draft_unreadable', originalBytes: bytes }
+    }
+
+    return {
+      ok: true,
+      inputs: { ...draft.inputs, preTaxTotalUnits: BigInt(draft.inputs.preTaxTotalUnits) },
+    }
+  } catch {
+    return { ok: false, code: 'draft_unreadable', originalBytes: bytes }
   }
 }
 

@@ -28,3 +28,11 @@ it('V08-B02 preserves prior bytes on write or quota failure', () => {
     monetaryLabel: 'USD', precision: 2, participants: ['Ana', 'Bo'], preTaxTotalUnits: 2500n,
   })).toEqual({ ok: false, priorBytes })
 })
+
+it('V08-B03 retains corrupt or unknown-schema bytes', () => {
+  const corruptBytes = '{not-json'
+  const unknownBytes = '{"schemaVersion":2,"inputs":{}}'
+
+  expect(restoreDraft(corruptBytes)).toEqual({ ok: false, code: 'draft_unreadable', originalBytes: corruptBytes })
+  expect(restoreDraft(unknownBytes)).toEqual({ ok: false, code: 'draft_unreadable', originalBytes: unknownBytes })
+})
