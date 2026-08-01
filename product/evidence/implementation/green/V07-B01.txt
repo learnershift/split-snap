@@ -1,0 +1,3 @@
+Command: npm run test:unit -- --run src/features/sharing/share-text.test.ts -t "^V07-B01 formats exact reconstructable F1 F2 and F3 plaintext$"
+Exit code: 0
+Result: PASS (F1, F2, and F3 byte-exact plaintext assertions).
