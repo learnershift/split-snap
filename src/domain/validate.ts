@@ -14,3 +14,10 @@ export function validateQuickSubtotal(subtotalUnits: bigint, fixedAdditionUnits:
     ? { ok: true as const }
     : { ok: false as const, message: 'Enter a pre-tax total greater than 0.' }
 }
+
+export function validateItemizedSubtotal(subtotalUnits: bigint, fixedAdditionUnits: bigint) {
+  void fixedAdditionUnits
+  return subtotalUnits > 0n
+    ? { ok: true }
+    : { ok: false, message: 'Add or update items so the pre-tax subtotal is greater than 0.' }
+}

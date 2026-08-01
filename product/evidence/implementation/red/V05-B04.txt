@@ -1,0 +1,4 @@
+Command: npm run test:unit -- --run src/domain/validate.test.ts -t "^V05-B04 blocks zero itemized subtotal despite fixed addition$"
+Exit code: 1
+Expected missing feature: Calculation proceeds or exact itemized repair differs.
+Observed failure: validateItemizedSubtotal is not a function.

@@ -1,7 +1,7 @@
 import { expect, it } from 'vitest'
 
 import { parseShare } from './validate'
-import { validateQuickSubtotal } from './validate'
+import { validateItemizedSubtotal, validateQuickSubtotal } from './validate'
 
 it('V03-B04 accepts only positive integer shares', () => {
   expect(parseShare('3')).toEqual({ ok: true, value: 3n })
@@ -12,4 +12,11 @@ it('V03-B04 accepts only positive integer shares', () => {
 
 it('V04-B06 blocks zero quick subtotal despite fixed addition', () => {
   expect(validateQuickSubtotal(0n, 10n)).toEqual({ ok: false, message: 'Enter a pre-tax total greater than 0.' })
+})
+
+it('V05-B04 blocks zero itemized subtotal despite fixed addition', () => {
+  expect(validateItemizedSubtotal(0n, 100n)).toEqual({
+    ok: false,
+    message: 'Add or update items so the pre-tax subtotal is greater than 0.',
+  })
 })
