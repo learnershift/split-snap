@@ -1,0 +1,4 @@
+Command: npm run test:unit -- --run src/domain/allocate.itemized.test.ts -t "^V05-B02 allocates item shares and exclusions exactly$"
+Exit code: 1
+Expected missing feature: Item weights/exclusions produce wrong rational entitlement.
+Observed failure: allocateItemRationalEntitlements is not a function.
