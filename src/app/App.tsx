@@ -8,11 +8,40 @@ export function App() {
   const [payer, setPayer] = useState('Person 1')
   const [monetaryLabel, setMonetaryLabel] = useState('')
   const [participantNames, setParticipantNames] = useState(['Person 1', 'Person 2'])
+  const [participantError, setParticipantError] = useState('')
   const [precision, setPrecision] = useState('0')
 
   function calculateSplit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
     setResult(Number(preTaxTotal) / 2)
+  }
+
+  function addParticipant() {
+    if (participantNames.length === 8) {
+      setParticipantError('Use between 2 and 8 participants.')
+      return
+    }
+
+    setParticipantNames([...participantNames, `Person ${participantNames.length + 1}`])
+    setParticipantError('')
+  }
+
+  function removeParticipant() {
+    if (participantNames.length === 2) {
+      setParticipantError('Use between 2 and 8 participants.')
+      return
+    }
+
+    setParticipantNames(participantNames.slice(0, -1))
+    setParticipantError('')
+  }
+
+  function updateParticipantName(index: number, value: string) {
+    setParticipantNames(
+      participantNames.map((name, currentIndex) =>
+        currentIndex === index ? trimToCodePointLimit(value, 40) : name,
+      ),
+    )
   }
 
   return (
@@ -29,22 +58,19 @@ export function App() {
         />
         <fieldset>
           <legend>Participants</legend>
-          <label htmlFor="participant-1-name">Participant 1 name</label>
-          <input
-            id="participant-1-name"
-            onChange={(event) =>
-              setParticipantNames([trimToCodePointLimit(event.target.value, 40), participantNames[1]])
-            }
-            value={participantNames[0]}
-          />
-          <label htmlFor="participant-2-name">Participant 2 name</label>
-          <input
-            id="participant-2-name"
-            onChange={(event) =>
-              setParticipantNames([participantNames[0], trimToCodePointLimit(event.target.value, 40)])
-            }
-            value={participantNames[1]}
-          />
+          {participantNames.map((name, index) => (
+            <div key={index}>
+              <label htmlFor={`participant-${index + 1}-name`}>Participant {index + 1} name</label>
+              <input
+                id={`participant-${index + 1}-name`}
+                onChange={(event) => updateParticipantName(index, event.target.value)}
+                value={name}
+              />
+            </div>
+          ))}
+          <button onClick={addParticipant} type="button">Add participant</button>
+          <button onClick={removeParticipant} type="button">Remove participant</button>
+          {participantError ? <p role="alert">{participantError}</p> : null}
         </fieldset>
         <label htmlFor="payer">Payer</label>
         <select id="payer" onChange={(event) => setPayer(event.target.value)} value={payer}>

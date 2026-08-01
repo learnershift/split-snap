@@ -1,0 +1,11 @@
+{
+  "behavior_id": "V03-B01",
+  "command": "npm run test:unit -- --run src/app/App.participants.test.tsx -t \"^V03-B01 enforces two through eight participants$\"",
+  "test_file": "src/app/App.participants.test.tsx",
+  "test_file_sha256": "74b77f209e12e621f2c7a46235b1af484abce2e763ccd7fb461f3d9484d8168b",
+  "red": { "started_at_utc": "2026-08-01T10:18:39Z", "ended_at_utc": "2026-08-01T10:18:40Z", "exit_code": 1, "expected_failure": "One/nine participants can calculate or repair is absent.", "observed_failure": "Participant count controls were absent.", "captured_output": "product/evidence/implementation/red/V03-B01.txt", "captured_output_sha256": "230847e9b5c81bd1f3c12b33ac0d5453ce9c8b20f822ffb8403e06607d4c38cd" },
+  "green": { "exit_code": 0, "captured_output": "product/evidence/implementation/green/V03-B01.txt", "captured_output_sha256": "68ee3c86f65f934fdc95b8e2d18cde7c2c6e2a041f5c553c44759eaa8d5e53f6" },
+  "full_check": { "command": "npm run check", "exit_code": 0, "result": "PASS: typecheck, lint, unit, coverage thresholds, and production build." },
+  "refactor": { "started_at_utc": "2026-08-01T10:19:15Z", "exit_code": 0, "captured_output": "product/evidence/implementation/refactor/V03-B01.txt", "captured_output_sha256": "4045f19eeee150af34eb0ec4a1e7caf092e9fa861c530af70d285ba3988b8abd", "full_check_exit_code": 0, "result": "No refactor required; the minimal GREEN boundary was retained." },
+  "implementation_revision": "pending_verified_checkpoint"
+}

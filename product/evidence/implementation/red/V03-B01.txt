@@ -1,0 +1,6 @@
+> split-snap@1.0.0 test:unit
+> vitest --run src/app/App.participants.test.tsx -t ^V03-B01 enforces two through eight participants$
+
+FAIL  src/app/App.participants.test.tsx > V03-B01 enforces two through eight participants
+TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "Remove participant"
+exit_code: 1
