@@ -1,0 +1,34 @@
+{
+  "behavior_id": "V02-B01",
+  "command": "npm run test:unit -- --run src/domain/decimal.test.ts -t \"^V02-B01 parses dot decimals directly to bigint units$\"",
+  "test_file": "src/domain/decimal.test.ts",
+  "test_file_sha256": "9bf6767b9ad0d54c510b28adb534d597669a004ba3e7f963e6f901509e676eff",
+  "red": {
+    "started_at_utc": "2026-08-01T09:27:14Z",
+    "ended_at_utc": "2026-08-01T09:27:15Z",
+    "exit_code": 1,
+    "expected_failure": "Parser is absent or returns floating/incorrect units.",
+    "observed_failure": "The decimal parser module was absent.",
+    "captured_output": "product/evidence/implementation/red/V02-B01.txt",
+    "captured_output_sha256": "4e0e79acc98595fe1a0b6cd4923eef1809039075286442148830b2c2f3b758cd"
+  },
+  "green": {
+    "exit_code": 0,
+    "captured_output": "product/evidence/implementation/green/V02-B01.txt",
+    "captured_output_sha256": "1e810c20b06e91b5ab5e507259ab00d7de338a526ef223c167839e90ea56fe36"
+  },
+  "full_check": {
+    "command": "npm run check",
+    "exit_code": 0,
+    "result": "PASS: typecheck, lint, unit, coverage thresholds, and production build."
+  },
+  "refactor": {
+    "started_at_utc": "2026-08-01T09:27:40Z",
+    "exit_code": 0,
+    "captured_output": "product/evidence/implementation/refactor/V02-B01.txt",
+    "captured_output_sha256": "1e810c20b06e91b5ab5e507259ab00d7de338a526ef223c167839e90ea56fe36",
+    "full_check_exit_code": 0,
+    "result": "No refactor required; the minimal GREEN boundary was retained."
+  },
+  "implementation_revision": "pending_verified_checkpoint"
+}

@@ -1,0 +1,9 @@
+> split-snap@1.0.0 test:unit
+> vitest --run src/domain/decimal.test.ts -t ^V02-B01 parses dot decimals directly to bigint units$
+
+FAIL  src/domain/decimal.test.ts
+Error: Failed to resolve import "./decimal" from "src/domain/decimal.test.ts". Does the file exist?
+
+Test Files  1 failed (1)
+Tests  no tests
+exit_code: 1
