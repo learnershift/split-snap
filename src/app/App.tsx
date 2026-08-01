@@ -8,7 +8,7 @@ import { Persistence } from '../features/persistence/PersistenceView'
 
 type Participant = { id: string; name: string }
 type Item = { id: string; description: string; amount: string; participants: { included: boolean; share: string }[] }
-type ItemizedResult = { allocations: bigint[]; grandTotalUnits: bigint }
+type ItemizedResult = { allocations: bigint[]; grandTotalUnits: bigint; recipientIndexes: number[] }
 
 export function App() {
   const [preTaxTotal, setPreTaxTotal] = useState('')
@@ -57,7 +57,7 @@ export function App() {
       })
       const tip = parseMoneyInput(fixedTip, Number(precision))
       const split = calculateItemizedSplit({ items: itemizedItems, taxPercentage: BigInt(taxPercentage || '0'), fixedTipUnits: tip.ok ? tip.units : 0n })
-      setResult({ allocations: split.allocations, grandTotalUnits: split.grandTotalUnits })
+      setResult({ allocations: split.allocations, grandTotalUnits: split.grandTotalUnits, recipientIndexes: split.recipientIndexes })
       return
     }
     setResult(Number(preTaxTotal) / 2)
@@ -237,6 +237,7 @@ export function App() {
             {typeof result === 'number' ? <><p>Person 1: {result}</p><p>Person 2: {result}</p></> : <>
               {result.allocations.map((allocation, index) => <p key={participants[index].id}>{participants[index].name}: {formatUnits(allocation, Number(precision))}</p>)}
               <p>Grand total: {formatUnits(result.grandTotalUnits, Number(precision))}</p>
+              {result.recipientIndexes.map((index) => <p key={`rounding-${participants[index].id}`}>Rounding: {participants[index].name} received +1 unit.</p>)}
             </>}
           </output>
         ) : null}

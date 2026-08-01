@@ -1,0 +1,4 @@
+Command: npm run test:a11y -- --grep "^V09-B04 errors results and rounding are announced$"
+Exit code: 1
+Expected missing feature: Live status lacks field/error/result/reconciliation announcement.
+Observed failure: Result status omitted the rounding recipient announcement.

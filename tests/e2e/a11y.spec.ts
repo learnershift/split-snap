@@ -50,3 +50,18 @@ test('V09-B03 dynamic rows and dialogs restore focus', { tag: '@a11y' }, async (
   await page.getByRole('button', { name: 'Cancel start over' }).click()
   await expect(page.getByRole('button', { name: 'Start over' })).toBeFocused()
 })
+
+test('V09-B04 errors results and rounding are announced', { tag: '@a11y' }, async ({ page }) => {
+  await page.goto('/')
+  await page.getByLabel('Participant 1 name').fill('')
+  await page.getByRole('button', { name: 'Calculate split' }).click()
+  await expect(page.getByRole('alert')).toContainText('Enter unique participant names.')
+
+  await page.getByLabel('Participant 1 name').fill('Ana')
+  await page.getByLabel('Mode').selectOption('itemized')
+  await page.getByRole('button', { name: 'Add item' }).click()
+  await page.getByLabel('Item 1 amount').fill('1')
+  await page.getByRole('button', { name: 'Calculate split' }).click()
+  await expect(page.getByRole('status')).toContainText('Grand total: 1')
+  await expect(page.getByRole('status')).toContainText('Rounding: Ana received +1 unit.')
+})
