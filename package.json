@@ -13,7 +13,7 @@
     "seal:dist": "node scripts/seal-dist.mjs",
     "preview": "vite preview",
     "test:e2e": "playwright test",
-    "test:offline": "playwright test --grep @offline",
+    "test:offline": "node scripts/run-playwright-tagged.mjs @offline",
     "test:install": "node scripts/run-playwright-tagged.mjs @install",
     "test:a11y": "node scripts/run-playwright-tagged.mjs @a11y",
     "test:privacy": "playwright test --grep @privacy",

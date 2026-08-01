@@ -1,0 +1,3 @@
+Command: npm run test:offline -- --grep "^V10-B03 reopens and completes F1 offline after initial load$"
+Result: No feature-missing RED observed.
+Reason: V10-B02's required generated shell precache already covers the complete static F1 application path after initial load.
