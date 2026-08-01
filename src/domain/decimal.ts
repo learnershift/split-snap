@@ -1,5 +1,5 @@
 export function parseDecimalToUnits(value: string, precision: number): bigint {
-  const parts = value.split('.')
+  const parts = value.replace(',', '.').split('.')
   const whole = parts[0]
   const fraction = parts[1] ?? ''
 

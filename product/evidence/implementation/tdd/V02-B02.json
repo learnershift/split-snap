@@ -1,0 +1,34 @@
+{
+  "behavior_id": "V02-B02",
+  "command": "npm run test:unit -- --run src/domain/decimal.test.ts -t \"^V02-B02 normalizes one comma decimal separator$\"",
+  "test_file": "src/domain/decimal.test.ts",
+  "test_file_sha256": "e74c24e26b083ebbeaa5b2948fe310021e2d6b070cf821b7bf5e8bc1371769ed",
+  "red": {
+    "started_at_utc": "2026-08-01T09:37:03Z",
+    "ended_at_utc": "2026-08-01T09:37:04Z",
+    "exit_code": 1,
+    "expected_failure": "Comma input is rejected or mis-scaled.",
+    "observed_failure": "Comma input was passed to BigInt without decimal normalization.",
+    "captured_output": "product/evidence/implementation/red/V02-B02.txt",
+    "captured_output_sha256": "06e73ef4709ecf10a426eb00bba78f8c4711611c7ba0feb7a82dce0afa977112"
+  },
+  "green": {
+    "exit_code": 0,
+    "captured_output": "product/evidence/implementation/green/V02-B02.txt",
+    "captured_output_sha256": "8382d7b5bad9c4968cb59ae760aa727b40c59230da17d0626ba68eaa84190640"
+  },
+  "full_check": {
+    "command": "npm run check",
+    "exit_code": 0,
+    "result": "PASS: typecheck, lint, unit, coverage thresholds, and production build."
+  },
+  "refactor": {
+    "started_at_utc": "2026-08-01T09:37:21Z",
+    "exit_code": 0,
+    "captured_output": "product/evidence/implementation/refactor/V02-B02.txt",
+    "captured_output_sha256": "8382d7b5bad9c4968cb59ae760aa727b40c59230da17d0626ba68eaa84190640",
+    "full_check_exit_code": 0,
+    "result": "No refactor required; the minimal GREEN boundary was retained."
+  },
+  "implementation_revision": "pending_verified_checkpoint"
+}

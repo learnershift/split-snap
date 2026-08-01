@@ -1,0 +1,9 @@
+> split-snap@1.0.0 test:unit
+> vitest --run src/domain/decimal.test.ts -t ^V02-B02 normalizes one comma decimal separator$
+
+FAIL  src/domain/decimal.test.ts > V02-B02 normalizes one comma decimal separator
+SyntaxError: Cannot convert 12,3400 to a BigInt
+
+Test Files  1 failed (1)
+Tests  1 failed | 1 skipped (2)
+exit_code: 1

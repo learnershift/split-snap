@@ -1,0 +1,6 @@
+> split-snap@1.0.0 test:unit
+> vitest --run src/domain/decimal.test.ts -t ^V02-B02 normalizes one comma decimal separator$
+
+Test Files  1 passed (1)
+Tests  1 passed | 1 skipped (2)
+exit_code: 0
