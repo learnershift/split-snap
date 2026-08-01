@@ -1,0 +1,4 @@
+Command: npm run test:unit -- --run src/features/results/Results.test.tsx -t "^V06-B03 identifies each reconciliation recipient$"
+Exit code: 1
+Expected missing feature: Rounding recipient/unit is not explicit.
+Observed failure: Rounding recipient explanation was absent.
