@@ -11,7 +11,7 @@
     "test:coverage": "vitest run --coverage",
     "build": "vite build",
     "seal:dist": "node scripts/seal-dist.mjs",
-    "preview": "node scripts/preview-dist.mjs",
+    "preview": "vite preview",
     "test:e2e": "playwright test",
     "test:offline": "playwright test --grep @offline",
     "test:install": "playwright test --grep @install",
