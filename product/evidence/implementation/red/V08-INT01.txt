@@ -1,0 +1,4 @@
+Command: npm run test:unit -- --run src/app/App.persistence.test.tsx -t "^active bill autosaves and restores through the persistence API$"
+Exit code: 1
+Expected missing feature: Active bill edits do not reach the existing draft persistence API, so reload loses them.
+Observed failure: localStorage.getItem('split-snap:v1:draft') returned null after active bill edits.

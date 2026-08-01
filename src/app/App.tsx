@@ -1,32 +1,55 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { parseMoneyInput } from '../domain/decimal'
 import { formatUnits } from '../domain/format'
 import { sameParticipantName, trimToCodePointLimit } from '../domain/text'
 import { calculateItemizedSplit } from '../domain/allocate.itemized'
 import { Persistence } from '../features/persistence/PersistenceView'
+import { restoreDraft, saveDraft } from '../features/persistence/persistence'
 
 type Participant = { id: string; name: string }
 type Item = { id: string; description: string; amount: string; participants: { included: boolean; share: string }[] }
 type ItemizedResult = { allocations: bigint[]; grandTotalUnits: bigint; recipientIndexes: number[] }
 
 export function App() {
-  const [preTaxTotal, setPreTaxTotal] = useState('')
+  const [restoredDraft] = useState(() => {
+    const bytes = localStorage.getItem('split-snap:v1:draft')
+    if (bytes === null) return null
+    const restored = restoreDraft(bytes)
+    return restored.ok ? restored.inputs : null
+  })
+  const [preTaxTotal, setPreTaxTotal] = useState(() => restoredDraft ? formatUnits(restoredDraft.preTaxTotalUnits, restoredDraft.precision) : '')
   const [result, setResult] = useState<number | ItemizedResult | null>(null)
   const [mode, setMode] = useState('quick')
   const [taxPercentage, setTaxPercentage] = useState('0')
   const [fixedTip, setFixedTip] = useState('0')
   const [payerId, setPayerId] = useState('participant-1')
-  const [monetaryLabel, setMonetaryLabel] = useState('')
-  const [participants, setParticipants] = useState<Participant[]>([
-    { id: 'participant-1', name: 'Person 1' },
-    { id: 'participant-2', name: 'Person 2' },
-  ])
+  const [monetaryLabel, setMonetaryLabel] = useState(() => restoredDraft?.monetaryLabel ?? '')
+  const [participants, setParticipants] = useState<Participant[]>(() => restoredDraft && restoredDraft.participants.length >= 2
+    ? restoredDraft.participants.map((name, index) => ({ id: `participant-${index + 1}`, name }))
+    : [{ id: 'participant-1', name: 'Person 1' }, { id: 'participant-2', name: 'Person 2' }])
   const [participantError, setParticipantError] = useState('')
   const [nameError, setNameError] = useState('')
-  const [precision, setPrecision] = useState('0')
+  const [precision, setPrecision] = useState(() => String(restoredDraft?.precision ?? 0))
   const [items, setItems] = useState<Item[]>([])
   const [focusParticipantId, setFocusParticipantId] = useState<string | null>(null)
+  const draftHasBeenEdited = useRef(false)
+
+  function markDraftEdited() {
+    draftHasBeenEdited.current = true
+  }
+
+  useEffect(() => {
+    if (!draftHasBeenEdited.current) return
+    const parsedTotal = parseMoneyInput(preTaxTotal, Number(precision))
+    if (!parsedTotal.ok) return
+    saveDraft(localStorage, {
+      monetaryLabel,
+      precision: Number(precision),
+      participants: participants.map(({ name }) => name),
+      preTaxTotalUnits: parsedTotal.units,
+    })
+  }, [monetaryLabel, participants, preTaxTotal, precision])
 
   useEffect(() => {
     if (!focusParticipantId) return
@@ -91,6 +114,7 @@ export function App() {
   }
 
   function updateParticipantName(index: number, value: string) {
+    markDraftEdited()
     setParticipants(
       participants.map((participant, currentIndex) =>
         currentIndex === index ? { ...participant, name: trimToCodePointLimit(value, 40) } : participant,
@@ -147,7 +171,7 @@ export function App() {
         <input
           id="pre-tax-total"
           inputMode="decimal"
-          onChange={(event) => { setPreTaxTotal(event.target.value); setResult(null) }}
+          onChange={(event) => { markDraftEdited(); setPreTaxTotal(event.target.value); setResult(null) }}
           value={preTaxTotal}
         />
         <fieldset>
@@ -211,11 +235,11 @@ export function App() {
         <label htmlFor="monetary-label">Monetary label</label>
         <input
           id="monetary-label"
-          onChange={(event) => { setMonetaryLabel(trimToCodePointLimit(event.target.value, 12)); setResult(null) }}
+          onChange={(event) => { markDraftEdited(); setMonetaryLabel(trimToCodePointLimit(event.target.value, 12)); setResult(null) }}
           value={monetaryLabel}
         />
         <label htmlFor="decimal-precision">Decimal precision</label>
-        <select id="decimal-precision" onChange={(event) => { setPrecision(event.target.value); setResult(null) }} value={precision}>
+        <select id="decimal-precision" onChange={(event) => { markDraftEdited(); setPrecision(event.target.value); setResult(null) }} value={precision}>
           <option value="0">0</option>
           <option value="1">1</option>
           <option value="2">2</option>

@@ -419,6 +419,12 @@
       "evidence": "product/evidence/implementation/tdd/V08-B05.json",
       "full_check": "PASS"
     },
+    "V08-INT01": {
+      "status": "PASS",
+      "evidence": "product/evidence/implementation/tdd/V08-INT01.json",
+      "full_check": "PASS",
+      "correction": "product/evidence/implementation/corrections/V08-live-wiring.md"
+    },
     "V09-B01": {
       "status": "PASS",
       "evidence": "product/evidence/implementation/tdd/V09-B01.json",
