@@ -1,0 +1,6 @@
+> split-snap@1.0.0 test:unit
+> vitest --run src/domain/decimal.test.ts -t ^V02-B04 rejects over-precision without rounding$
+
+Test Files  1 passed (1)
+Tests  1 passed | 3 skipped (4)
+exit_code: 0

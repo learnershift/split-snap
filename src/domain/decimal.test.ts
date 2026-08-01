@@ -17,4 +17,9 @@ it('V02-B03 rejects mixed malformed exponent and signed money', () => {
   }
 
   expect(parseMoneyInput('1.2', 2)).toEqual({ ok: true, units: 120n })
+  expect(parseMoneyInput('7', 3)).toEqual({ ok: true, units: 7000n })
+})
+
+it('V02-B04 rejects over-precision without rounding', () => {
+  expect(parseMoneyInput('9.999', 2)).toEqual({ ok: false, code: 'amount_over_precision' })
 })

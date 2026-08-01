@@ -1,0 +1,11 @@
+{
+  "behavior_id": "V02-B04",
+  "command": "npm run test:unit -- --run src/domain/decimal.test.ts -t \"^V02-B04 rejects over-precision without rounding$\"",
+  "test_file": "src/domain/decimal.test.ts",
+  "test_file_sha256": "496ad0dad73d67e7bc6d05c58efe58d5e51490182b338206274fb3c5f39c2fd2",
+  "red": { "started_at_utc": "2026-08-01T09:39:43Z", "ended_at_utc": "2026-08-01T09:39:44Z", "exit_code": 1, "expected_failure": "9.999 at precision 2 is accepted/rounded.", "observed_failure": "The typed parser accepted 9.999 at precision 2 as 9999 units.", "captured_output": "product/evidence/implementation/red/V02-B04.txt", "captured_output_sha256": "a26b4b72913d303c0a65e09472dabf00a754ba59c358e4524e18365a5a98f954" },
+  "green": { "exit_code": 0, "captured_output": "product/evidence/implementation/green/V02-B04.txt", "captured_output_sha256": "d59cb4250638d195dfc0d71d7bceb7d78e9577188e46e6db00486a70a41ed9ea" },
+  "full_check": { "command": "npm run check", "exit_code": 0, "result": "PASS: typecheck, lint, unit, coverage thresholds, and production build." },
+  "refactor": { "started_at_utc": "2026-08-01T09:40:22Z", "exit_code": 0, "captured_output": "product/evidence/implementation/refactor/V02-B04.txt", "captured_output_sha256": "d59cb4250638d195dfc0d71d7bceb7d78e9577188e46e6db00486a70a41ed9ea", "full_check_exit_code": 0, "result": "No refactor required; the minimal GREEN boundary was retained." },
+  "implementation_revision": "pending_verified_checkpoint"
+}
