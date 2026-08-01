@@ -1,0 +1,1 @@
+{"behavior_id":"V10-B07","command":"npm run test:offline -- --grep \"V10-B07\"","red":{"exit_code":1,"captured_output":"product/evidence/implementation/red/V10-B07.txt"},"green":{"exit_code":0,"captured_output":"product/evidence/implementation/green/V10-B07.txt"},"full_check":{"command":"npm run check","exit_code":0,"result":"PASS"}}

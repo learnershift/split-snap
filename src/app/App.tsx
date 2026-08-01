@@ -11,13 +11,16 @@ type Participant = { id: string; name: string }
 type Item = { id: string; description: string; amount: string; participants: { included: boolean; share: string }[] }
 type ItemizedResult = { allocations: bigint[]; grandTotalUnits: bigint; recipientIndexes: number[] }
 
+function loadDraft() {
+  const bytes = localStorage.getItem('split-snap:v1:draft')
+  if (bytes === null) return { inputs: null, error: '' }
+  const restored = restoreDraft(bytes)
+  return restored.ok ? { inputs: restored.inputs, error: '' } : { inputs: null, error: 'Saved draft needs recovery before it can be used.' }
+}
+
 export function App() {
-  const [restoredDraft] = useState(() => {
-    const bytes = localStorage.getItem('split-snap:v1:draft')
-    if (bytes === null) return null
-    const restored = restoreDraft(bytes)
-    return restored.ok ? restored.inputs : null
-  })
+  const [loadedDraft] = useState(loadDraft)
+  const restoredDraft = loadedDraft.inputs
   const [preTaxTotal, setPreTaxTotal] = useState(() => restoredDraft ? formatUnits(restoredDraft.preTaxTotalUnits, restoredDraft.precision) : '')
   const [result, setResult] = useState<number | ItemizedResult | null>(null)
   const [mode, setMode] = useState('quick')
@@ -35,6 +38,7 @@ export function App() {
   const [focusParticipantId, setFocusParticipantId] = useState<string | null>(null)
   const [updateReady, setUpdateReady] = useState(false)
   const [updateError, setUpdateError] = useState('')
+  const [draftError] = useState(loadedDraft.error)
   const draftHasBeenEdited = useRef(false)
 
   function markDraftEdited() {
@@ -184,6 +188,7 @@ export function App() {
     <main aria-label="SplitSnap bill">
       <h1>SplitSnap</h1>
       <form aria-label="Bill details" onSubmit={calculateSplit}>
+        {draftError ? <p role="alert">{draftError}</p> : null}
         <p>Enter a bill to calculate an exact split.</p>
         <label htmlFor="mode">Mode</label>
         <select id="mode" onChange={(event) => { setMode(event.target.value); setResult(null) }} value={mode}>

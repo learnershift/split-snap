@@ -1,0 +1,3 @@
+Command: npm run test:offline -- --grep "V10-B07"
+Exit code: 1
+Observed failure: recovery-safe incompatible-draft alert was absent.
