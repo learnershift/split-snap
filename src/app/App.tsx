@@ -45,6 +45,7 @@ export function App() {
 
     const number = participants.length + 1
     setParticipants([...participants, { id: `participant-${number}`, name: `Person ${number}` }])
+    setResult(null)
     setParticipantError('')
   }
 
@@ -55,6 +56,7 @@ export function App() {
     }
 
     setParticipants(participants.slice(0, -1))
+    setResult(null)
     setParticipantError('')
   }
 
@@ -64,6 +66,7 @@ export function App() {
         currentIndex === index ? { ...participant, name: trimToCodePointLimit(value, 40) } : participant,
       ),
     )
+    setResult(null)
   }
 
   function moveParticipant(index: number, direction: -1 | 1) {
@@ -73,15 +76,18 @@ export function App() {
     const reordered = [...participants]
     ;[reordered[index], reordered[targetIndex]] = [reordered[targetIndex], reordered[index]]
     setParticipants(reordered)
+    setResult(null)
   }
 
   function addItem() {
     const number = items.length + 1
     setItems([...items, { id: `item-${number}`, description: '', amount: '' }])
+    setResult(null)
   }
 
   function updateItem(index: number, field: 'description' | 'amount', value: string) {
     setItems(items.map((item, currentIndex) => currentIndex === index ? { ...item, [field]: value } : item))
+    setResult(null)
   }
 
   const payer = participants.find((participant) => participant.id === payerId) as Participant
@@ -99,7 +105,7 @@ export function App() {
         <input
           id="pre-tax-total"
           inputMode="decimal"
-          onChange={(event) => setPreTaxTotal(event.target.value)}
+          onChange={(event) => { setPreTaxTotal(event.target.value); setResult(null) }}
           value={preTaxTotal}
         />
         <fieldset>
@@ -147,7 +153,7 @@ export function App() {
         <label htmlFor="payer">Payer</label>
         <select
           id="payer"
-          onChange={(event) => setPayerId(event.target.selectedOptions[0].dataset.participantId!)}
+          onChange={(event) => { setPayerId(event.target.selectedOptions[0].dataset.participantId!); setResult(null) }}
           value={payer.name}
         >
           {participants.map((participant) => (
@@ -157,11 +163,11 @@ export function App() {
         <label htmlFor="monetary-label">Monetary label</label>
         <input
           id="monetary-label"
-          onChange={(event) => setMonetaryLabel(trimToCodePointLimit(event.target.value, 12))}
+          onChange={(event) => { setMonetaryLabel(trimToCodePointLimit(event.target.value, 12)); setResult(null) }}
           value={monetaryLabel}
         />
         <label htmlFor="decimal-precision">Decimal precision</label>
-        <select id="decimal-precision" onChange={(event) => setPrecision(event.target.value)} value={precision}>
+        <select id="decimal-precision" onChange={(event) => { setPrecision(event.target.value); setResult(null) }} value={precision}>
           <option value="0">0</option>
           <option value="1">1</option>
           <option value="2">2</option>

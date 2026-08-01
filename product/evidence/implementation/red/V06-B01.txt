@@ -1,0 +1,4 @@
+Command: npm run test:unit -- --run src/app/App.result.test.tsx -t "^V06-B01 invalidates result after every input edit$"
+Exit code: 1
+Expected missing feature: Old obligations remain current after an edit.
+Observed failure: Calculated status remained after monetary label edit.
