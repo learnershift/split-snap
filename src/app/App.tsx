@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { parseMoneyInput } from '../domain/decimal'
 import { formatUnits } from '../domain/format'
 import { sameParticipantName, trimToCodePointLimit } from '../domain/text'
 import { calculateItemizedSplit } from '../domain/allocate.itemized'
+import { Persistence } from '../features/persistence/PersistenceView'
 
 type Participant = { id: string; name: string }
 type Item = { id: string; description: string; amount: string; participants: { included: boolean; share: string }[] }
@@ -25,6 +26,13 @@ export function App() {
   const [nameError, setNameError] = useState('')
   const [precision, setPrecision] = useState('0')
   const [items, setItems] = useState<Item[]>([])
+  const [focusParticipantId, setFocusParticipantId] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (!focusParticipantId) return
+    document.getElementById(`${focusParticipantId}-name`)?.focus()
+    setFocusParticipantId(null)
+  }, [focusParticipantId])
 
   function calculateSplit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -66,6 +74,7 @@ export function App() {
     setItems(items.map((item) => ({ ...item, participants: [...item.participants, { included: true, share: '1' }] })))
     setResult(null)
     setParticipantError('')
+    setFocusParticipantId(`participant-${number}`)
   }
 
   function removeParticipant() {
@@ -74,9 +83,11 @@ export function App() {
       return
     }
 
-    setParticipants(participants.slice(0, -1))
+    const remaining = participants.slice(0, -1)
+    setParticipants(remaining)
     setResult(null)
     setParticipantError('')
+    setFocusParticipantId(remaining[remaining.length - 1].id)
   }
 
   function updateParticipantName(index: number, value: string) {
@@ -219,6 +230,7 @@ export function App() {
           <p>Monetary label: {monetaryLabel}</p>
           <p>Decimal precision: {precision}</p>
         </section>
+        <Persistence />
         <button type="submit">Calculate split</button>
         {result !== null ? (
           <output aria-live="polite" role="status">

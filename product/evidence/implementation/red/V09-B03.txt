@@ -1,0 +1,4 @@
+Command: npm run test:a11y -- --grep "^V09-B03 dynamic rows and dialogs restore focus$"
+Exit code: 1
+Expected missing feature: Add/remove/dialog leaves focus lost or illogical.
+Observed failure: Added Participant 3 name input remained inactive.

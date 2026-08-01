@@ -36,3 +36,17 @@ test('V09-B02 keyboard completes F1 with logical focus', { tag: '@a11y' }, async
   await expect(page.getByRole('status')).toContainText('Cy: 8.08')
   await expect(page.getByRole('status')).toContainText('Grand total: 29.54')
 })
+
+test('V09-B03 dynamic rows and dialogs restore focus', { tag: '@a11y' }, async ({ page }) => {
+  await page.goto('/')
+
+  await page.getByRole('button', { name: 'Add participant' }).click()
+  await expect(page.getByLabel('Participant 3 name')).toBeFocused()
+  await page.getByRole('button', { name: 'Remove participant' }).click()
+  await expect(page.getByLabel('Participant 2 name')).toBeFocused()
+
+  await page.getByRole('button', { name: 'Start over' }).click()
+  await expect(page.getByRole('dialog')).toBeVisible()
+  await page.getByRole('button', { name: 'Cancel start over' }).click()
+  await expect(page.getByRole('button', { name: 'Start over' })).toBeFocused()
+})
