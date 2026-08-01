@@ -1,0 +1,1 @@
+{"behavior_id":"V11-B04","command":"npm run test:privacy -- --grep ^V11-B04","red":{"exit_code":1,"observed_failure":"CSP meta was absent"},"green":{"exit_code":0},"full_check":{"command":"npm run check","exit_code":0,"result":"PASS"}}

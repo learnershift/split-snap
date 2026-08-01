@@ -37,3 +37,8 @@ test('V11-B03 requests no permission and never reads clipboard', { tag: '@privac
   await page.goto('/split-snap/')
   await expect(page.getByRole('main', { name: 'SplitSnap bill' })).toBeVisible()
 })
+
+test('V11-B04 meta CSP blocks product connections', { tag: '@privacy' }, async ({ page }) => {
+  await page.goto('/split-snap/')
+  await expect(page.locator('meta[http-equiv="Content-Security-Policy"]')).toHaveAttribute('content', "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'")
+})
