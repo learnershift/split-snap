@@ -1,0 +1,1 @@
+{"behavior_id":"V11-B02","characterization":true,"red":"unavailable: existing build has no remote executable tracker or font","green_command":"npm run test:privacy -- --grep ^V11-B02","result":"PASS","production_change":false}

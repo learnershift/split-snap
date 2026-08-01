@@ -19,3 +19,12 @@ test('V11-B01 never transmits the canary bill', { tag: '@privacy' }, async ({ pa
   expect(consoleMessages.join('\n')).not.toContain(canary)
   expect(transmitted.every((entry) => /^GET \/split-snap\/(?:$|index\.html|assets\/[^/]+|manifest\.webmanifest|icons\/[^/]+|sw\.js|workbox-[^/]+|registerSW\.js)$/.test(entry.split(' {')[0])), transmitted.join('\n')).toBe(true)
 })
+
+test('V11-B02 build contains no remote executable tracker or font', { tag: '@privacy' }, async ({ page }) => {
+  const requests: string[] = []
+  page.on('request', (request) => requests.push(request.url()))
+  await page.goto('/split-snap/')
+  expect(requests.every((url) => new URL(url).origin === 'http://127.0.0.1:4173')).toBe(true)
+  const markup = await page.content()
+  expect(markup).not.toMatch(/https?:\/\//i)
+})
