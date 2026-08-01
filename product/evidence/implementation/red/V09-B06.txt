@@ -1,0 +1,4 @@
+Command: npm run test:a11y -- --grep "^V09-B06 targets cues contrast and reduced motion pass$"
+Exit code: 1
+Expected missing feature: Target/cue/contrast/motion assertion fails.
+Observed failure: Calculate split target height was 24px, below 44px.

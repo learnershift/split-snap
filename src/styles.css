@@ -16,5 +16,21 @@ input,
 select {
   box-sizing: border-box;
   max-width: 100%;
-  min-height: 24px;
+  min-height: 44px;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 3px solid #005fcc;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto;
+    transition-duration: 0s;
+  }
 }

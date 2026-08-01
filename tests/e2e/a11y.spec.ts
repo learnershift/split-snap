@@ -80,3 +80,15 @@ test('V09-B05 reflows at 320px and 200 percent zoom', { tag: '@a11y' }, async ({
   await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true)
   await expect(page.getByRole('button', { name: 'Calculate split' })).toBeVisible()
 })
+
+test('V09-B06 targets cues contrast and reduced motion pass', { tag: '@a11y' }, async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await page.goto('/')
+  const calculate = page.getByRole('button', { name: 'Calculate split' })
+  const bounds = await calculate.boundingBox()
+
+  expect(bounds?.height).toBeGreaterThanOrEqual(44)
+  await calculate.focus()
+  await expect.poll(() => calculate.evaluate((element) => getComputedStyle(element).outlineStyle)).not.toBe('none')
+  await expect.poll(() => calculate.evaluate((element) => getComputedStyle(element).transitionDuration)).toBe('0s')
+})
