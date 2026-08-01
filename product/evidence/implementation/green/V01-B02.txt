@@ -1,0 +1,6 @@
+> split-snap@1.0.0 test:unit
+> vitest --run src/app/App.quick.test.tsx -t ^V01-B02 completes a two-person equal quick split$
+
+Test Files  1 passed (1)
+Tests  1 passed | 1 skipped (2)
+exit_code: 0

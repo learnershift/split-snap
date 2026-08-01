@@ -1,0 +1,9 @@
+> split-snap@1.0.0 test:unit
+> vitest --run src/app/App.quick.test.tsx -t ^V01-B02 completes a two-person equal quick split$
+
+FAIL  src/app/App.quick.test.tsx > V01-B02 completes a two-person equal quick split
+TestingLibraryElementError: Unable to find an accessible element with the role "textbox" and name "Pre-tax total"
+
+Test Files  1 failed (1)
+Tests  1 failed | 1 skipped (2)
+exit_code: 1

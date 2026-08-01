@@ -1,0 +1,34 @@
+{
+  "behavior_id": "V01-B02",
+  "command": "npm run test:unit -- --run src/app/App.quick.test.tsx -t \"^V01-B02 completes a two-person equal quick split$\"",
+  "test_file": "src/app/App.quick.test.tsx",
+  "test_file_sha256": "9a9bf9d915bacdcfbe8d1fdd7f134a617f68938042f0ca4b9bccab83b3600ec7",
+  "red": {
+    "started_at_utc": "2026-08-01T09:23:19Z",
+    "ended_at_utc": "2026-08-01T09:23:20Z",
+    "exit_code": 1,
+    "expected_failure": "Quick amount/participant controls or equal result is absent.",
+    "observed_failure": "Pre-tax total textbox was absent from the semantic bill form.",
+    "captured_output": "product/evidence/implementation/red/V01-B02.txt",
+    "captured_output_sha256": "3142e108b8cff1ba37f901dcede1aea1cf47cbd4e5b9a0bb89e442ace8652e44"
+  },
+  "green": {
+    "exit_code": 0,
+    "captured_output": "product/evidence/implementation/green/V01-B02.txt",
+    "captured_output_sha256": "b72d96d1eff9a0f17d5caaf7c22fb7c46ad17daf5ea9a6d6b6938d047b0414eb"
+  },
+  "full_check": {
+    "command": "npm run check",
+    "exit_code": 0,
+    "result": "PASS: typecheck, lint, unit, coverage thresholds, and production build."
+  },
+  "refactor": {
+    "started_at_utc": "2026-08-01T09:24:22Z",
+    "exit_code": 0,
+    "captured_output": "product/evidence/implementation/refactor/V01-B02.txt",
+    "captured_output_sha256": "b72d96d1eff9a0f17d5caaf7c22fb7c46ad17daf5ea9a6d6b6938d047b0414eb",
+    "full_check_exit_code": 0,
+    "result": "No refactor required; the minimal GREEN boundary was retained."
+  },
+  "implementation_revision": "pending_verified_checkpoint"
+}
