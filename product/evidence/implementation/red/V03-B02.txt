@@ -1,0 +1,2 @@
+FAIL: V03-B02 did not render a field validation alert after blank participant input.
+exit_code: 1

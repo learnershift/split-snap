@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { trimToCodePointLimit } from '../domain/text'
+import { sameParticipantName, trimToCodePointLimit } from '../domain/text'
 
 export function App() {
   const [preTaxTotal, setPreTaxTotal] = useState('')
@@ -9,10 +9,22 @@ export function App() {
   const [monetaryLabel, setMonetaryLabel] = useState('')
   const [participantNames, setParticipantNames] = useState(['Person 1', 'Person 2'])
   const [participantError, setParticipantError] = useState('')
+  const [nameError, setNameError] = useState('')
   const [precision, setPrecision] = useState('0')
 
   function calculateSplit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    const hasBlankName = participantNames.some((name) => name.trim() === '')
+    const hasDuplicateName = participantNames.some((name, index) =>
+      participantNames.slice(index + 1).some((otherName) => sameParticipantName(name, otherName)),
+    )
+
+    if (hasBlankName || hasDuplicateName) {
+      setNameError('Enter unique participant names.')
+      return
+    }
+
+    setNameError('')
     setResult(Number(preTaxTotal) / 2)
   }
 
@@ -71,6 +83,7 @@ export function App() {
           <button onClick={addParticipant} type="button">Add participant</button>
           <button onClick={removeParticipant} type="button">Remove participant</button>
           {participantError ? <p role="alert">{participantError}</p> : null}
+          {nameError ? <p role="alert">{nameError}</p> : null}
         </fieldset>
         <label htmlFor="payer">Payer</label>
         <select id="payer" onChange={(event) => setPayer(event.target.value)} value={payer}>

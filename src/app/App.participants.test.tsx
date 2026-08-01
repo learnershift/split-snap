@@ -1,8 +1,13 @@
-import { screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { expect, it } from 'vitest'
+import { beforeEach, expect, it } from 'vitest'
 
-import '../main'
+import { App } from './App'
+
+beforeEach(() => {
+  document.body.innerHTML = ''
+  render(<App />)
+})
 
 it('V03-B01 enforces two through eight participants', async () => {
   const user = userEvent.setup()
@@ -17,4 +22,20 @@ it('V03-B01 enforces two through eight participants', async () => {
   expect(screen.getAllByRole('textbox', { name: /Participant \d+ name/ })).toHaveLength(8)
   await user.click(screen.getByRole('button', { name: 'Add participant' }))
   expect(screen.getByRole('alert')).toHaveTextContent('Use between 2 and 8 participants.')
+})
+
+it('V03-B02 rejects blank and duplicate participant names', async () => {
+  const user = userEvent.setup()
+  const firstName = screen.getByRole('textbox', { name: 'Participant 1 name' })
+  const secondName = screen.getByRole('textbox', { name: 'Participant 2 name' })
+
+  await user.clear(firstName)
+  await user.click(screen.getByRole('button', { name: 'Calculate split' }))
+  expect(screen.getByRole('alert')).toHaveTextContent('Enter unique participant names.')
+
+  await user.type(firstName, 'e\u0301')
+  await user.clear(secondName)
+  await user.type(secondName, 'é')
+  await user.click(screen.getByRole('button', { name: 'Calculate split' }))
+  expect(screen.getByRole('alert')).toHaveTextContent('Enter unique participant names.')
 })

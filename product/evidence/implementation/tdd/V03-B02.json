@@ -1,0 +1,11 @@
+{
+  "behavior_id": "V03-B02",
+  "command": "npm run test:unit -- --run src/app/App.participants.test.tsx -t \"^V03-B02 rejects blank and duplicate participant names$\"",
+  "test_file": "src/app/App.participants.test.tsx",
+  "test_file_sha256": "12ed55cb5149ec39c48a50c7fff4dd8c8004a4ef661ff240c1a1b3a50db78efc",
+  "red": { "exit_code": 1, "expected_failure": "Blank/NFC-duplicate names can calculate.", "observed_failure": "No participant-name validation alert existed.", "captured_output": "product/evidence/implementation/red/V03-B02.txt", "captured_output_sha256": "dfdb5efc86046a8938f824d4bb090406b4caa2e56069aa86258a225a174440e2" },
+  "green": { "exit_code": 0, "captured_output": "product/evidence/implementation/green/V03-B02.txt", "captured_output_sha256": "c4d6a378f149a2ff9416a905b1f5298f65af6eb6b47177dacdefe08efaab148a" },
+  "full_check": { "command": "npm run check", "exit_code": 0, "result": "PASS: typecheck, lint, unit, coverage thresholds, and production build." },
+  "refactor": { "exit_code": 0, "captured_output": "product/evidence/implementation/refactor/V03-B02.txt", "captured_output_sha256": "8c4bf5f88fb15e0516ab73c947f547dbd7ab21d23b2ab27e928601300f1f1cfb", "full_check_exit_code": 0, "result": "No refactor required; test isolation repair retained green behavior." },
+  "implementation_revision": "pending_verified_checkpoint"
+}
