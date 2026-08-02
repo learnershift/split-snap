@@ -1,0 +1,34 @@
+{
+  "behavior_id": "RELEASE-REVIEW-QUICK-PERSISTENCE",
+  "scope": "quick positive shares and active-draft share restoration",
+  "red": [
+    {
+      "command": "npm run test:unit -- --run src/app/App.quick.test.tsx -t 'uses positive quick shares in the exact allocation'",
+      "result": "FAIL",
+      "observed_failure": "Unable to find accessible textbox 'Quick share Person 1'"
+    },
+    {
+      "command": "npm run test:unit -- --run src/app/App.persistence.test.tsx -t 'restores positive quick shares with the active draft'",
+      "result": "FAIL",
+      "observed_failure": "expected restored share 2; received 1"
+    }
+  ],
+  "green": {
+    "commands": [
+      "npm run test:unit -- --run src/app/App.quick.test.tsx",
+      "npm run test:unit -- --run src/app/App.persistence.test.tsx -t 'restores positive quick shares with the active draft'"
+    ],
+    "result": "PASS"
+  },
+  "full_check": {
+    "command": "npm run check",
+    "result": "PASS",
+    "unit_tests": 49
+  },
+  "source_sha256": {
+    "src/app/App.tsx": "21c3e7c48aa7fe586f0a4b184ccf429c967cc0a6352d27f99d7cb1a7182af821",
+    "src/app/App.quick.test.tsx": "6c24d5e5bd6d6e9910510b91a9fbe7ad3f319e43c8f2afef0035e0e6774c1feb",
+    "src/app/App.persistence.test.tsx": "e15332ff98bf608ebbc2d9f821bac6d08917df92200fbc897155ca566e6e494d",
+    "src/features/persistence/persistence.ts": "f955c57ad10d1b0b607c19d41cae60b3638696c452d24f1a6b59aa7ae10c8ae3"
+  }
+}

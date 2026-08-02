@@ -2,6 +2,7 @@ export type DraftInputs = {
   monetaryLabel: string
   precision: number
   participants: string[]
+  participantShares?: string[]
   preTaxTotalUnits: bigint
   mode?: string
   payerId?: string

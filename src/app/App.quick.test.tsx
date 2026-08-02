@@ -32,9 +32,23 @@ it('V01-B03 selects payer label and precision', async () => {
   expect(screen.getByText('Decimal precision: 2')).toBeVisible()
 })
 
+it('uses positive quick shares in the exact allocation', async () => {
+  const user = userEvent.setup()
+  await user.clear(screen.getByRole('textbox', { name: 'Pre-tax total' }))
+  await user.type(screen.getByRole('textbox', { name: 'Pre-tax total' }), '9')
+  await user.clear(screen.getByRole('textbox', { name: 'Quick share Person 1' }))
+  await user.type(screen.getByRole('textbox', { name: 'Quick share Person 1' }), '2')
+  await user.click(screen.getByRole('button', { name: 'Calculate split' }))
+
+  expect(screen.getByRole('status')).toHaveTextContent('Person 1: 6')
+  expect(screen.getByRole('status')).toHaveTextContent('Person 2: 3')
+})
+
 it('uses exact quick allocation for F2 visible-order rounding', async () => {
   const user = userEvent.setup()
   await user.click(screen.getByRole('button', { name: 'Add participant' }))
+  await user.clear(screen.getByRole('textbox', { name: 'Quick share Person 1' }))
+  await user.type(screen.getByRole('textbox', { name: 'Quick share Person 1' }), '1')
   await user.selectOptions(screen.getByRole('combobox', { name: 'Decimal precision' }), '0')
   await user.clear(screen.getByRole('textbox', { name: 'Pre-tax total' }))
   await user.type(screen.getByRole('textbox', { name: 'Pre-tax total' }), '100')

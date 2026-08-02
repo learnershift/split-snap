@@ -10,7 +10,7 @@ import { restoreDraft, saveDraft } from '../features/persistence/persistence'
 import { Sharing } from '../features/sharing/Sharing'
 import { formatShareText } from '../features/sharing/share-text'
 
-type Participant = { id: string; name: string }
+type Participant = { id: string; name: string; share: string }
 type Item = { id: string; description: string; amount: string; participants: { included: boolean; share: string }[] }
 type ItemizedResult = { allocations: bigint[]; grandTotalUnits: bigint; recipientIndexes: number[] }
 
@@ -32,8 +32,8 @@ export function App() {
   const [payerId, setPayerId] = useState(restoredDraft?.payerId ?? 'participant-1')
   const [monetaryLabel, setMonetaryLabel] = useState(() => restoredDraft?.monetaryLabel ?? '')
   const [participants, setParticipants] = useState<Participant[]>(() => restoredDraft && restoredDraft.participants.length >= 2
-    ? restoredDraft.participants.map((name, index) => ({ id: `participant-${index + 1}`, name }))
-    : [{ id: 'participant-1', name: 'Person 1' }, { id: 'participant-2', name: 'Person 2' }])
+    ? restoredDraft.participants.map((name, index) => ({ id: `participant-${index + 1}`, name, share: restoredDraft.participantShares?.[index] ?? '1' }))
+    : [{ id: 'participant-1', name: 'Person 1', share: '1' }, { id: 'participant-2', name: 'Person 2', share: '1' }])
   const [participantError, setParticipantError] = useState('')
   const [nameError, setNameError] = useState('')
   const [shareError, setShareError] = useState('')
@@ -55,6 +55,7 @@ export function App() {
       monetaryLabel,
       precision: Number(precision),
       participants: participants.map(({ name }) => name),
+      participantShares: participants.map(({ share }) => share),
       preTaxTotalUnits: parsedTotal.units,
       mode, payerId, taxPercentage, fixedTip, items: items.map(({ description, amount, participants: itemParticipants }) => ({ description, amount, participants: itemParticipants })),
     }).ok) {
@@ -72,6 +73,7 @@ export function App() {
       monetaryLabel,
       precision: Number(precision),
       participants: participants.map(({ name }) => name),
+      participantShares: participants.map(({ share }) => share),
       preTaxTotalUnits: parsedTotal.units,
       mode, payerId, taxPercentage, fixedTip, items: items.map(({ description, amount, participants: itemParticipants }) => ({ description, amount, participants: itemParticipants })),
     })
@@ -123,9 +125,14 @@ export function App() {
     const subtotal = parseMoneyInput(preTaxTotal, Number(precision))
     const tip = parseMoneyInput(fixedTip, Number(precision))
     if (!subtotal.ok || !tip.ok) return
+    if (participants.some((participant) => !/^[1-9]\d*$/.test(participant.share))) {
+      setShareError('Enter a positive integer share for every participant.')
+      return
+    }
+    setShareError('')
     const split = calculateQuickSplit({
       subtotalUnits: subtotal.units,
-      shares: participants.map(() => 1n),
+      shares: participants.map((participant) => BigInt(participant.share || '0')),
       taxPercentage: BigInt(taxPercentage || '0'),
       fixedTipUnits: tip.units,
     })
@@ -139,7 +146,7 @@ export function App() {
     }
 
     const number = participants.length + 1
-    setParticipants([...participants, { id: `participant-${number}`, name: `Person ${number}` }])
+    setParticipants([...participants, { id: `participant-${number}`, name: `Person ${number}`, share: '1' }])
     setItems(items.map((item) => ({ ...item, participants: [...item.participants, { included: true, share: '1' }] })))
     setResult(null)
     setParticipantError('')
@@ -209,7 +216,7 @@ export function App() {
     setPayerId('participant-1')
     setMonetaryLabel('')
     setPrecision('0')
-    setParticipants([{ id: 'participant-1', name: 'Person 1' }, { id: 'participant-2', name: 'Person 2' }])
+    setParticipants([{ id: 'participant-1', name: 'Person 1', share: '1' }, { id: 'participant-2', name: 'Person 2', share: '1' }])
     setItems([])
     setResult(null)
     setNameError('')
@@ -280,6 +287,23 @@ export function App() {
                 onChange={(event) => updateParticipantName(index, event.target.value)}
                 value={participant.name}
               />
+              {mode === 'quick' ? (
+                <>
+                  <label htmlFor={`participant-${index + 1}-quick-share`}>Quick share {participant.name}</label>
+                  <input
+                    id={`participant-${index + 1}-quick-share`}
+                    inputMode="numeric"
+                    onChange={(event) => {
+                      markDraftEdited()
+                      setParticipants(participants.map((current, currentIndex) =>
+                        currentIndex === index ? { ...current, share: event.target.value } : current,
+                      ))
+                      setResult(null)
+                    }}
+                    value={participant.share}
+                  />
+                </>
+              ) : null}
               {index < participants.length - 1 ? (
                 <button onClick={() => moveParticipant(index, 1)} type="button">Move participant {index + 1} down</button>
               ) : null}

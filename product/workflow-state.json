@@ -520,6 +520,11 @@
       "evidence": "product/evidence/implementation/tdd/V11-B05.json",
       "full_check": "PASS",
       "characterization": true
+    },
+    "RELEASE-REVIEW-QUICK-PERSISTENCE": {
+      "status": "PASS",
+      "evidence": "product/evidence/implementation/tdd/RELEASE-REVIEW-QUICK-PERSISTENCE.json",
+      "full_check": "PASS"
     }
   },
   "next_gate": "implementation",

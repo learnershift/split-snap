@@ -32,6 +32,18 @@ it('active bill autosaves and restores through the persistence API', async () =>
   expect(screen.getByLabelText('Participant 2 name')).toHaveValue('Bo')
 })
 
+it('restores positive quick shares with the active draft', async () => {
+  const user = userEvent.setup()
+  const first = render(<App />)
+  await user.type(screen.getByLabelText('Pre-tax total'), '9')
+  await user.clear(screen.getByLabelText('Quick share Person 1'))
+  await user.type(screen.getByLabelText('Quick share Person 1'), '2')
+  first.unmount()
+  render(<App />)
+
+  expect(screen.getByLabelText('Quick share Person 1')).toHaveValue('2')
+})
+
 it('restores mode, payer, item shares, and additions with the active draft', async () => {
   const user = userEvent.setup()
   const first = render(<App />)
