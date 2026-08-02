@@ -31,3 +31,17 @@ it('V01-B03 selects payer label and precision', async () => {
   expect(screen.getByText('Monetary label: USD')).toBeVisible()
   expect(screen.getByText('Decimal precision: 2')).toBeVisible()
 })
+
+it('uses exact quick allocation for F2 visible-order rounding', async () => {
+  const user = userEvent.setup()
+  await user.click(screen.getByRole('button', { name: 'Add participant' }))
+  await user.selectOptions(screen.getByRole('combobox', { name: 'Decimal precision' }), '0')
+  await user.clear(screen.getByRole('textbox', { name: 'Pre-tax total' }))
+  await user.type(screen.getByRole('textbox', { name: 'Pre-tax total' }), '100')
+  await user.selectOptions(screen.getByRole('combobox', { name: 'Payer' }), 'Person 3')
+  await user.click(screen.getByRole('button', { name: 'Calculate split' }))
+
+  expect(screen.getByRole('status')).toHaveTextContent('Person 1: 34')
+  expect(screen.getByRole('status')).toHaveTextContent('Person 2: 33')
+  expect(screen.getByRole('status')).toHaveTextContent('Person 3: 33')
+})

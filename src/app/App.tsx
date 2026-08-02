@@ -4,6 +4,7 @@ import { parseMoneyInput } from '../domain/decimal'
 import { formatUnits } from '../domain/format'
 import { sameParticipantName, trimToCodePointLimit } from '../domain/text'
 import { calculateItemizedSplit } from '../domain/allocate.itemized'
+import { calculateQuickSplit } from '../domain/allocate.quick'
 import { Persistence } from '../features/persistence/PersistenceView'
 import { restoreDraft, saveDraft } from '../features/persistence/persistence'
 import { Sharing } from '../features/sharing/Sharing'
@@ -111,7 +112,16 @@ export function App() {
       setResult({ allocations: split.allocations, grandTotalUnits: split.grandTotalUnits, recipientIndexes: split.recipientIndexes })
       return
     }
-    setResult(Number(preTaxTotal) / 2)
+    const subtotal = parseMoneyInput(preTaxTotal, Number(precision))
+    const tip = parseMoneyInput(fixedTip, Number(precision))
+    if (!subtotal.ok || !tip.ok) return
+    const split = calculateQuickSplit({
+      subtotalUnits: subtotal.units,
+      shares: participants.map(() => 1n),
+      taxPercentage: BigInt(taxPercentage || '0'),
+      fixedTipUnits: tip.units,
+    })
+    setResult({ allocations: split.allocations, grandTotalUnits: split.grandTotalUnits, recipientIndexes: split.recipientIndexes })
   }
 
   function addParticipant() {
