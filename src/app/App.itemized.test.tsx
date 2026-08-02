@@ -58,3 +58,16 @@ it('completes the itemized F1 controls with exact visible allocations', async ()
   expect(screen.getByRole('status')).toHaveTextContent('Ana owed: 0.00')
   expect(screen.getByRole('status')).toHaveTextContent('Bo owed: 13.98')
 })
+
+it('blocks an included item participant with a non-positive share', async () => {
+  const user = userEvent.setup()
+  await user.selectOptions(screen.getByRole('combobox', { name: 'Mode' }), 'itemized')
+  await user.click(screen.getByRole('button', { name: 'Add item' }))
+  await user.type(screen.getByRole('textbox', { name: 'Item 1 amount' }), '1')
+  await user.clear(screen.getByRole('textbox', { name: 'Item 1 share Person 1' }))
+  await user.type(screen.getByRole('textbox', { name: 'Item 1 share Person 1' }), '0')
+  await user.click(screen.getByRole('button', { name: 'Calculate split' }))
+
+  expect(screen.getByRole('alert')).toHaveTextContent('Enter a positive integer share for every included person.')
+  expect(screen.queryByRole('status')).not.toBeInTheDocument()
+})

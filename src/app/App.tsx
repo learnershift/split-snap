@@ -36,6 +36,7 @@ export function App() {
     : [{ id: 'participant-1', name: 'Person 1' }, { id: 'participant-2', name: 'Person 2' }])
   const [participantError, setParticipantError] = useState('')
   const [nameError, setNameError] = useState('')
+  const [shareError, setShareError] = useState('')
   const [precision, setPrecision] = useState(() => String(restoredDraft?.precision ?? 0))
   const [items, setItems] = useState<Item[]>([])
   const [focusParticipantId, setFocusParticipantId] = useState<string | null>(null)
@@ -100,6 +101,11 @@ export function App() {
 
     setNameError('')
     if (mode === 'itemized') {
+      if (items.some((item) => item.participants.some((participant) => participant.included && !/^[1-9]\d*$/.test(participant.share)))) {
+        setShareError('Enter a positive integer share for every included person.')
+        return
+      }
+      setShareError('')
       const itemizedItems = items.map((item) => {
         const parsedAmount = parseMoneyInput(item.amount, Number(precision))
         return {
@@ -234,6 +240,8 @@ export function App() {
                 <span key={participants[participantIndex].id}>
                   <label htmlFor={`item-${index + 1}-include-${participantIndex + 1}`}>Item {index + 1} include {participants[participantIndex].name}</label>
                   <input checked={itemParticipant.included} id={`item-${index + 1}-include-${participantIndex + 1}`} onChange={(event) => updateItemParticipant(index, participantIndex, 'included', event.target.checked)} type="checkbox" />
+                  <label htmlFor={`item-${index + 1}-share-${participantIndex + 1}`}>Item {index + 1} share {participants[participantIndex].name}</label>
+                  <input id={`item-${index + 1}-share-${participantIndex + 1}`} inputMode="numeric" onChange={(event) => updateItemParticipant(index, participantIndex, 'share', event.target.value)} value={itemParticipant.share} />
                 </span>
               )) : null}
             </div>
@@ -260,6 +268,7 @@ export function App() {
           <button onClick={removeParticipant} type="button">Remove participant</button>
           {participantError ? <p role="alert">{participantError}</p> : null}
           {nameError ? <p role="alert">{nameError}</p> : null}
+          {shareError ? <p role="alert">{shareError}</p> : null}
         </fieldset>
         <label htmlFor="payer">Payer</label>
         <select
