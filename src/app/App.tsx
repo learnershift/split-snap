@@ -306,7 +306,8 @@ export function App() {
         {result !== null ? (
           <output aria-live="polite" role="status">
             {typeof result === 'number' ? <><p>Person 1: {result}</p><p>Person 2: {result}</p></> : <>
-              {result.allocations.map((allocation, index) => <p key={participants[index].id}>{participants[index].name}: {formatUnits(allocation, Number(precision))}</p>)}
+              <p>Payer: {payer.name}</p>
+              {result.allocations.map((allocation, index) => <div key={participants[index].id}><p>{participants[index].name}: {formatUnits(allocation, Number(precision))}</p><p>{participants[index].name} owed: {formatUnits(index === participants.findIndex((participant) => participant.id === payerId) ? 0n : allocation, Number(precision))}</p></div>)}
               <p>Grand total: {formatUnits(result.grandTotalUnits, Number(precision))}</p>
               {result.recipientIndexes.map((index) => <p key={`rounding-${participants[index].id}`}>Rounding: {participants[index].name} received +1 unit.</p>)}
             </>}
