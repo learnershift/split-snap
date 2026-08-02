@@ -58,6 +58,21 @@ it('restores mode, payer, item shares, and additions with the active draft', asy
   expect(screen.getByLabelText('Payer')).toHaveValue('Person 2')
 })
 
+it('confirmed Start over clears the active in-memory bill as well as its draft', async () => {
+  const user = userEvent.setup()
+  render(<App />)
+  await user.type(screen.getByLabelText('Pre-tax total'), '12')
+  await user.selectOptions(screen.getByLabelText('Mode'), 'itemized')
+  await user.click(screen.getByRole('button', { name: 'Add item' }))
+  await user.click(screen.getByRole('button', { name: 'Start over' }))
+  await user.click(screen.getByRole('button', { name: 'Confirm start over' }))
+
+  expect(screen.getByLabelText('Pre-tax total')).toHaveValue('')
+  expect(screen.getByLabelText('Mode')).toHaveValue('quick')
+  expect(screen.queryByLabelText('Item 1 amount')).not.toBeInTheDocument()
+  expect(localStorage.getItem('split-snap:v1:draft')).toBeNull()
+})
+
 it('blocks an update when the active draft cannot be saved', async () => {
   const user = userEvent.setup()
   render(<App />)

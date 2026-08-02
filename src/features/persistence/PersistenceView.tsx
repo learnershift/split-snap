@@ -1,12 +1,13 @@
 import { useRef, useState } from 'react'
 
-export function Persistence() {
+export function Persistence({ onStartOver }: { onStartOver?: () => void }) {
   const [confirmingStartOver, setConfirmingStartOver] = useState(false)
   const [confirmingDeleteAll, setConfirmingDeleteAll] = useState(false)
   const startOverButton = useRef<HTMLButtonElement>(null)
 
   function confirmStartOver() {
     localStorage.removeItem('split-snap:v1:draft')
+    onStartOver?.()
     setConfirmingStartOver(false)
   }
 

@@ -201,6 +201,22 @@ export function App() {
     setResult(null)
   }
 
+  function resetActiveBill() {
+    setPreTaxTotal('')
+    setMode('quick')
+    setTaxPercentage('0')
+    setFixedTip('0')
+    setPayerId('participant-1')
+    setMonetaryLabel('')
+    setPrecision('0')
+    setParticipants([{ id: 'participant-1', name: 'Person 1' }, { id: 'participant-2', name: 'Person 2' }])
+    setItems([])
+    setResult(null)
+    setNameError('')
+    setShareError('')
+    draftHasBeenEdited.current = false
+  }
+
   const payer = participants.find((participant) => participant.id === payerId) as Participant
   const subtotalUnits = items.reduce((subtotal, item) => {
     const parsed = parseMoneyInput(item.amount, Number(precision))
@@ -307,7 +323,7 @@ export function App() {
           <p>Monetary label: {monetaryLabel}</p>
           <p>Decimal precision: {precision}</p>
         </section>
-        <Persistence />
+        <Persistence onStartOver={resetActiveBill} />
         {updateReady ? (
           <section aria-label="Update ready" role="dialog">
             <p>Update ready. Keep the current version until you choose to update.</p>
