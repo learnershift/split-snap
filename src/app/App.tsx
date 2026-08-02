@@ -6,6 +6,8 @@ import { sameParticipantName, trimToCodePointLimit } from '../domain/text'
 import { calculateItemizedSplit } from '../domain/allocate.itemized'
 import { Persistence } from '../features/persistence/PersistenceView'
 import { restoreDraft, saveDraft } from '../features/persistence/persistence'
+import { Sharing } from '../features/sharing/Sharing'
+import { formatShareText } from '../features/sharing/share-text'
 
 type Participant = { id: string; name: string }
 type Item = { id: string; description: string; amount: string; participants: { included: boolean; share: string }[] }
@@ -36,7 +38,7 @@ export function App() {
   const [precision, setPrecision] = useState(() => String(restoredDraft?.precision ?? 0))
   const [items, setItems] = useState<Item[]>([])
   const [focusParticipantId, setFocusParticipantId] = useState<string | null>(null)
-  const [updateReady, setUpdateReady] = useState(false)
+  const [updateReady, setUpdateReady] = useState(() => window.__splitSnapUpdateReady === true)
   const [updateError, setUpdateError] = useState('')
   const [draftError] = useState(loadedDraft.error)
   const draftHasBeenEdited = useRef(false)
@@ -300,6 +302,15 @@ export function App() {
             </>}
           </output>
         ) : null}
+        {result !== null && typeof result === 'object' ? <Sharing text={formatShareText({
+          label: monetaryLabel,
+          precision: Number(precision),
+          payerName: payer.name,
+          grandTotalUnits: result.grandTotalUnits,
+          participants: result.allocations.map((allocation, index) => ({ name: participants[index].name, allocationUnits: allocation, owedUnits: index === participants.findIndex((participant) => participant.id === payerId) ? 0n : allocation })),
+          roundingRecipientName: participants[result.recipientIndexes[0]]?.name ?? payer.name,
+          roundingReason: 'largest discarded remainder',
+        })} /> : null}
       </form>
     </main>
   )

@@ -1,0 +1,18 @@
+{
+  "behavior_id": "V12",
+  "red": {
+    "command": "node scripts/verify-dist.test.mjs",
+    "result": "FAIL",
+    "reason": "scripts/verify-dist.mjs was absent"
+  },
+  "green": {
+    "command": "node scripts/verify-dist.test.mjs",
+    "result": "PASS",
+    "coverage": "sealed tree and each manifest file hash; invokes e2e, offline, install, a11y, and privacy against DIST_DIR without a build"
+  },
+  "full_check": {
+    "command": "npm run verify",
+    "result": "PASS",
+    "dist_tree_sha256": "04103191616ecfecbcfab9299909b35a7972b4d5d290c9dc52f6d34b6c58cc54"
+  }
+}

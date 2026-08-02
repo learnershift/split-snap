@@ -46,7 +46,7 @@ test('V09-B03 dynamic rows and dialogs restore focus', { tag: '@a11y' }, async (
   await expect(page.getByLabel('Participant 2 name')).toBeFocused()
 
   await page.getByRole('button', { name: 'Start over' }).click()
-  await expect(page.getByRole('dialog')).toBeVisible()
+  await expect(page.getByRole('dialog', { name: 'Confirm start over' })).toBeVisible()
   await page.getByRole('button', { name: 'Cancel start over' }).click()
   await expect(page.getByRole('button', { name: 'Start over' })).toBeFocused()
 })

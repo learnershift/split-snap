@@ -6,19 +6,32 @@ import './styles.css'
 
 if ('serviceWorker' in navigator) {
   let waitingWorker: ServiceWorker | undefined
+  let acceptingUpdate = false
   navigator.serviceWorker.register('/split-snap/sw.js', { scope: '/split-snap/' }).then((registration) => {
+    const announceWaiting = () => {
+      if (registration.waiting) {
+        waitingWorker = registration.waiting
+        window.__splitSnapUpdateReady = true
+        window.dispatchEvent(new Event('splitsnap:update-ready'))
+      }
+    }
+    announceWaiting()
     registration.addEventListener('updatefound', () => {
       registration.installing?.addEventListener('statechange', () => {
-        if (registration.waiting && navigator.serviceWorker.controller) {
-          waitingWorker = registration.waiting
-          window.dispatchEvent(new Event('splitsnap:update-ready'))
-        }
+        announceWaiting()
       })
     })
+    window.addEventListener('focus', () => {
+      void registration.update()
+    })
   })
-  window.addEventListener('splitsnap:accept-update', () => waitingWorker?.postMessage('SKIP_WAITING'))
+  window.addEventListener('splitsnap:accept-update', async () => {
+    acceptingUpdate = true
+    const registration = await navigator.serviceWorker.getRegistration('/split-snap/')
+    ;(waitingWorker ?? registration?.waiting)?.postMessage('SKIP_WAITING')
+  })
   navigator.serviceWorker.addEventListener('controllerchange', () => {
-    if (sessionStorage.getItem('split-snap:update-reloaded') !== '1') {
+    if (acceptingUpdate && sessionStorage.getItem('split-snap:update-reloaded') !== '1') {
       sessionStorage.setItem('split-snap:update-reloaded', '1')
       location.reload()
     }

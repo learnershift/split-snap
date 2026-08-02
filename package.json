@@ -20,7 +20,7 @@
     "check:source": "npm run typecheck && npm run lint && npm run test:unit -- --run && npm run test:coverage",
     "verify:dist": "node scripts/verify-dist.mjs",
     "check": "npm run check:source && npm run build",
-    "verify": "npm run check && npm run seal:dist -- --dir dist"
+    "verify": "npm run check && dist_tree_sha256=$(npm run --silent seal:dist -- --dir dist) && npm run verify:dist -- --dir dist --sha \"$dist_tree_sha256\""
   },
   "repository": {
     "type": "git",

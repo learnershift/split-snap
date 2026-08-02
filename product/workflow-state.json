@@ -523,5 +523,5 @@
     }
   },
   "next_gate": "implementation",
-  "next_action": "continue at V12 integration and verification"
+  "next_action": "V13 Pages predeploy and independent release review"
 }

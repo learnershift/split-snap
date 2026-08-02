@@ -44,3 +44,19 @@ it('blocks an update when the active draft cannot be saved', async () => {
   expect(screen.getByRole('alert')).toHaveTextContent('Unable to save draft. Update remains pending.')
   Object.defineProperty(Storage.prototype, 'setItem', { configurable: true, value: originalSetItem })
 })
+
+it('flushes the active draft before accepting a ready update', async () => {
+  const user = userEvent.setup()
+  let accepted = 0
+  window.__splitSnapUpdateReady = true
+  window.addEventListener('splitsnap:accept-update', () => { accepted += 1 }, { once: true })
+  render(<App />)
+
+  await user.type(screen.getByLabelText('Pre-tax total'), '12')
+  await user.type(screen.getByLabelText('Monetary label'), 'USD')
+  await user.click(screen.getByRole('button', { name: 'Update now' }))
+
+  expect(accepted).toBe(1)
+  expect(localStorage.getItem('split-snap:v1:draft')).toContain('"monetaryLabel":"USD"')
+  window.__splitSnapUpdateReady = undefined
+})

@@ -1,23 +1,31 @@
 import { expect, test } from '@playwright/test'
 
 test('V10-B06 accepted update changes controller and reloads once', async ({ page, request }) => {
+  expect((await request.get('/__reset-worker')).status()).toBe(200)
   await page.goto('/split-snap/')
   await page.evaluate(async () => navigator.serviceWorker.ready)
+  await page.reload()
+  await page.evaluate(async () => navigator.serviceWorker.ready)
+  await page.getByLabel('Pre-tax total').fill('1')
+  const draft = await page.evaluate(() => localStorage.getItem('split-snap:v1:draft'))
+  expect(draft).not.toBeNull()
   const switched = await request.get('/__switch-worker')
   expect(switched.status()).toBe(200)
-  await page.evaluate(async () => {
+  const otherPage = await page.context().newPage()
+  await otherPage.goto('about:blank')
+  await otherPage.bringToFront()
+  await page.bringToFront()
+  const state = await page.evaluate(async () => {
     const registration = await navigator.serviceWorker.getRegistration()
-    await new Promise<void>((resolve) => {
-      if (registration?.waiting) return resolve()
-      registration?.addEventListener('updatefound', () => registration.installing?.addEventListener('statechange', () => {
-        if (registration.waiting) resolve()
-      }))
-      registration?.update()
-    })
+    return { scope: registration?.scope, active: registration?.active?.scriptURL, waiting: registration?.waiting?.scriptURL, controller: navigator.serviceWorker.controller?.scriptURL }
   })
-  await expect(page.getByRole('dialog', { name: 'Update ready' })).toBeVisible()
+  await expect(page.getByRole('dialog', { name: 'Update ready' }), JSON.stringify(state)).toBeVisible()
+  await otherPage.close()
+  const reloaded = page.waitForEvent('load')
   await page.getByRole('button', { name: 'Update now' }).click()
+  await reloaded
   await expect.poll(() => page.evaluate(() => sessionStorage.getItem('split-snap:update-reloaded'))).toBe('1')
+  expect(await page.evaluate(() => localStorage.getItem('split-snap:v1:draft'))).toBe(draft)
 })
 
 test('V10-B07 incompatible draft survives update until explicit deletion', async ({ page }) => {
@@ -29,7 +37,11 @@ test('V10-B07 incompatible draft survives update until explicit deletion', async
 })
 
 test('V10-B08 activation removes obsolete static cache only', async ({ page, request }) => {
+  expect((await request.get('/__reset-worker')).status()).toBe(200)
   await page.goto('/split-snap/')
+  await page.evaluate(async () => navigator.serviceWorker.ready)
+  await page.reload()
+  await page.evaluate(async () => navigator.serviceWorker.ready)
   await page.waitForTimeout(250)
   await page.getByLabel('Pre-tax total').fill('1')
   const draft = await page.evaluate(() => localStorage.getItem('split-snap:v1:draft'))
@@ -42,17 +54,12 @@ test('V10-B08 activation removes obsolete static cache only', async ({ page, req
   })
   const switched = await request.get('/__switch-worker')
   expect(switched.status()).toBe(200)
-  await page.evaluate(async () => {
-    const registration = await navigator.serviceWorker.getRegistration()
-    await new Promise<void>((resolve) => {
-      if (registration?.waiting) return resolve()
-      registration?.addEventListener('updatefound', () => registration.installing?.addEventListener('statechange', () => {
-        if (registration.waiting) resolve()
-      }))
-      registration?.update()
-    })
-  })
+  const otherPage = await page.context().newPage()
+  await otherPage.goto('about:blank')
+  await otherPage.bringToFront()
+  await page.bringToFront()
   await expect(page.getByRole('button', { name: 'Update now' })).toBeVisible()
+  await otherPage.close()
   const reloaded = page.waitForEvent('load')
   await page.getByRole('button', { name: 'Update now' }).click()
   await reloaded
