@@ -93,6 +93,9 @@ jobs:
     needs: [validation, build_once, resolve_source]
     if: github.event_name == 'workflow_dispatch' && inputs.deploy == true && needs.validation.outputs.deploy_allowed == 'true'
     runs-on: ubuntu-latest
+    outputs:
+      source_sha: ${{ needs.resolve_source.outputs.source_sha }}
+      dist_tree_sha256: ${{ needs.build_once.outputs.dist_tree_sha256 }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with: { ref: ${{ needs.resolve_source.outputs.source_sha }} }
@@ -103,12 +106,14 @@ jobs:
       - uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa
         with: { path: artifact }
   deploy:
-    needs: package_pages
+    needs: [package_pages, validation]
     if: github.event_name == 'workflow_dispatch' && inputs.deploy == true && needs.validation.outputs.deploy_allowed == 'true'
     runs-on: ubuntu-latest
     environment: github-pages
     outputs:
       page_url: ${{ steps.deployment.outputs.page_url }}
+      source_sha: ${{ needs.package_pages.outputs.source_sha }}
+      dist_tree_sha256: ${{ needs.package_pages.outputs.dist_tree_sha256 }}
     steps:
       - id: deployment
         uses: actions/deploy-pages@d6db218c7e46a0e9f3a9b2b036e4f0fdbd4a5090
@@ -118,5 +123,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-        with: { ref: ${{ github.sha }} }
+        with: { ref: ${{ needs.deploy.outputs.source_sha }} }
       - run: BASE_URL='${{ needs.deploy.outputs.page_url }}' npm run test:e2e -- --grep '^V13 live HTTP UI and offline smoke$' --project=chromium

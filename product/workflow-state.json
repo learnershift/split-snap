@@ -525,6 +525,11 @@
       "status": "PASS",
       "evidence": "product/evidence/implementation/tdd/RELEASE-REVIEW-QUICK-PERSISTENCE.json",
       "full_check": "PASS"
+    },
+    "RELEASE-REVIEW-PAGES-DAG": {
+      "status": "PASS",
+      "evidence": "product/evidence/implementation/tdd/RELEASE-REVIEW-PAGES-DAG.json",
+      "full_check": "PASS"
     }
   },
   "next_gate": "implementation",

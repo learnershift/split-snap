@@ -1,0 +1,19 @@
+{
+  "behavior_id": "RELEASE-REVIEW-PAGES-DAG",
+  "scope": "deploy validation dependency and resolved source handoff to live verification",
+  "red": {
+    "command": "node scripts/pages-workflow.test.mjs",
+    "result": "FAIL",
+    "observed_failure": "deploy did not directly need validation"
+  },
+  "green": {
+    "command": "node scripts/pages-workflow.test.mjs",
+    "result": "PASS"
+  },
+  "full_check": {
+    "command": "npm run check",
+    "result": "PASS",
+    "unit_tests": 49
+  },
+  "deployment_claim": "none; moderated validation and independent review remain required before deployment"
+}
