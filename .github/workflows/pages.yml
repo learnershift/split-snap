@@ -42,7 +42,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-        with: { ref: ${{ needs.resolve_source.outputs.source_sha }} }
+        with: { ref: "${{ needs.resolve_source.outputs.source_sha }}" }
       - run: npm ci && npm run check:source
   build_once:
     needs: [source_checks, resolve_source]
@@ -52,7 +52,7 @@ jobs:
       source_sha: ${{ needs.resolve_source.outputs.source_sha }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-        with: { ref: ${{ needs.resolve_source.outputs.source_sha }} }
+        with: { ref: "${{ needs.resolve_source.outputs.source_sha }}" }
       - id: seal
         run: |
           npm ci
@@ -67,7 +67,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-        with: { ref: ${{ needs.resolve_source.outputs.source_sha }} }
+        with: { ref: "${{ needs.resolve_source.outputs.source_sha }}" }
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
           name: split-snap-dist-${{ needs.resolve_source.outputs.source_sha }}-${{ needs.build_once.outputs.dist_tree_sha256 }}
@@ -80,7 +80,7 @@ jobs:
       deploy_allowed: ${{ steps.gate.outputs.deploy_allowed }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-        with: { ref: ${{ needs.resolve_source.outputs.source_sha }} }
+        with: { ref: "${{ needs.resolve_source.outputs.source_sha }}" }
       - id: gate
         run: |
           if [ "${{ inputs.deploy }}" = "true" ]; then
@@ -98,7 +98,7 @@ jobs:
       dist_tree_sha256: ${{ needs.build_once.outputs.dist_tree_sha256 }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-        with: { ref: ${{ needs.resolve_source.outputs.source_sha }} }
+        with: { ref: "${{ needs.resolve_source.outputs.source_sha }}" }
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
           name: split-snap-dist-${{ needs.resolve_source.outputs.source_sha }}-${{ needs.build_once.outputs.dist_tree_sha256 }}
@@ -123,5 +123,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-        with: { ref: ${{ needs.deploy.outputs.source_sha }} }
+        with: { ref: "${{ needs.deploy.outputs.source_sha }}" }
       - run: BASE_URL='${{ needs.deploy.outputs.page_url }}' npm run test:e2e -- --grep '^V13 live HTTP UI and offline smoke$' --project=chromium

@@ -22,4 +22,5 @@ assert.match(workflow, /package_pages:\n\s+needs: \[validation, build_once, reso
 assert.match(workflow, /deploy_allowed=true/)
 assert.match(workflow, /else\n\s+echo 'deploy_allowed=false'/)
 assert.match(workflow, /deploy:\n\s+needs: \[package_pages, validation\]/)
-assert.match(workflow, /live_verify:\n(?:.|\n)*?with: \{ ref: \$\{\{ needs\.deploy\.outputs\.source_sha \}\} \}/)
+assert.doesNotMatch(workflow, /with: \{ ref: \$\{\{/)
+assert.match(workflow, /live_verify:\n(?:.|\n)*?with: \{ ref: "\$\{\{ needs\.deploy\.outputs\.source_sha \}\}" \}/)
