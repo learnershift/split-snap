@@ -45,7 +45,7 @@ jobs:
         with: { ref: ${{ needs.resolve_source.outputs.source_sha }} }
       - run: npm ci && npm run check:source
   build_once:
-    needs: source_checks
+    needs: [source_checks, resolve_source]
     runs-on: ubuntu-latest
     outputs:
       dist_tree_sha256: ${{ steps.seal.outputs.dist_tree_sha256 }}
@@ -63,7 +63,7 @@ jobs:
           name: split-snap-dist-${{ needs.resolve_source.outputs.source_sha }}-${{ steps.seal.outputs.dist_tree_sha256 }}
           path: dist
   verify_dist:
-    needs: build_once
+    needs: [build_once, resolve_source]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -74,7 +74,7 @@ jobs:
           path: artifact
       - run: npm ci --ignore-scripts && npx playwright install --with-deps && npm run verify:dist -- --dir artifact --sha '${{ needs.build_once.outputs.dist_tree_sha256 }}'
   validation:
-    needs: verify_dist
+    needs: [verify_dist, resolve_source]
     runs-on: ubuntu-latest
     outputs:
       deploy_allowed: ${{ steps.gate.outputs.deploy_allowed }}
@@ -83,10 +83,14 @@ jobs:
         with: { ref: ${{ needs.resolve_source.outputs.source_sha }} }
       - id: gate
         run: |
-          if [ "${{ inputs.deploy }}" = "true" ]; then npm run validate:moderated -- --check product/evidence/validation/summary.json; fi
-          echo 'deploy_allowed=false' >> "$GITHUB_OUTPUT"
+          if [ "${{ inputs.deploy }}" = "true" ]; then
+            npm run validate:moderated -- --check product/evidence/validation/summary.json
+            echo 'deploy_allowed=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'deploy_allowed=false' >> "$GITHUB_OUTPUT"
+          fi
   package_pages:
-    needs: [validation, build_once]
+    needs: [validation, build_once, resolve_source]
     if: github.event_name == 'workflow_dispatch' && inputs.deploy == true && needs.validation.outputs.deploy_allowed == 'true'
     runs-on: ubuntu-latest
     steps:
