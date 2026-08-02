@@ -32,6 +32,32 @@ it('active bill autosaves and restores through the persistence API', async () =>
   expect(screen.getByLabelText('Participant 2 name')).toHaveValue('Bo')
 })
 
+it('restores mode, payer, item shares, and additions with the active draft', async () => {
+  const user = userEvent.setup()
+  const first = render(<App />)
+  await user.type(screen.getByLabelText('Pre-tax total'), '4')
+  await user.selectOptions(screen.getByLabelText('Mode'), 'itemized')
+  await user.click(screen.getByRole('button', { name: 'Add item' }))
+  await user.type(screen.getByLabelText('Item 1 description'), 'Tea')
+  await user.type(screen.getByLabelText('Item 1 amount'), '4')
+  await user.clear(screen.getByLabelText('Item 1 share Person 1'))
+  await user.type(screen.getByLabelText('Item 1 share Person 1'), '2')
+  await user.clear(screen.getByLabelText('Tax percentage'))
+  await user.type(screen.getByLabelText('Tax percentage'), '8')
+  await user.clear(screen.getByLabelText('Fixed tip'))
+  await user.type(screen.getByLabelText('Fixed tip'), '1')
+  await user.selectOptions(screen.getByLabelText('Payer'), 'Person 2')
+  first.unmount()
+  render(<App />)
+
+  expect(screen.getByLabelText('Mode')).toHaveValue('itemized')
+  expect(screen.getByLabelText('Item 1 description')).toHaveValue('Tea')
+  expect(screen.getByLabelText('Item 1 share Person 1')).toHaveValue('2')
+  expect(screen.getByLabelText('Tax percentage')).toHaveValue('8')
+  expect(screen.getByLabelText('Fixed tip')).toHaveValue('1')
+  expect(screen.getByLabelText('Payer')).toHaveValue('Person 2')
+})
+
 it('blocks an update when the active draft cannot be saved', async () => {
   const user = userEvent.setup()
   render(<App />)

@@ -26,10 +26,10 @@ export function App() {
   const restoredDraft = loadedDraft.inputs
   const [preTaxTotal, setPreTaxTotal] = useState(() => restoredDraft ? formatUnits(restoredDraft.preTaxTotalUnits, restoredDraft.precision) : '')
   const [result, setResult] = useState<number | ItemizedResult | null>(null)
-  const [mode, setMode] = useState('quick')
-  const [taxPercentage, setTaxPercentage] = useState('0')
-  const [fixedTip, setFixedTip] = useState('0')
-  const [payerId, setPayerId] = useState('participant-1')
+  const [mode, setMode] = useState(restoredDraft?.mode ?? 'quick')
+  const [taxPercentage, setTaxPercentage] = useState(restoredDraft?.taxPercentage ?? '0')
+  const [fixedTip, setFixedTip] = useState(restoredDraft?.fixedTip ?? '0')
+  const [payerId, setPayerId] = useState(restoredDraft?.payerId ?? 'participant-1')
   const [monetaryLabel, setMonetaryLabel] = useState(() => restoredDraft?.monetaryLabel ?? '')
   const [participants, setParticipants] = useState<Participant[]>(() => restoredDraft && restoredDraft.participants.length >= 2
     ? restoredDraft.participants.map((name, index) => ({ id: `participant-${index + 1}`, name }))
@@ -38,7 +38,7 @@ export function App() {
   const [nameError, setNameError] = useState('')
   const [shareError, setShareError] = useState('')
   const [precision, setPrecision] = useState(() => String(restoredDraft?.precision ?? 0))
-  const [items, setItems] = useState<Item[]>([])
+  const [items, setItems] = useState<Item[]>(() => restoredDraft?.items?.map((item, index) => ({ ...item, id: `item-${index + 1}` })) ?? [])
   const [focusParticipantId, setFocusParticipantId] = useState<string | null>(null)
   const [updateReady, setUpdateReady] = useState(() => window.__splitSnapUpdateReady === true)
   const [updateError, setUpdateError] = useState('')
@@ -56,6 +56,7 @@ export function App() {
       precision: Number(precision),
       participants: participants.map(({ name }) => name),
       preTaxTotalUnits: parsedTotal.units,
+      mode, payerId, taxPercentage, fixedTip, items: items.map(({ description, amount, participants: itemParticipants }) => ({ description, amount, participants: itemParticipants })),
     }).ok) {
       setUpdateError('Unable to save draft. Update remains pending.')
       return
@@ -72,8 +73,9 @@ export function App() {
       precision: Number(precision),
       participants: participants.map(({ name }) => name),
       preTaxTotalUnits: parsedTotal.units,
+      mode, payerId, taxPercentage, fixedTip, items: items.map(({ description, amount, participants: itemParticipants }) => ({ description, amount, participants: itemParticipants })),
     })
-  }, [monetaryLabel, participants, preTaxTotal, precision])
+  }, [monetaryLabel, participants, preTaxTotal, precision, mode, payerId, taxPercentage, fixedTip, items])
 
   useEffect(() => {
     const showUpdate = () => setUpdateReady(true)
@@ -178,17 +180,20 @@ export function App() {
   }
 
   function addItem() {
+    markDraftEdited()
     const number = items.length + 1
     setItems([...items, { id: `item-${number}`, description: '', amount: '', participants: participants.map(() => ({ included: true, share: '1' })) }])
     setResult(null)
   }
 
   function updateItem(index: number, field: 'description' | 'amount', value: string) {
+    markDraftEdited()
     setItems(items.map((item, currentIndex) => currentIndex === index ? { ...item, [field]: value } : item))
     setResult(null)
   }
 
   function updateItemParticipant(itemIndex: number, participantIndex: number, field: 'included' | 'share', value: boolean | string) {
+    markDraftEdited()
     setItems(items.map((item, currentItemIndex) => currentItemIndex !== itemIndex ? item : {
       ...item,
       participants: item.participants.map((participant, currentParticipantIndex) => currentParticipantIndex !== participantIndex ? participant : { ...participant, [field]: value }),
@@ -209,7 +214,7 @@ export function App() {
         {draftError ? <p role="alert">{draftError}</p> : null}
         <p>Enter a bill to calculate an exact split.</p>
         <label htmlFor="mode">Mode</label>
-        <select id="mode" onChange={(event) => { setMode(event.target.value); setResult(null) }} value={mode}>
+        <select id="mode" onChange={(event) => { markDraftEdited(); setMode(event.target.value); setResult(null) }} value={mode}>
           <option value="quick">Quick</option><option value="itemized">Itemized</option>
         </select>
         <label htmlFor="pre-tax-total">Pre-tax total</label>
@@ -273,7 +278,7 @@ export function App() {
         <label htmlFor="payer">Payer</label>
         <select
           id="payer"
-          onChange={(event) => { setPayerId(event.target.selectedOptions[0].dataset.participantId!); setResult(null) }}
+          onChange={(event) => { markDraftEdited(); setPayerId(event.target.selectedOptions[0].dataset.participantId!); setResult(null) }}
           value={payer.name}
         >
           {participants.map((participant) => (
@@ -294,9 +299,9 @@ export function App() {
           <option value="3">3</option>
         </select>
         <label htmlFor="tax-percentage">Tax percentage</label>
-        <input id="tax-percentage" inputMode="numeric" onChange={(event) => { setTaxPercentage(event.target.value); setResult(null) }} value={taxPercentage} />
+        <input id="tax-percentage" inputMode="numeric" onChange={(event) => { markDraftEdited(); setTaxPercentage(event.target.value); setResult(null) }} value={taxPercentage} />
         <label htmlFor="fixed-tip">Fixed tip</label>
-        <input id="fixed-tip" inputMode="decimal" onChange={(event) => { setFixedTip(event.target.value); setResult(null) }} value={fixedTip} />
+        <input id="fixed-tip" inputMode="decimal" onChange={(event) => { markDraftEdited(); setFixedTip(event.target.value); setResult(null) }} value={fixedTip} />
         <section aria-label="Split settings">
           <p>Payer: {payer.name}</p>
           <p>Monetary label: {monetaryLabel}</p>

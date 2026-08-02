@@ -3,6 +3,11 @@ export type DraftInputs = {
   precision: number
   participants: string[]
   preTaxTotalUnits: bigint
+  mode?: string
+  payerId?: string
+  taxPercentage?: string
+  fixedTip?: string
+  items?: { description: string; amount: string; participants: { included: boolean; share: string }[] }[]
 }
 
 type StoredDraft = {
