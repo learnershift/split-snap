@@ -1,0 +1,7 @@
+{
+  "behavior_id": "V13",
+  "red": { "result": "FAIL", "detail": "focused contract tests observed missing workflow, moderated validator, known-good validator, and live-byte verifier modules" },
+  "green": { "commands": ["node scripts/pages-workflow.test.mjs", "node scripts/validate-moderated.test.mjs", "node scripts/verify-known-good.test.mjs", "node scripts/verify-live-artifact.test.mjs"], "result": "PASS" },
+  "full_check": { "command": "npm run verify", "result": "PASS", "dist_tree_sha256": "04103191616ecfecbcfab9299909b35a7972b4d5d290c9dc52f6d34b6c58cc54" },
+  "launch_status": "BLOCKED: moderated AC-U01 through AC-U05 evidence is unavailable; deployment was not attempted"
+}

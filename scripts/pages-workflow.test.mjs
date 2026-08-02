@@ -1,0 +1,19 @@
+import assert from 'node:assert/strict'
+import { readFile } from 'node:fs/promises'
+
+const workflow = await readFile('.github/workflows/pages.yml', 'utf8')
+for (const job of ['resolve_source:', 'source_checks:', 'build_once:', 'verify_dist:', 'validation:', 'package_pages:', 'deploy:', 'live_verify:']) assert.match(workflow, new RegExp(`^  ${job}`, 'm'))
+assert.match(workflow, /live_verify:\n(?:.|\n)*?needs: \[deploy, validation\]/)
+assert.match(workflow, /github\.event_name == 'workflow_dispatch'/)
+assert.doesNotMatch(workflow, /workflow_run|latest successful/)
+assert.match(workflow, /actions\/upload-artifact@/)
+assert.match(workflow, /actions\/download-artifact@/)
+assert.match(workflow, /split-snap-dist-\$\{\{ needs\.resolve_source\.outputs\.source_sha \}\}/)
+assert.match(workflow, /npm run verify:dist -- --dir/)
+assert.match(workflow, /npm run validate:moderated/)
+assert.match(workflow, /actions\/upload-pages-artifact@/)
+assert.match(workflow, /actions\/deploy-pages@/)
+assert.match(workflow, /source_sha/)
+assert.match(workflow, /expected_dist_sha256/)
+assert.match(workflow, /known-good/)
+assert.doesNotMatch(workflow, /validate:moderated[^\n]*\|\| true/)

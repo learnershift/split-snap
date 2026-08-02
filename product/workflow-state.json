@@ -523,5 +523,5 @@
     }
   },
   "next_gate": "implementation",
-  "next_action": "V13 Pages predeploy and independent release review"
+  "next_action": "independent release review and moderated AC-U01–AC-U05 validation before deploy"
 }

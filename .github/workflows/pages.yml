@@ -1,0 +1,118 @@
+name: SplitSnap Pages
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      deploy:
+        type: boolean
+        default: false
+      mode:
+        type: choice
+        options: [release, rollback]
+        default: release
+      source_sha:
+        type: string
+        required: false
+      expected_dist_sha256:
+        type: string
+        required: false
+      known_good_record:
+        type: string
+        required: false
+
+concurrency: pages-production
+
+jobs:
+  resolve_source:
+    runs-on: ubuntu-latest
+    outputs:
+      source_sha: ${{ steps.source.outputs.source_sha }}
+      mode: ${{ steps.source.outputs.mode }}
+    steps:
+      - id: source
+        run: |
+          echo "source_sha=${{ inputs.source_sha || github.sha }}" >> "$GITHUB_OUTPUT"
+          echo "mode=${{ inputs.mode || 'release' }}" >> "$GITHUB_OUTPUT"
+          if [ "${{ inputs.mode }}" = rollback ]; then npm run verify:known-good -- --record "${{ inputs.known_good_record }}" --source-sha "${{ inputs.source_sha }}" --dist-sha "${{ inputs.expected_dist_sha256 }}"; fi
+  source_checks:
+    needs: resolve_source
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: { ref: ${{ needs.resolve_source.outputs.source_sha }} }
+      - run: npm ci && npm run check:source
+  build_once:
+    needs: source_checks
+    runs-on: ubuntu-latest
+    outputs:
+      dist_tree_sha256: ${{ steps.seal.outputs.dist_tree_sha256 }}
+      source_sha: ${{ needs.resolve_source.outputs.source_sha }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: { ref: ${{ needs.resolve_source.outputs.source_sha }} }
+      - id: seal
+        run: |
+          npm ci
+          npm run build
+          echo "dist_tree_sha256=$(npm run --silent seal:dist -- --dir dist)" >> "$GITHUB_OUTPUT"
+      - uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808
+        with:
+          name: split-snap-dist-${{ needs.resolve_source.outputs.source_sha }}-${{ steps.seal.outputs.dist_tree_sha256 }}
+          path: dist
+  verify_dist:
+    needs: build_once
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: { ref: ${{ needs.resolve_source.outputs.source_sha }} }
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: split-snap-dist-${{ needs.resolve_source.outputs.source_sha }}-${{ needs.build_once.outputs.dist_tree_sha256 }}
+          path: artifact
+      - run: npm ci --ignore-scripts && npx playwright install --with-deps && npm run verify:dist -- --dir artifact --sha '${{ needs.build_once.outputs.dist_tree_sha256 }}'
+  validation:
+    needs: verify_dist
+    runs-on: ubuntu-latest
+    outputs:
+      deploy_allowed: ${{ steps.gate.outputs.deploy_allowed }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: { ref: ${{ needs.resolve_source.outputs.source_sha }} }
+      - id: gate
+        run: |
+          if [ "${{ inputs.deploy }}" = "true" ]; then npm run validate:moderated -- --check product/evidence/validation/summary.json; fi
+          echo 'deploy_allowed=false' >> "$GITHUB_OUTPUT"
+  package_pages:
+    needs: [validation, build_once]
+    if: github.event_name == 'workflow_dispatch' && inputs.deploy == true && needs.validation.outputs.deploy_allowed == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: { ref: ${{ needs.resolve_source.outputs.source_sha }} }
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: split-snap-dist-${{ needs.resolve_source.outputs.source_sha }}-${{ needs.build_once.outputs.dist_tree_sha256 }}
+          path: artifact
+      - uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa
+        with: { path: artifact }
+  deploy:
+    needs: package_pages
+    if: github.event_name == 'workflow_dispatch' && inputs.deploy == true && needs.validation.outputs.deploy_allowed == 'true'
+    runs-on: ubuntu-latest
+    environment: github-pages
+    outputs:
+      page_url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@d6db218c7e46a0e9f3a9b2b036e4f0fdbd4a5090
+  live_verify:
+    needs: [deploy, validation]
+    if: github.event_name == 'workflow_dispatch' && inputs.deploy == true && needs.validation.outputs.deploy_allowed == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: { ref: ${{ github.sha }} }
+      - run: BASE_URL='${{ needs.deploy.outputs.page_url }}' npm run test:e2e -- --grep '^V13 live HTTP UI and offline smoke$' --project=chromium
