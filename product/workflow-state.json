@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "project": "SplitSnap",
-  "phase": "implementation_in_progress",
+  "phase": "blocked_on_moderated_validation",
   "candidate_digest": "02e875d722bdac57b14e2bf4bac89ba52aa1e7f719a50dc913eea9f80a61cdea",
   "candidate_digest_algorithm": "sha256",
   "problem_bundle_digest": "adb4cf5578860009ed81b830d3a8e1347854ea226e0c3cf0cc804c0a9de70ecd",
@@ -16,10 +16,10 @@
     "active_review_artifact": null
   },
   "writer": {
-    "terminal_handle": "term_6364f849-8c64-4720-8227-a8239a08776f",
-    "current_runtime_terminal_handle": "codex-api-root-handle-unavailable",
+    "terminal_handle": "term_6fdd5f6b-7427-4198-b95b-8b8398080c02",
+    "current_runtime_terminal_handle": "term_6fdd5f6b-7427-4198-b95b-8b8398080c02",
     "model": "gpt-5.6-terra",
-    "status": "implementation_active"
+    "status": "completed_idle"
   },
   "timestamps": {
     "problem_candidate_frozen_at": "2026-08-01T03:58:02Z",
@@ -39,7 +39,7 @@
     "implementation_plan_review_02e8_2_completed_at": "2026-08-01T08:52:03Z",
     "implementation_plan_review_02e8_3_completed_at": "2026-08-01T08:58:40Z",
     "implementation_plan_review_completed_at": "2026-08-01T08:58:40Z",
-    "state_updated_at": "2026-08-01T10:14:40Z"
+    "state_updated_at": "2026-08-02T04:21:28Z"
   },
   "owner_authorizations": {
     "implementation": true,
@@ -532,6 +532,6 @@
       "full_check": "PASS"
     }
   },
-  "next_gate": "implementation",
-  "next_action": "independent release review and moderated AC-U01–AC-U05 validation before deploy"
+  "next_gate": "moderated_validation",
+  "next_action": "Run AC-U01–AC-U05 with five eligible target-user coordinators and paired recipients against sealed dist 38af928770a2712c7e3c5ae27c173a9c23a81e9a8f266b5505dabd5843b4e7bb; then perform fresh independent release review and deploy the exact validated artifact"
 }
