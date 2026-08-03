@@ -11,3 +11,7 @@ await writeFile(summary, JSON.stringify({ overall: 'INCONCLUSIVE', results: { 'A
 const result = spawnSync(process.execPath, ['scripts/validate-moderated.mjs', '--check', summary], { encoding: 'utf8' })
 assert.notEqual(result.status, 0)
 assert.match(result.stderr, /moderated validation is not PASS/)
+
+const missingCheck = spawnSync(process.execPath, ['scripts/validate-moderated.mjs'], { encoding: 'utf8' })
+assert.notEqual(missingCheck.status, 0)
+assert.match(missingCheck.stderr, /--check is required/)
