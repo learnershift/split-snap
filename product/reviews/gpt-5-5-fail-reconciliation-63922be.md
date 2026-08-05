@@ -16,7 +16,7 @@ The supplied predecessor GPT-5.5 FAIL summary named calculation, itemized-share,
 
 ## This tranche
 
-Adds a deterministic repository check for version sync, local-asset Android shell, no network permission, local-only privacy/data-safety assertions, and the listing graphic dimensions. It also adds an unsigned Android Gradle configuration that packages the verified `dist/` directory as app assets once an Android SDK is supplied.
+Adds a deterministic repository check for version sync, local-asset Android shell, no network permission, local-only privacy/data-safety assertions, and the listing graphic dimensions. It also adds an unsigned Android Gradle configuration that packages the verified `dist/` directory as app assets once an Android SDK is supplied. A TDD regression also changed the Playwright fixture server command to `exec node …`; the initial post-change full verification exposed an orphan listener on port 4173 between sequential gates, and the final full verification completed with no listener.
 
 ## Non-claims
 

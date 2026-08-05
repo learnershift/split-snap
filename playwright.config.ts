@@ -10,7 +10,7 @@ export default defineConfig({
     baseURL: 'http://127.0.0.1:4173/split-snap/',
   },
   webServer: {
-    command: distDirectory ? 'node scripts/update-fixture-server.mjs' : 'npm run build && node scripts/update-fixture-server.mjs',
+    command: distDirectory ? 'exec node scripts/update-fixture-server.mjs' : 'npm run build && exec node scripts/update-fixture-server.mjs',
     url: 'http://127.0.0.1:4173/split-snap/',
     reuseExistingServer: false,
   },

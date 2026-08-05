@@ -1,0 +1,54 @@
+node:internal/modules/run_main:122
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: The input did not match the regular expression /exec node scripts\/update-fixture-server\.mjs/. Input:
+
+"import { defineConfig } from '@playwright/test'\n" +
+  '\n' +
+  'const distDirectory = (globalThis as unknown as { process?: { env?: Record<string, string | undefined> } }).process?.env?.DIST_DIR\n' +
+  '\n' +
+  'export default defineConfig({\n' +
+  '  workers: 1,\n' +
+  "  testDir: './tests',\n" +
+  "  testMatch: '**/*.spec.ts',\n" +
+  '  use: {\n' +
+  "    baseURL: 'http://127.0.0.1:4173/split-snap/',\n" +
+  '  },\n' +
+  '  webServer: {\n' +
+  "    command: distDirectory ? 'node scripts/update-fixture-server.mjs' : 'npm run build && node scripts/update-fixture-server.mjs',\n" +
+  "    url: 'http://127.0.0.1:4173/split-snap/',\n" +
+  '    reuseExistingServer: false,\n' +
+  '  },\n' +
+  '})\n'
+
+    at file:///Users/timeabout/projects/split-snap/scripts/playwright-server-lifecycle.test.mjs:9:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:274:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:644:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: "import { defineConfig } from '@playwright/test'\n" +
+    '\n' +
+    'const distDirectory = (globalThis as unknown as { process?: { env?: Record<string, string | undefined> } }).process?.env?.DIST_DIR\n' +
+    '\n' +
+    'export default defineConfig({\n' +
+    '  workers: 1,\n' +
+    "  testDir: './tests',\n" +
+    "  testMatch: '**/*.spec.ts',\n" +
+    '  use: {\n' +
+    "    baseURL: 'http://127.0.0.1:4173/split-snap/',\n" +
+    '  },\n' +
+    '  webServer: {\n' +
+    "    command: distDirectory ? 'node scripts/update-fixture-server.mjs' : 'npm run build && node scripts/update-fixture-server.mjs',\n" +
+    "    url: 'http://127.0.0.1:4173/split-snap/',\n" +
+    '    reuseExistingServer: false,\n' +
+    '  },\n' +
+    '})\n',
+  expected: /exec node scripts\/update-fixture-server\.mjs/,
+  operator: 'match'
+}
+
+Node.js v22.15.0
+
+EXIT_CODE=1
