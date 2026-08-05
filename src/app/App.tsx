@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { parseMoneyInput } from '../domain/decimal'
 import { formatUnits } from '../domain/format'
 import { sameParticipantName, trimToCodePointLimit } from '../domain/text'
-import { validateItemizedSubtotal } from '../domain/validate'
+import { validateItemizedSubtotal, validateQuickSubtotal } from '../domain/validate'
 import { calculateItemizedSplit } from '../domain/allocate.itemized'
 import { calculateQuickSplit } from '../domain/allocate.quick'
 import { Persistence } from '../features/persistence/PersistenceView'
@@ -133,7 +133,17 @@ export function App() {
     }
     const subtotal = parseMoneyInput(preTaxTotal, Number(precision))
     const tip = parseMoneyInput(fixedTip, Number(precision))
-    if (!subtotal.ok || !tip.ok) return
+    if (!subtotal.ok) {
+      setCalculationError('Enter a pre-tax total greater than 0.')
+      return
+    }
+    if (!tip.ok) return
+    const subtotalValidation = validateQuickSubtotal(subtotal.units, tip.units)
+    if (!subtotalValidation.ok) {
+      setCalculationError(subtotalValidation.message)
+      return
+    }
+    setCalculationError('')
     if (participants.some((participant) => !/^[1-9]\d*$/.test(participant.share))) {
       setShareError('Enter a positive integer share for every participant.')
       return

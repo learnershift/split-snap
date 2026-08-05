@@ -59,3 +59,15 @@ it('uses exact quick allocation for F2 visible-order rounding', async () => {
   expect(screen.getByRole('status')).toHaveTextContent('Person 2: 33')
   expect(screen.getByRole('status')).toHaveTextContent('Person 3: 33')
 })
+
+it('blocks a zero quick subtotal even when a fixed tip is present', async () => {
+  const user = userEvent.setup()
+  await user.clear(screen.getByRole('textbox', { name: 'Pre-tax total' }))
+  await user.type(screen.getByRole('textbox', { name: 'Pre-tax total' }), '0')
+  await user.clear(screen.getByRole('textbox', { name: 'Fixed tip' }))
+  await user.type(screen.getByRole('textbox', { name: 'Fixed tip' }), '1')
+  await user.click(screen.getByRole('button', { name: 'Calculate split' }))
+
+  expect(screen.getByRole('alert')).toHaveTextContent('Enter a pre-tax total greater than 0.')
+  expect(screen.queryByRole('status')).not.toBeInTheDocument()
+})
