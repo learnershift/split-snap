@@ -367,7 +367,7 @@ export function App() {
           <p>Monetary label: {monetaryLabel}</p>
           <p>Decimal precision: {precision}</p>
         </section>
-        <Persistence onStartOver={resetActiveBill} />
+        <Persistence onDeleteAll={resetActiveBill} onStartOver={resetActiveBill} />
         {updateReady ? (
           <section aria-label="Update ready" role="dialog">
             <p>Update ready. Keep the current version until you choose to update.</p>

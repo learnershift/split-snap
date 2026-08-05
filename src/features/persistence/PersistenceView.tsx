@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 
-export function Persistence({ onStartOver }: { onStartOver?: () => void }) {
+export function Persistence({ onStartOver, onDeleteAll }: { onStartOver?: () => void; onDeleteAll?: () => void }) {
   const [confirmingStartOver, setConfirmingStartOver] = useState(false)
   const [confirmingDeleteAll, setConfirmingDeleteAll] = useState(false)
   const startOverButton = useRef<HTMLButtonElement>(null)
@@ -16,6 +16,7 @@ export function Persistence({ onStartOver }: { onStartOver?: () => void }) {
       const key = localStorage.key(index)
       if (key?.startsWith('split-snap:')) localStorage.removeItem(key)
     }
+    onDeleteAll?.()
     setConfirmingDeleteAll(false)
   }
 

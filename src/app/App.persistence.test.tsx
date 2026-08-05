@@ -85,6 +85,24 @@ it('confirmed Start over clears the active in-memory bill as well as its draft',
   expect(localStorage.getItem('split-snap:v1:draft')).toBeNull()
 })
 
+it('confirmed Delete all local data clears the active in-memory bill as well as persisted data', async () => {
+  const user = userEvent.setup()
+  render(<App />)
+  await user.type(screen.getByLabelText('Pre-tax total'), '12')
+  await user.selectOptions(screen.getByLabelText('Mode'), 'itemized')
+  await user.click(screen.getByRole('button', { name: 'Add item' }))
+  localStorage.setItem('split-snap:v1:preferences', 'preferences')
+
+  await user.click(screen.getByRole('button', { name: 'Delete all local data' }))
+  await user.click(screen.getByRole('button', { name: 'Confirm delete all local data' }))
+
+  expect(screen.getByLabelText('Pre-tax total')).toHaveValue('')
+  expect(screen.getByLabelText('Mode')).toHaveValue('quick')
+  expect(screen.queryByLabelText('Item 1 amount')).not.toBeInTheDocument()
+  expect(localStorage.getItem('split-snap:v1:draft')).toBeNull()
+  expect(localStorage.getItem('split-snap:v1:preferences')).toBeNull()
+})
+
 it('blocks an update when the active draft cannot be saved', async () => {
   const user = userEvent.setup()
   render(<App />)
