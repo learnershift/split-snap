@@ -1,0 +1,10 @@
+$ node scripts/verify-play-readiness.mjs
+PLAY_READINESS: PASS
+versionName=1.0.0
+versionCode=1
+dataSafety=NO_DATA_COLLECTED
+networkPermission=ABSENT
+signing=UNCONFIGURED
+featureGraphic=1024x500
+$ node scripts/verify-play-readiness.test.mjs
+verify-play-readiness contract passes

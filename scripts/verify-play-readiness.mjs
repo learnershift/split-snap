@@ -1,0 +1,45 @@
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const read = (relativePath) => readFileSync(path.join(root, relativePath), 'utf8');
+const packageJson = JSON.parse(read('package.json'));
+const gradle = read('android/app/build.gradle');
+const manifest = read('android/app/src/main/AndroidManifest.xml');
+const activity = read('android/app/src/main/java/com/learnershift/splitsnap/MainActivity.java');
+const listing = read('play-listing/listing.md');
+const privacy = read('play-listing/privacy-policy.md');
+const dataSafety = read('play-listing/data-safety.md');
+const graphic = read('play-listing/assets/feature-graphic.svg');
+const featureGraphicPng = readFileSync(path.join(root, 'play-listing/assets/feature-graphic.png'));
+
+const version = packageJson.version;
+assert.match(version, /^\d+\.\d+\.\d+$/);
+assert.match(gradle, new RegExp(`versionName '${version.replaceAll('.', '\\.')}'`));
+assert.match(gradle, /versionCode 1/);
+assert.match(gradle, /compileSdk 35/);
+assert.match(gradle, /targetSdk 35/);
+assert.match(gradle, /main\.assets\.srcDirs\('\.\.\/\.\.\/dist'\)/);
+assert.match(manifest, /android:allowBackup="false"/);
+assert.match(manifest, /android:usesCleartextTraffic="false"/);
+assert.doesNotMatch(manifest, /android\.permission\.INTERNET/);
+assert.match(activity, /file:\/\/\/android_asset\/index\.html/);
+assert.match(activity, /setAllowFileAccess\(false\)/);
+assert.match(activity, /setAllowContentAccess\(false\)/);
+assert.ok(listing.includes(`**Version:** \`${version}\``));
+assert.match(privacy, /does not collect, transmit, sell, share/);
+assert.match(dataSafety, /No \| No `INTERNET` permission/);
+assert.match(graphic, /width="1024" height="500"/);
+assert.deepEqual([...featureGraphicPng.subarray(0, 8)], [137, 80, 78, 71, 13, 10, 26, 10]);
+assert.equal(featureGraphicPng.readUInt32BE(16), 1024);
+assert.equal(featureGraphicPng.readUInt32BE(20), 500);
+
+console.log('PLAY_READINESS: PASS');
+console.log(`versionName=${version}`);
+console.log('versionCode=1');
+console.log('dataSafety=NO_DATA_COLLECTED');
+console.log('networkPermission=ABSENT');
+console.log('signing=UNCONFIGURED');
+console.log('featureGraphic=1024x500');

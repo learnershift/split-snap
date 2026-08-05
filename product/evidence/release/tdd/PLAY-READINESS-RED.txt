@@ -1,0 +1,99 @@
+node:internal/modules/cjs/loader:1404
+  throw err;
+  ^
+
+Error: Cannot find module '/Users/timeabout/projects/split-snap/scripts/verify-play-readiness.mjs'
+    at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+    at Function._load (node:internal/modules/cjs/loader:1211:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+    at node:internal/main/run_main_module:36:49 {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: []
+}
+
+Node.js v22.15.0
+node:internal/errors:983
+  const err = new Error(message);
+              ^
+
+Error: Command failed: /usr/local/bin/node scripts/verify-play-readiness.mjs
+node:internal/modules/cjs/loader:1404
+  throw err;
+  ^
+
+Error: Cannot find module '/Users/timeabout/projects/split-snap/scripts/verify-play-readiness.mjs'
+    at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+    at Function._load (node:internal/modules/cjs/loader:1211:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+    at node:internal/main/run_main_module:36:49 {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: []
+}
+
+Node.js v22.15.0
+
+    at genericNodeError (node:internal/errors:983:15)
+    at wrappedFn (node:internal/errors:537:14)
+    at checkExecSyncError (node:child_process:882:11)
+    at execFileSync (node:child_process:918:15)
+    at file:///Users/timeabout/projects/split-snap/scripts/verify-play-readiness.test.mjs:8:16
+    at ModuleJob.run (node:internal/modules/esm/module_job:274:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:644:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5) {
+  status: 1,
+  signal: null,
+  output: [
+    null,
+    '',
+    'node:internal/modules/cjs/loader:1404\n' +
+      '  throw err;\n' +
+      '  ^\n' +
+      '\n' +
+      "Error: Cannot find module '/Users/timeabout/projects/split-snap/scripts/verify-play-readiness.mjs'\n" +
+      '    at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)\n' +
+      '    at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)\n' +
+      '    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)\n' +
+      '    at Function._load (node:internal/modules/cjs/loader:1211:37)\n' +
+      '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+      '    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n' +
+      '    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)\n' +
+      '    at node:internal/main/run_main_module:36:49 {\n' +
+      "  code: 'MODULE_NOT_FOUND',\n" +
+      '  requireStack: []\n' +
+      '}\n' +
+      '\n' +
+      'Node.js v22.15.0\n'
+  ],
+  pid: 46175,
+  stdout: '',
+  stderr: 'node:internal/modules/cjs/loader:1404\n' +
+    '  throw err;\n' +
+    '  ^\n' +
+    '\n' +
+    "Error: Cannot find module '/Users/timeabout/projects/split-snap/scripts/verify-play-readiness.mjs'\n" +
+    '    at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)\n' +
+    '    at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)\n' +
+    '    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1211:37)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n' +
+    '    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)\n' +
+    '    at node:internal/main/run_main_module:36:49 {\n' +
+    "  code: 'MODULE_NOT_FOUND',\n" +
+    '  requireStack: []\n' +
+    '}\n' +
+    '\n' +
+    'Node.js v22.15.0\n'
+}
+
+Node.js v22.15.0
+
+EXIT_CODE=1

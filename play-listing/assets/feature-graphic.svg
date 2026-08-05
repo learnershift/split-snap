@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="500" viewBox="0 0 1024 500" role="img" aria-label="SplitSnap exact bill splitting">
+  <rect width="1024" height="500" fill="#eff6ff"/>
+  <circle cx="154" cy="250" r="104" fill="#1d4ed8"/>
+  <path d="M110 230h88v40h-88zm18 58h52v24h-52z" fill="#fff"/>
+  <text x="300" y="230" font-family="Arial, sans-serif" font-size="76" font-weight="700" fill="#172554">SplitSnap</text>
+  <text x="304" y="294" font-family="Arial, sans-serif" font-size="32" fill="#1e3a8a">Fair shares. Exact totals. Offline.</text>
+</svg>
