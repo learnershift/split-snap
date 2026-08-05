@@ -2,7 +2,7 @@
   "schema": "split-snap-local-android-aab-provenance-v1",
   "result": "PASS",
   "source": {
-    "tree_sha256": "fff7ba63785fcd67551d6d891e5f31b7f130b430999022e291f497bb604a631f"
+    "tree_sha256": "267bad3dc22c02b6f17f1292eacfeb58db811b176bf95ba969f627a32fd85c96"
   },
   "payload": {
     "path": "dist",

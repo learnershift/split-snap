@@ -42,7 +42,7 @@ assert.equal(bytesDigest(agpJar), toolchain.android_gradle_plugin.jar_sha256, 'P
 // Build the web payload once from the existing deterministic verification contract.
 run('npm', ['run', 'verify']);
 const payloadSha256 = run('npm', ['run', '--silent', 'seal:dist', '--', '--dir', 'dist']).trim();
-const sourceFiles = run('git', ['ls-files', '-co', '--exclude-standard']).split('\n')
+const sourceFiles = run('git', ['ls-files', '--cached']).split('\n')
   .filter(Boolean)
   .filter((file) => file !== 'product/evidence/release/local-android-aab-provenance.json')
   .sort();
