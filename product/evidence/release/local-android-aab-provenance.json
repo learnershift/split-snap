@@ -1,0 +1,31 @@
+{
+  "schema": "split-snap-local-android-aab-provenance-v1",
+  "result": "BLOCKED",
+  "source": {
+    "git_revision": "50bc0dcfc20bdfa8d2c4aee13f3da49d11fc061f",
+    "sha256": "80ff471806a4a5575c52e8dd320b9c7b548e3d767ba543ca383a41d3ef70ed9f"
+  },
+  "payload": {
+    "path": "dist",
+    "tree_sha256": "f8db9680f9afa3c0124d58feebe02ed77bfaa7f42724b46bbb65c257e5117bdd",
+    "verification": "npm run verify: PASS"
+  },
+  "offline": {
+    "gradle_argument": "--offline",
+    "network_access": "not_attempted",
+    "attempted_command": "JAVA_HOME=/Users/timeabout/.cache/fridge-menu-android-toolchain/jdk/temurin-17.jdk/Contents/Home ANDROID_HOME=/Users/timeabout/.cache/fridge-menu-android-toolchain/android-sdk /Users/timeabout/.cache/fridge-menu-android-toolchain/gradle/gradle-8.7/bin/gradle --offline --no-daemon --console=plain :app:bundleRelease",
+    "result": "BLOCKED"
+  },
+  "toolchain": {
+    "gradle": "8.7 (revision 650af14d7653aa949fce5e886e685efc9cf97c10)",
+    "android_gradle_plugin": "8.6.1",
+    "compile_sdk": 35,
+    "java_major": 17
+  },
+  "blocker": {
+    "root_cause": "The available AGP 8.6.1 cache is incomplete. Offline dependency resolution requires kotlin-reflect:1.9.20, kotlin-stdlib:1.9.20, and org.jetbrains:annotations:23.0.0, none of which are in Gradle's module cache.",
+    "aab": "not produced",
+    "repeat_builds": "not run because the first offline build cannot resolve its pinned dependency closure",
+    "signing": "No signing configuration or credentials were added."
+  }
+}

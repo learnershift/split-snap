@@ -1,0 +1,16 @@
+{
+  "schema": "split-snap-local-android-toolchain-v1",
+  "gradle": {
+    "version": "8.7",
+    "revision": "650af14d7653aa949fce5e886e685efc9cf97c10",
+    "launcher_sha256": "8da20e6969bb0a21f62c7f09c22f57df63558dd57a0a8618a8f7e8455152578c"
+  },
+  "android_gradle_plugin": {
+    "version": "8.6.1",
+    "jar_sha256": "9697733a215f2ed42e5b2fc4053484ec832eab29584ebced94d92c91090051c1"
+  },
+  "java_major": 17,
+  "compile_sdk": 35,
+  "offline_only": true,
+  "credentials_or_signing": "forbidden"
+}

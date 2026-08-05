@@ -17,4 +17,12 @@ android {
     sourceSets {
         main.assets.srcDirs('../../dist')
     }
+
+    buildTypes {
+        release {
+            // Deliberately no keystore: this local candidate is unsigned.
+            signingConfig null
+            minifyEnabled false
+        }
+    }
 }
