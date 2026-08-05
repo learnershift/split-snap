@@ -71,3 +71,14 @@ it('blocks an included item participant with a non-positive share', async () => 
   expect(screen.getByRole('alert')).toHaveTextContent('Enter a positive integer share for every included person.')
   expect(screen.queryByRole('status')).not.toBeInTheDocument()
 })
+
+it('blocks a zero itemized subtotal even when a fixed tip is present', async () => {
+  const user = userEvent.setup()
+  await user.selectOptions(screen.getByRole('combobox', { name: 'Mode' }), 'itemized')
+  await user.clear(screen.getByRole('textbox', { name: 'Fixed tip' }))
+  await user.type(screen.getByRole('textbox', { name: 'Fixed tip' }), '1')
+  await user.click(screen.getByRole('button', { name: 'Calculate split' }))
+
+  expect(screen.getByRole('alert')).toHaveTextContent('Add or update items so the pre-tax subtotal is greater than 0.')
+  expect(screen.queryByRole('status')).not.toBeInTheDocument()
+})

@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { parseMoneyInput } from '../domain/decimal'
 import { formatUnits } from '../domain/format'
 import { sameParticipantName, trimToCodePointLimit } from '../domain/text'
+import { validateItemizedSubtotal } from '../domain/validate'
 import { calculateItemizedSplit } from '../domain/allocate.itemized'
 import { calculateQuickSplit } from '../domain/allocate.quick'
 import { Persistence } from '../features/persistence/PersistenceView'
@@ -37,6 +38,7 @@ export function App() {
   const [participantError, setParticipantError] = useState('')
   const [nameError, setNameError] = useState('')
   const [shareError, setShareError] = useState('')
+  const [calculationError, setCalculationError] = useState('')
   const [precision, setPrecision] = useState(() => String(restoredDraft?.precision ?? 0))
   const [items, setItems] = useState<Item[]>(() => restoredDraft?.items?.map((item, index) => ({ ...item, id: `item-${index + 1}` })) ?? [])
   const [focusParticipantId, setFocusParticipantId] = useState<string | null>(null)
@@ -118,6 +120,13 @@ export function App() {
         }
       })
       const tip = parseMoneyInput(fixedTip, Number(precision))
+      const subtotal = itemizedItems.reduce((total, item) => total + item.units, 0n)
+      const subtotalValidation = validateItemizedSubtotal(subtotal, tip.ok ? tip.units : 0n)
+      if (!subtotalValidation.ok) {
+        setCalculationError(subtotalValidation.message ?? 'Add or update items so the pre-tax subtotal is greater than 0.')
+        return
+      }
+      setCalculationError('')
       const split = calculateItemizedSplit({ items: itemizedItems, taxPercentage: BigInt(taxPercentage || '0'), fixedTipUnits: tip.ok ? tip.units : 0n })
       setResult({ allocations: split.allocations, grandTotalUnits: split.grandTotalUnits, recipientIndexes: split.recipientIndexes })
       return
@@ -314,6 +323,7 @@ export function App() {
           {participantError ? <p role="alert">{participantError}</p> : null}
           {nameError ? <p role="alert">{nameError}</p> : null}
           {shareError ? <p role="alert">{shareError}</p> : null}
+          {calculationError ? <p role="alert">{calculationError}</p> : null}
         </fieldset>
         <label htmlFor="payer">Payer</label>
         <select
