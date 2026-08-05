@@ -1,31 +1,49 @@
 {
   "schema": "split-snap-local-android-aab-provenance-v1",
-  "result": "BLOCKED",
+  "result": "PASS",
   "source": {
-    "git_revision": "50bc0dcfc20bdfa8d2c4aee13f3da49d11fc061f",
-    "sha256": "80ff471806a4a5575c52e8dd320b9c7b548e3d767ba543ca383a41d3ef70ed9f"
+    "git_revision": "e8aa4426ec1c1738d2d4262462eeee04d5e75fa2",
+    "sha256": "04f2aab4ce65b0526888e7327d71039ce325af920e6c2701dc66d741c0db0043"
   },
   "payload": {
     "path": "dist",
-    "tree_sha256": "f8db9680f9afa3c0124d58feebe02ed77bfaa7f42724b46bbb65c257e5117bdd",
-    "verification": "npm run verify: PASS"
+    "tree_sha256": "f8db9680f9afa3c0124d58feebe02ed77bfaa7f42724b46bbb65c257e5117bdd"
   },
   "offline": {
     "gradle_argument": "--offline",
-    "network_access": "not_attempted",
-    "attempted_command": "JAVA_HOME=/Users/timeabout/.cache/fridge-menu-android-toolchain/jdk/temurin-17.jdk/Contents/Home ANDROID_HOME=/Users/timeabout/.cache/fridge-menu-android-toolchain/android-sdk /Users/timeabout/.cache/fridge-menu-android-toolchain/gradle/gradle-8.7/bin/gradle --offline --no-daemon --console=plain :app:bundleRelease",
-    "result": "BLOCKED"
+    "network_access": "not_attempted"
   },
   "toolchain": {
-    "gradle": "8.7 (revision 650af14d7653aa949fce5e886e685efc9cf97c10)",
-    "android_gradle_plugin": "8.6.1",
+    "schema": "split-snap-local-android-toolchain-v1",
+    "gradle": {
+      "version": "8.7",
+      "revision": "650af14d7653aa949fce5e886e685efc9cf97c10",
+      "launcher_sha256": "8da20e6969bb0a21f62c7f09c22f57df63558dd57a0a8618a8f7e8455152578c"
+    },
+    "android_gradle_plugin": {
+      "version": "8.6.1",
+      "jar_sha256": "9697733a215f2ed42e5b2fc4053484ec832eab29584ebced94d92c91090051c1"
+    },
+    "java_major": 17,
     "compile_sdk": 35,
-    "java_major": 17
+    "offline_only": true,
+    "credentials_or_signing": "forbidden"
   },
-  "blocker": {
-    "root_cause": "The available AGP 8.6.1 cache is incomplete. Offline dependency resolution requires kotlin-reflect:1.9.20, kotlin-stdlib:1.9.20, and org.jetbrains:annotations:23.0.0, none of which are in Gradle's module cache.",
-    "aab": "not produced",
-    "repeat_builds": "not run because the first offline build cannot resolve its pinned dependency closure",
-    "signing": "No signing configuration or credentials were added."
-  }
+  "aab": {
+    "path": "android/app/build/outputs/bundle/release/app-release.aab",
+    "unsigned": true,
+    "sha256": "0aee1c49de6fd8ae17d0c3ac9f50cb0cc5d5b01a26813bf47d6fc8053ac6c860",
+    "bytes": 570921,
+    "repeatable": true
+  },
+  "runs": [
+    {
+      "sha256": "0aee1c49de6fd8ae17d0c3ac9f50cb0cc5d5b01a26813bf47d6fc8053ac6c860",
+      "bytes": 570921
+    },
+    {
+      "sha256": "0aee1c49de6fd8ae17d0c3ac9f50cb0cc5d5b01a26813bf47d6fc8053ac6c860",
+      "bytes": 570921
+    }
+  ]
 }
