@@ -16,6 +16,8 @@ assert.match(build, /--offline/);
 assert.match(build, /:app:bundleRelease/);
 assert.match(build, /Two clean offline AAB builds must be byte-identical/);
 assert.match(build, /local-android-aab-provenance\.json/);
+assert.match(build, /source: \{ tree_sha256: sourceSha256 \}/, 'AAB provenance must bind the immutable source content tree');
+assert.doesNotMatch(build, /git', \['rev-parse', 'HEAD'\]/, 'AAB provenance must not require a self-referential current commit SHA');
 assert.match(eslintConfig, /android\/app\/build\/\*\*/);
 
 console.log('local Android AAB build contract passes');

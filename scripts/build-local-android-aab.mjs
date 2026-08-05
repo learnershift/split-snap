@@ -47,7 +47,6 @@ const sourceFiles = run('git', ['ls-files', '-co', '--exclude-standard']).split(
   .filter((file) => file !== 'product/evidence/release/local-android-aab-provenance.json')
   .sort();
 const sourceSha256 = sha256(sourceFiles.map((file) => `${file}\0${bytesDigest(path.join(root, file))}\n`).join(''));
-const revision = run('git', ['rev-parse', 'HEAD']).trim();
 const env = {
   ...environment,
   ANDROID_HOME: sdkHome,
@@ -69,7 +68,7 @@ mkdirSync(path.dirname(report), { recursive: true });
 writeFileSync(report, `${JSON.stringify({
   schema: 'split-snap-local-android-aab-provenance-v1',
   result: 'PASS',
-  source: { git_revision: revision, sha256: sourceSha256 },
+  source: { tree_sha256: sourceSha256 },
   payload: { path: 'dist', tree_sha256: payloadSha256 },
   offline: { gradle_argument: '--offline', network_access: 'not_attempted' },
   toolchain,
