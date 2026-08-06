@@ -44,7 +44,7 @@ run('npm', ['run', 'verify']);
 const payloadSha256 = run('npm', ['run', '--silent', 'seal:dist', '--', '--dir', 'dist']).trim();
 const sourceFiles = run('git', ['ls-files', '--cached']).split('\n')
   .filter(Boolean)
-  .filter((file) => file !== 'product/evidence/release/local-android-aab-provenance.json')
+  .filter((file) => !file.startsWith('product/evidence/'))
   .sort();
 const sourceSha256 = sha256(sourceFiles.map((file) => `${file}\0${bytesDigest(path.join(root, file))}\n`).join(''));
 const env = {

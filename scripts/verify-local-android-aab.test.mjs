@@ -18,6 +18,7 @@ assert.match(build, /Two clean offline AAB builds must be byte-identical/);
 assert.match(build, /local-android-aab-provenance\.json/);
 assert.match(build, /source: \{ tree_sha256: sourceSha256 \}/, 'AAB provenance must bind the immutable source content tree');
 assert.match(build, /git', \['ls-files', '--cached'\]/, 'AAB provenance must exclude untracked runtime debris');
+assert.match(build, /file\.startsWith\('product\/evidence\/'\)/, 'AAB provenance must exclude evidence-only files while retaining all product source files');
 assert.doesNotMatch(build, /git', \['ls-files', '-co'/, 'AAB provenance must not include untracked files');
 assert.doesNotMatch(build, /git', \['rev-parse', 'HEAD'\]/, 'AAB provenance must not require a self-referential current commit SHA');
 assert.match(eslintConfig, /android\/app\/build\/\*\*/);
